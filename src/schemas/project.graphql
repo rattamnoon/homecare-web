@@ -1,0 +1,21 @@
+fragment Unit on Unit {
+  id
+  projectId
+  unitNumber
+  houseNumber
+}
+
+fragment Project on Project {
+  id
+  nameTh
+  nameEn
+  units {
+    ...Unit
+  }
+}
+
+query Projects {
+  projects {
+    ...Project
+  }
+}

@@ -1,0 +1,30 @@
+fragment Auth on Auth {
+  token
+  refreshToken
+  expiresAt
+  user {
+    id
+    employeeId
+    username
+    firstName
+    lastName
+    email
+    lastLoginAt
+    status
+    createdAt
+    updatedAt
+    deletedAt
+  }
+}
+
+mutation Login($username: String!, $password: String!) {
+  login(username: $username, password: $password) {
+    ...Auth
+  }
+}
+
+mutation RefreshToken {
+  refreshToken {
+    ...Auth
+  }
+}
