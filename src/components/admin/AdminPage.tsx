@@ -1,6 +1,6 @@
 "use client";
 
-import { useProjectsQuery } from "@/gql/project.generated";
+import { useProjectsQuery } from "@/gql/generated/project.generated";
 
 export const AdminPage = () => {
   const { data, loading, error } = useProjectsQuery();

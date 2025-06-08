@@ -10,7 +10,7 @@ import {
   RefreshTokenDocument,
   RefreshTokenMutation,
   RefreshTokenMutationVariables,
-} from "./gql/auth.generated";
+} from "./gql/generated/auth.generated";
 
 const requestRefreshOfAccessToken = async (token: JWT) => {
   try {

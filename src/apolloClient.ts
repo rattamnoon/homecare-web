@@ -19,7 +19,7 @@ import dayjs from "dayjs";
 import { createClient } from "graphql-ws";
 import { JWT } from "next-auth/jwt";
 import { getSession, signOut } from "next-auth/react";
-import { RefreshTokenDocument } from "./gql/auth.generated";
+import { RefreshTokenDocument } from "./gql/generated/auth.generated";
 
 const isServer = typeof window === "undefined";
 
