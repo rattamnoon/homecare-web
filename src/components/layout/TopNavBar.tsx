@@ -27,9 +27,62 @@ import { useRouter } from "nextjs-toploader/app";
 
 const { Header } = Layout;
 
-export const TopNavBar = () => {
+const MainMenu = () => {
   const router = useRouter();
   const pathname = usePathname();
+
+  const menuItems: MenuProps["items"] = [
+    {
+      label: "หน้าหลัก",
+      key: Routes.Home,
+      icon: <HomeOutlined />,
+      onClick: () => router.push(Routes.Home),
+    },
+    {
+      label: "ระบบจัดการงาน",
+      key: Routes.Tasks,
+      icon: <AppstoreOutlined />,
+      onClick: () => router.push(Routes.Tasks),
+    },
+    {
+      label: "Dashboard",
+      key: Routes.Dashboard,
+      icon: <DashboardOutlined />,
+      onClick: () => router.push(Routes.Dashboard),
+    },
+    {
+      label: "จัดการระบบ",
+      key: Routes.System,
+      icon: <SettingOutlined />,
+      onClick: () => router.push(Routes.System),
+    },
+    {
+      label: "ระบบจัดการผู้ใช้งาน",
+      key: Routes.Admin,
+      icon: <UserOutlined />,
+      onClick: () => router.push(Routes.Admin),
+    },
+  ];
+
+  return (
+    <Menu
+      mode="horizontal"
+      selectedKeys={[pathname]}
+      style={{
+        flex: 1,
+        minWidth: 0,
+        width: "100%",
+        border: "none",
+        borderRadius: 0,
+      }}
+      theme="light"
+      items={menuItems}
+    />
+  );
+};
+
+export const TopNavBar = () => {
+  const router = useRouter();
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -39,18 +92,6 @@ export const TopNavBar = () => {
   });
 
   const username = data?.user?.username;
-
-  const menuItems: MenuProps["items"] = [
-    {
-      label: "ออกจากระบบ",
-      key: "logout",
-      icon: <LogoutOutlined />,
-      onClick: async () => {
-        await makeClient().clearStore();
-        await signOut();
-      },
-    },
-  ];
 
   return (
     <Header
@@ -72,54 +113,26 @@ export const TopNavBar = () => {
           height={32}
           priority
         />
-        <Menu
-          mode="horizontal"
-          selectedKeys={[pathname]}
-          style={{
-            flex: 1,
-            minWidth: 0,
-            width: "100%",
-            border: "none",
-            borderRadius: 0,
-          }}
-          theme="light"
-          items={[
-            {
-              label: "หน้าหลัก",
-              key: Routes.Home,
-              icon: <HomeOutlined />,
-              onClick: () => router.push(Routes.Home),
-            },
-            {
-              label: "ระบบจัดการงาน",
-              key: Routes.Tasks,
-              icon: <AppstoreOutlined />,
-              onClick: () => router.push(Routes.Tasks),
-            },
-            {
-              label: "Dashboard",
-              key: Routes.Dashboard,
-              icon: <DashboardOutlined />,
-              onClick: () => router.push(Routes.Dashboard),
-            },
-            {
-              label: "จัดการระบบ",
-              key: Routes.System,
-              icon: <SettingOutlined />,
-              onClick: () => router.push(Routes.System),
-            },
-            {
-              label: "ระบบจัดการผู้ใช้งาน",
-              key: Routes.Admin,
-              icon: <UserOutlined />,
-              onClick: () => router.push(Routes.Admin),
-            },
-          ]}
-        />
+        <MainMenu />
       </Flex>
 
       <Space direction="horizontal" align="center">
-        <Dropdown menu={{ items: menuItems }} trigger={["click", "hover"]}>
+        <Dropdown
+          menu={{
+            items: [
+              {
+                label: "ออกจากระบบ",
+                key: "logout",
+                icon: <LogoutOutlined />,
+                onClick: async () => {
+                  await makeClient().clearStore();
+                  await signOut();
+                },
+              },
+            ],
+          }}
+          trigger={["click", "hover"]}
+        >
           <Button variant="filled" color="primary">
             <UserOutlined /> {username}
           </Button>
