@@ -1,4 +1,4 @@
-import { type ThemeConfig } from "antd";
+import { theme, type ThemeConfig } from "antd";
 import { Noto_Sans_Thai } from "next/font/google";
 
 export const notoSansThai = Noto_Sans_Thai({
@@ -8,10 +8,10 @@ export const notoSansThai = Noto_Sans_Thai({
   fallback: ["Helvetica", "Arial", "sans-serif"],
 });
 
-// const { darkAlgorithm, compactAlgorithm } = theme;
+const { compactAlgorithm } = theme;
 
 export const themeConfig: ThemeConfig = {
-  // algorithm: [darkAlgorithm, compactAlgorithm],
+  algorithm: [compactAlgorithm],
   token: {
     fontSize: 14,
     colorPrimary: "#EA7F2F",

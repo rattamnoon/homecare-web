@@ -4,4 +4,5 @@ export const Routes = {
   Tasks: "/tasks",
   Dashboard: "/dashboard",
   Admin: "/admin",
+  System: "/system",
 };

@@ -67,6 +67,23 @@ export type CreateUserInput = {
   username?: InputMaybe<Scalars["String"]["input"]>;
 };
 
+export type IPaginateLinks = {
+  __typename?: "IPaginateLinks";
+  first?: Maybe<Scalars["String"]["output"]>;
+  last?: Maybe<Scalars["String"]["output"]>;
+  next?: Maybe<Scalars["String"]["output"]>;
+  previous?: Maybe<Scalars["String"]["output"]>;
+};
+
+export type IPaginateMeta = {
+  __typename?: "IPaginateMeta";
+  currentPage: Scalars["Float"]["output"];
+  itemCount: Scalars["Float"]["output"];
+  itemsPerPage: Scalars["Float"]["output"];
+  totalItems?: Maybe<Scalars["Float"]["output"]>;
+  totalPages?: Maybe<Scalars["Float"]["output"]>;
+};
+
 export type Master = {
   __typename?: "Master";
   children: Array<Master>;
@@ -184,7 +201,7 @@ export type Query = {
   task: Task;
   tasks: Array<Task>;
   user: User;
-  users: Array<User>;
+  users: UserPaginate;
 };
 
 export type QueryMasterArgs = {
@@ -201,6 +218,12 @@ export type QueryTaskArgs = {
 
 export type QueryUserArgs = {
   id: Scalars["ID"]["input"];
+};
+
+export type QueryUsersArgs = {
+  limit?: Scalars["Int"]["input"];
+  page?: Scalars["Int"]["input"];
+  searchText?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type Task = {
@@ -296,4 +319,11 @@ export type User = {
   status: Scalars["String"]["output"];
   updatedAt: Scalars["Date"]["output"];
   username: Scalars["String"]["output"];
+};
+
+export type UserPaginate = {
+  __typename?: "UserPaginate";
+  items: Array<User>;
+  links?: Maybe<IPaginateLinks>;
+  meta?: Maybe<IPaginateMeta>;
 };

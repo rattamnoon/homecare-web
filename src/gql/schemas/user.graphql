@@ -1,0 +1,27 @@
+fragment User on User {
+  id
+  employeeId
+  username
+  firstName
+  lastName
+  email
+  lastLoginAt
+  status
+  createdAt
+  updatedAt
+  deletedAt
+}
+
+query Users($page: Int!, $limit: Int!, $searchText: String) {
+  users(page: $page, limit: $limit, searchText: $searchText) {
+    meta {
+      ...IPaginateMeta
+    }
+    links {
+      ...IPaginateLinks
+    }
+    items {
+      ...User
+    }
+  }
+}

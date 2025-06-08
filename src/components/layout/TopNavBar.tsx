@@ -2,23 +2,30 @@
 
 import { makeClient } from "@/apolloClient";
 import { Routes } from "@/constant/routes";
-import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
-import styled from "@emotion/styled";
-import { Button, Dropdown, Flex, Menu, MenuProps, Space, theme } from "antd";
+import {
+  AppstoreOutlined,
+  DashboardOutlined,
+  HomeOutlined,
+  LogoutOutlined,
+  SettingOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import {
+  Button,
+  Dropdown,
+  Flex,
+  Layout,
+  Menu,
+  MenuProps,
+  Space,
+  theme,
+} from "antd";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 
-const Container = styled.div<{ backgroundColor: string }>`
-  display: flex;
-  width: 100%;
-  background-color: ${({ backgroundColor }) => backgroundColor};
-  padding: 16px;
-  height: 48px;
-  align-items: center;
-  box-shadow: 0px -1px 0px 0px #f0f0f0 inset;
-`;
+const { Header } = Layout;
 
 export const TopNavBar = () => {
   const router = useRouter();
@@ -46,39 +53,65 @@ export const TopNavBar = () => {
   ];
 
   return (
-    <Container backgroundColor={colorBgContainer}>
+    <Header
+      style={{
+        display: "flex",
+        alignItems: "center",
+        backgroundColor: colorBgContainer,
+        paddingLeft: 16,
+        paddingRight: 16,
+      }}
+    >
       <Flex align="center" gap={16} flex={1}>
         <Image
           src="/images/origin-vertical-logo.png"
           alt="Logo"
-          height={32}
-          width={100}
           onClick={() => router.push(Routes.Home)}
-          style={{ cursor: "pointer" }}
+          style={{ cursor: "pointer", objectFit: "contain" }}
+          width={135}
+          height={32}
+          priority
         />
         <Menu
           mode="horizontal"
           selectedKeys={[pathname]}
-          style={{ width: "100%" }}
+          style={{
+            flex: 1,
+            minWidth: 0,
+            width: "100%",
+            border: "none",
+            borderRadius: 0,
+          }}
+          theme="light"
           items={[
             {
               label: "หน้าหลัก",
               key: Routes.Home,
+              icon: <HomeOutlined />,
               onClick: () => router.push(Routes.Home),
             },
             {
               label: "ระบบจัดการงาน",
               key: Routes.Tasks,
+              icon: <AppstoreOutlined />,
               onClick: () => router.push(Routes.Tasks),
             },
             {
               label: "Dashboard",
               key: Routes.Dashboard,
+              icon: <DashboardOutlined />,
               onClick: () => router.push(Routes.Dashboard),
+            },
+            {
+              label: "จัดการระบบ",
+              key: Routes.System,
+              icon: <SettingOutlined />,
+              onClick: () => router.push(Routes.System),
             },
             {
               label: "ระบบจัดการผู้ใช้งาน",
               key: Routes.Admin,
+              icon: <UserOutlined />,
               onClick: () => router.push(Routes.Admin),
             },
           ]}
@@ -92,6 +125,6 @@ export const TopNavBar = () => {
           </Button>
         </Dropdown>
       </Space>
-    </Container>
+    </Header>
   );
 };

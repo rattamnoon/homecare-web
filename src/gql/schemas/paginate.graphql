@@ -1,0 +1,14 @@
+fragment IPaginateMeta on IPaginateMeta {
+  totalItems
+  itemCount
+  itemsPerPage
+  totalPages
+  currentPage
+}
+
+fragment IPaginateLinks on IPaginateLinks {
+  first
+  previous
+  next
+  last
+}
