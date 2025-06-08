@@ -1,9 +1,8 @@
 import { getSession } from "@/auth";
 import { ApolloClientProvider } from "@/components/ApolloClientProvider";
 import { NextAuthProvider } from "@/components/NextAuthProvider";
-import theme, { notoSansThai } from "@/theme/themeConfig";
+import { notoSansThai } from "@/theme/themeConfig";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { ConfigProvider } from "antd";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import NextTopLoader from "nextjs-toploader";
@@ -31,9 +30,7 @@ export default async function RootLayout({
         <NextTopLoader color="#EA7F2F" showSpinner={false} />
         <AntdRegistry>
           <NextAuthProvider session={session}>
-            <ApolloClientProvider>
-              <ConfigProvider theme={theme}>{children}</ConfigProvider>
-            </ApolloClientProvider>
+            <ApolloClientProvider>{children}</ApolloClientProvider>
           </NextAuthProvider>
         </AntdRegistry>
       </body>

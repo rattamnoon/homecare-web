@@ -99,6 +99,12 @@ const authOptions: NextAuthOptions = {
     session({ session, token }) {
       session.token = token.token;
       session.refreshToken = token.refreshToken;
+      session.user.id = token.id ?? "";
+      session.user.employeeId = token.employeeId ?? "";
+      session.user.username = token.username ?? "";
+      session.user.firstName = token.firstName ?? "";
+      session.user.lastName = token.lastName ?? "";
+      session.user.email = token.email ?? "";
       session.error = token.error as "RefreshAccessTokenError";
 
       return session;
