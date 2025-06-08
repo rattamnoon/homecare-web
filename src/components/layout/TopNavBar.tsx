@@ -2,6 +2,7 @@
 
 import { makeClient } from "@/apolloClient";
 import { Routes } from "@/constant/routes";
+import { imageBlob } from "@/utils/imageBlob";
 import {
   AppstoreOutlined,
   DashboardOutlined,
@@ -12,6 +13,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import {
+  Avatar,
   Button,
   Divider,
   Drawer,
@@ -22,14 +24,72 @@ import {
   MenuProps,
   Space,
   theme,
+  Typography,
 } from "antd";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
+import { useEffect, useMemo, useState } from "react";
 import { useLocalStorage, useMediaQuery } from "usehooks-ts";
 
 const { Header } = Layout;
+const { Text } = Typography;
+
+const getImageUrl = async (employeeId: string): Promise<string> => {
+  const url = `${process.env.NEXT_PUBLIC_MYORIGIN_API_URL}/static`;
+  const blob = await imageBlob(`${url}/employee_mid/${employeeId}.jpg`);
+
+  return blob;
+};
+
+export const ProfilePlaceholder = ({
+  styles,
+}: {
+  styles?: React.CSSProperties;
+}) => {
+  const { data } = useSession({
+    required: true,
+  });
+  const [avatar, setAvatar] = useState<string>("");
+
+  useEffect(() => {
+    const fetchAvatar = async () => {
+      const avatarUrl = await getImageUrl(data?.user?.employeeId ?? "");
+      setAvatar(avatarUrl);
+    };
+
+    fetchAvatar();
+  }, [data?.user?.employeeId]);
+
+  const { name, description } = useMemo(() => {
+    if (!data?.user)
+      return {
+        name: "",
+        description: "",
+      };
+
+    return {
+      name: `${data?.user?.firstName} ${data?.user?.lastName}`,
+    };
+  }, [data?.user]);
+
+  return (
+    <Flex align="center" gap={8} style={styles}>
+      <Avatar
+        size="large"
+        icon={<UserOutlined />}
+        {...(avatar && { src: avatar })}
+      />
+      <Flex vertical>
+        <Text>{name}</Text>
+        <Text style={{ fontSize: 12 }} type="secondary">
+          {description}
+        </Text>
+      </Flex>
+    </Flex>
+  );
+};
 
 const MainMenu = () => {
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -108,21 +168,9 @@ const MobileMenu = ({
   open: boolean;
   onClose: () => void;
 }) => {
-  const router = useRouter();
-
   return (
     <Drawer width={250} closable={false} open={open} onClose={onClose}>
-      <Flex align="center" gap={16} flex={1} justify="center">
-        <Image
-          src="/images/origin-vertical-logo.png"
-          alt="Logo"
-          onClick={() => router.push(Routes.Home)}
-          style={{ cursor: "pointer", objectFit: "contain" }}
-          width={135}
-          height={32}
-          priority
-        />
-      </Flex>
+      <ProfilePlaceholder />
       <Divider />
       <MainMenu />
     </Drawer>
@@ -143,12 +191,6 @@ export const TopNavBar = () => {
   const onClose = () => {
     setIsMobileMenuOpen(false);
   };
-
-  const { data } = useSession({
-    required: true,
-  });
-
-  const username = data?.user?.username;
 
   const handleLogout = async () => {
     await makeClient().clearStore();
@@ -193,9 +235,15 @@ export const TopNavBar = () => {
             }}
             trigger={["click", "hover"]}
           >
-            <Button variant="filled" color="primary">
-              <UserOutlined /> {username}
-            </Button>
+            <div>
+              <ProfilePlaceholder
+                styles={{
+                  cursor: "pointer",
+                  paddingLeft: 16,
+                  paddingRight: 16,
+                }}
+              />
+            </div>
           </Dropdown>
         </Space>
       ) : (
@@ -208,7 +256,7 @@ export const TopNavBar = () => {
         </Button>
       )}
 
-      <MobileMenu open={isMobileMenuOpen} onClose={onClose} />
+      {isMobile && <MobileMenu open={isMobileMenuOpen} onClose={onClose} />}
     </Header>
   );
 };

@@ -1,5 +1,6 @@
 "use client";
 
+import { withTheme } from "@/components/layout/MainLayout";
 import { LockOutlined, LoginOutlined, UserOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
 import { Button, Card, Form, Input } from "antd";
@@ -57,7 +58,7 @@ export const LoginPage = () => {
     }
   };
 
-  return (
+  return withTheme(
     <Background>
       <Image
         src="/images/origin-vertical-logo.png"
