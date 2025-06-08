@@ -132,7 +132,7 @@ const MainMenu = () => {
       icon: <UserOutlined />,
       onClick: () => router.push(Routes.Admin),
     },
-    ...(isMobile
+    ...(!isMobile
       ? []
       : [
           {
@@ -250,10 +250,10 @@ export const TopNavBar = () => {
         <Button
           variant="filled"
           color="primary"
+          size="large"
           onClick={() => setIsMobileMenuOpen(true)}
-        >
-          <MenuOutlined />
-        </Button>
+          icon={<MenuOutlined />}
+        />
       )}
 
       {isMobile && <MobileMenu open={isMobileMenuOpen} onClose={onClose} />}
