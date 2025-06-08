@@ -15,7 +15,7 @@ type LoginForm = {
 
 const Background = styled.div`
   min-height: 100svh;
-  background-image: url("/images/login-bg.png");
+  background-image: url("/images/origin-homecare-bg.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

@@ -2,10 +2,11 @@
 
 import { Routes } from "@/constant/routes";
 import { UsergroupAddOutlined, UserOutlined } from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Layout, Menu, theme } from "antd";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
+import { CustomBreadcrumb } from "../common/CustomBreadcrumb";
 import { RolePage } from "./RolePage";
 import { UserPage } from "./UserPage";
 
@@ -70,18 +71,7 @@ export const AdminPage = () => {
         />
       </Sider>
       <Layout style={{ padding: "0 24px 24px" }}>
-        <Breadcrumb
-          style={{ margin: "16px 0" }}
-          items={[
-            {
-              title: "หน้าหลัก",
-              onClick: () => router.push(Routes.Home),
-            },
-            {
-              title: "ระบบจัดการผู้ใช้งาน",
-            },
-          ]}
-        />
+        <CustomBreadcrumb />
         <Content
           style={{
             padding: 24,

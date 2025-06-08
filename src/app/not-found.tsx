@@ -12,7 +12,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   height: 100svh;
-  background-image: url("/images/login-bg.png");
+  background-image: url("/images/origin-homecare-bg.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
