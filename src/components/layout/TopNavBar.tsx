@@ -7,11 +7,14 @@ import {
   DashboardOutlined,
   HomeOutlined,
   LogoutOutlined,
+  MenuOutlined,
   SettingOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import {
   Button,
+  Divider,
+  Drawer,
   Dropdown,
   Flex,
   Layout,
@@ -24,12 +27,19 @@ import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
+import { useLocalStorage, useMediaQuery } from "usehooks-ts";
 
 const { Header } = Layout;
 
 const MainMenu = () => {
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const router = useRouter();
   const pathname = usePathname();
+
+  const handleLogout = async () => {
+    await makeClient().clearStore();
+    await signOut();
+  };
 
   const menuItems: MenuProps["items"] = [
     {
@@ -62,11 +72,21 @@ const MainMenu = () => {
       icon: <UserOutlined />,
       onClick: () => router.push(Routes.Admin),
     },
+    ...(isMobile
+      ? []
+      : [
+          {
+            label: "ออกจากระบบ",
+            key: "logout",
+            icon: <LogoutOutlined />,
+            onClick: handleLogout,
+          },
+        ]),
   ];
 
   return (
     <Menu
-      mode="horizontal"
+      mode={isMobile ? "vertical" : "horizontal"}
       selectedKeys={[pathname]}
       style={{
         flex: 1,
@@ -81,17 +101,59 @@ const MainMenu = () => {
   );
 };
 
+const MobileMenu = ({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) => {
+  const router = useRouter();
+
+  return (
+    <Drawer width={250} closable={false} open={open} onClose={onClose}>
+      <Flex align="center" gap={16} flex={1} justify="center">
+        <Image
+          src="/images/origin-vertical-logo.png"
+          alt="Logo"
+          onClick={() => router.push(Routes.Home)}
+          style={{ cursor: "pointer", objectFit: "contain" }}
+          width={135}
+          height={32}
+          priority
+        />
+      </Flex>
+      <Divider />
+      <MainMenu />
+    </Drawer>
+  );
+};
+
 export const TopNavBar = () => {
   const router = useRouter();
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useLocalStorage(
+    "isMobileMenuOpen",
+    false
+  );
+
+  const onClose = () => {
+    setIsMobileMenuOpen(false);
+  };
 
   const { data } = useSession({
     required: true,
   });
 
   const username = data?.user?.username;
+
+  const handleLogout = async () => {
+    await makeClient().clearStore();
+    await signOut();
+  };
 
   return (
     <Header
@@ -113,31 +175,40 @@ export const TopNavBar = () => {
           height={32}
           priority
         />
-        <MainMenu />
+        {!isMobile && <MainMenu />}
       </Flex>
 
-      <Space direction="horizontal" align="center">
-        <Dropdown
-          menu={{
-            items: [
-              {
-                label: "ออกจากระบบ",
-                key: "logout",
-                icon: <LogoutOutlined />,
-                onClick: async () => {
-                  await makeClient().clearStore();
-                  await signOut();
+      {!isMobile ? (
+        <Space direction="horizontal" align="center">
+          <Dropdown
+            menu={{
+              items: [
+                {
+                  label: "ออกจากระบบ",
+                  key: "logout",
+                  icon: <LogoutOutlined />,
+                  onClick: handleLogout,
                 },
-              },
-            ],
-          }}
-          trigger={["click", "hover"]}
+              ],
+            }}
+            trigger={["click", "hover"]}
+          >
+            <Button variant="filled" color="primary">
+              <UserOutlined /> {username}
+            </Button>
+          </Dropdown>
+        </Space>
+      ) : (
+        <Button
+          variant="filled"
+          color="primary"
+          onClick={() => setIsMobileMenuOpen(true)}
         >
-          <Button variant="filled" color="primary">
-            <UserOutlined /> {username}
-          </Button>
-        </Dropdown>
-      </Space>
+          <MenuOutlined />
+        </Button>
+      )}
+
+      <MobileMenu open={isMobileMenuOpen} onClose={onClose} />
     </Header>
   );
 };

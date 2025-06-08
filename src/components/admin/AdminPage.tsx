@@ -38,6 +38,11 @@ export const AdminPage = () => {
 
   return (
     <Layout>
+      <style jsx global>{`
+        .ant-menu-light.ant-menu-root.ant-menu-vertical {
+          border-inline-end: transparent;
+        }
+      `}</style>
       <Sider
         trigger={null}
         collapsedWidth={0}
