@@ -19,3 +19,9 @@ query Projects {
     ...Project
   }
 }
+
+query Units($projectId: String!) {
+  units(projectId: $projectId) {
+    ...Unit
+  }
+}

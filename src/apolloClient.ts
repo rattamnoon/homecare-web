@@ -71,7 +71,6 @@ const refreshMiddleware = onError(
                 });
 
                 if (!newToken || newToken.error === "RefreshAccessTokenError") {
-                  await makeClient().resetStore();
                   await signOut();
                   observer.error(new Error("Unauthorized"));
                   return;
@@ -92,8 +91,7 @@ const refreshMiddleware = onError(
 
                 forward(operation).subscribe(subscriber);
               } catch (err) {
-                await makeClient().resetStore();
-                signOut();
+                await signOut();
                 observer.error(err);
               }
             })();

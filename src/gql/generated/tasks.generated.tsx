@@ -38,6 +38,19 @@ export type TaskFragment = {
     nameEn: string;
     nameTh: string;
   };
+  project: {
+    __typename?: "Project";
+    id: string;
+    nameTh: string;
+    nameEn: string;
+  };
+  unit?: {
+    __typename?: "Unit";
+    id: string;
+    projectId: string;
+    unitNumber?: string | null;
+    houseNumber?: string | null;
+  } | null;
 };
 
 export type TaskStatusDtoFragment = {
@@ -53,9 +66,7 @@ export type TasksQueryVariables = Types.Exact<{
   limit: Types.Scalars["Int"]["input"];
   searchText?: Types.InputMaybe<Types.Scalars["String"]["input"]>;
   statuses?: Types.InputMaybe<Array<Types.TaskStatus> | Types.TaskStatus>;
-  projectIds?: Types.InputMaybe<
-    Array<Types.Scalars["String"]["input"]> | Types.Scalars["String"]["input"]
-  >;
+  projectId?: Types.InputMaybe<Types.Scalars["String"]["input"]>;
   unitIds?: Types.InputMaybe<
     Array<Types.Scalars["String"]["input"]> | Types.Scalars["String"]["input"]
   >;
@@ -111,6 +122,19 @@ export type TasksQuery = {
         nameEn: string;
         nameTh: string;
       };
+      project: {
+        __typename?: "Project";
+        id: string;
+        nameTh: string;
+        nameEn: string;
+      };
+      unit?: {
+        __typename?: "Unit";
+        id: string;
+        projectId: string;
+        unitNumber?: string | null;
+        houseNumber?: string | null;
+      } | null;
     }>;
   };
 };
@@ -157,6 +181,17 @@ export const TaskFragmentDoc = gql`
     createdAt
     updatedAt
     deletedAt
+    project {
+      id
+      nameTh
+      nameEn
+    }
+    unit {
+      id
+      projectId
+      unitNumber
+      houseNumber
+    }
   }
 `;
 export const TaskStatusDtoFragmentDoc = gql`
@@ -173,7 +208,7 @@ export const TasksDocument = gql`
     $limit: Int!
     $searchText: String
     $statuses: [TaskStatus!]
-    $projectIds: [String!]
+    $projectId: String
     $unitIds: [String!]
   ) {
     tasks(
@@ -181,7 +216,7 @@ export const TasksDocument = gql`
       limit: $limit
       searchText: $searchText
       statuses: $statuses
-      projectIds: $projectIds
+      projectId: $projectId
       unitIds: $unitIds
     ) {
       meta {
@@ -216,7 +251,7 @@ export const TasksDocument = gql`
  *      limit: // value for 'limit'
  *      searchText: // value for 'searchText'
  *      statuses: // value for 'statuses'
- *      projectIds: // value for 'projectIds'
+ *      projectId: // value for 'projectId'
  *      unitIds: // value for 'unitIds'
  *   },
  * });

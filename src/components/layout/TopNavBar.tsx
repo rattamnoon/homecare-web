@@ -1,6 +1,5 @@
 "use client";
 
-import { makeClient } from "@/apolloClient";
 import { Routes } from "@/config/routes";
 import { siteConfig } from "@/config/site";
 import { imageBlob } from "@/utils/imageBlob";
@@ -92,7 +91,6 @@ const MainMenu = () => {
   const pathname = usePathname();
 
   const handleLogout = async () => {
-    await makeClient().clearStore();
     await signOut();
   };
 
@@ -164,7 +162,6 @@ export const TopNavBar = () => {
   };
 
   const handleLogout = async () => {
-    await makeClient().clearStore();
     await signOut();
   };
 

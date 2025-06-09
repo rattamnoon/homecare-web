@@ -204,6 +204,7 @@ export type Query = {
   taskRangeTimes: Array<TaskRangeTimeDto>;
   taskStatuses: Array<TaskStatusDto>;
   tasks: TaskPaginate;
+  units: Array<Unit>;
   user: User;
   users: UserPaginate;
 };
@@ -223,10 +224,14 @@ export type QueryTaskArgs = {
 export type QueryTasksArgs = {
   limit?: Scalars["Int"]["input"];
   page?: Scalars["Int"]["input"];
-  projectIds?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  projectId?: InputMaybe<Scalars["String"]["input"]>;
   searchText?: InputMaybe<Scalars["String"]["input"]>;
   statuses?: InputMaybe<Array<TaskStatus>>;
   unitIds?: InputMaybe<Array<Scalars["String"]["input"]>>;
+};
+
+export type QueryUnitsArgs = {
+  projectId: Scalars["String"]["input"];
 };
 
 export type QueryUserArgs = {
@@ -252,10 +257,12 @@ export type Task = {
   id: Scalars["String"]["output"];
   insuranceDate?: Maybe<Scalars["Date"]["output"]>;
   insuranceDateDefault?: Maybe<Scalars["Date"]["output"]>;
+  project: Project;
   projectId: Scalars["String"]["output"];
   source?: Maybe<Scalars["String"]["output"]>;
   status: TaskStatusDto;
   transferDate?: Maybe<Scalars["Date"]["output"]>;
+  unit?: Maybe<Unit>;
   unitId?: Maybe<Scalars["String"]["output"]>;
   unitNumber: Scalars["String"]["output"];
   updatedAt: Scalars["Date"]["output"];

@@ -1,4 +1,5 @@
 import { Routes } from "@/config/routes";
+import { useUnitsQuery } from "@/gql/generated/project.generated";
 import { useTaskStatusesQuery } from "@/gql/generated/tasks.generated";
 import { useProjectsQuery } from "@/gql/src/gql/generated/project.generated";
 import { useCreateSearchParams } from "@/hooks/useCreateSearchParams";
@@ -14,20 +15,27 @@ export const useRepairFilter = () => {
   const statuses = ((searchParams.get("statuses") as string) || "")
     .split(",")
     .filter(Boolean);
-  const projectIds = ((searchParams.get("projectIds") as string) || "")
+  const projectId = searchParams.get("projectId") as string;
+  const unitIds = ((searchParams.get("unitIds") as string) || "")
     .split(",")
     .filter(Boolean);
 
-  return { searchText, statuses, projectIds };
+  return { searchText, statuses, projectId, unitIds };
 };
 
 export const RepairFilter = () => {
   const router = useRouter();
+  const { createQueryString } = useCreateSearchParams();
+  const { searchText, statuses, projectId, unitIds } = useRepairFilter();
   const { data: statusesData, loading: statusesLoading } =
     useTaskStatusesQuery();
-  const { createQueryString } = useCreateSearchParams();
   const { data: projectsData, loading: projectsLoading } = useProjectsQuery();
-  const { searchText, statuses, projectIds } = useRepairFilter();
+  const { data: unitsData, loading: unitsLoading } = useUnitsQuery({
+    variables: {
+      projectId,
+    },
+    skip: !projectId,
+  });
 
   const statusesOptions = useMemo(
     () => statusesData?.taskStatuses || [],
@@ -37,6 +45,7 @@ export const RepairFilter = () => {
     () => projectsData?.projects || [],
     [projectsData]
   );
+  const unitsOptions = useMemo(() => unitsData?.units || [], [unitsData]);
 
   const tagRender: TagRender = (props) => {
     const { label, value, closable, onClose } = props;
@@ -74,16 +83,6 @@ export const RepairFilter = () => {
     style: { width: "100%" },
     showSearch: true,
     optionFilterProp: "label",
-    mode: "multiple",
-    maxTagCount: "responsive",
-    maxTagPlaceholder: (omittedValues) => (
-      <Tooltip
-        styles={{ root: { pointerEvents: "none" } }}
-        title={omittedValues.map(({ label }) => label).join(", ")}
-      >
-        <span>+ {omittedValues.length}</span>
-      </Tooltip>
-    ),
   };
 
   return (
@@ -117,6 +116,7 @@ export const RepairFilter = () => {
               >
                 <Select
                   {...sharedSelectProps}
+                  mode="multiple"
                   placeholder="สถานะ"
                   loading={statusesLoading}
                   value={statuses}
@@ -128,13 +128,22 @@ export const RepairFilter = () => {
                     label: status.nameEn,
                     value: status.id,
                   }))}
+                  maxTagCount="responsive"
+                  maxTagPlaceholder={(omittedValues) => (
+                    <Tooltip
+                      styles={{ root: { pointerEvents: "none" } }}
+                      title={omittedValues.map(({ label }) => label).join(", ")}
+                    >
+                      <span>+ {omittedValues.length}</span>
+                    </Tooltip>
+                  )}
                 />
               </Form.Item>
             </Col>
             <Col xs={24} md={6}>
               <Form.Item
                 label="โครงการ"
-                name="projects"
+                name="projectId"
                 colon={false}
                 style={{ marginBottom: 0 }}
               >
@@ -142,13 +151,36 @@ export const RepairFilter = () => {
                   {...sharedSelectProps}
                   placeholder="โครงการ"
                   loading={projectsLoading}
-                  value={projectIds}
+                  value={projectId}
                   onChange={(value) => {
-                    handleSearch("projectIds", value.join(","));
+                    handleSearch("projectId", value);
                   }}
                   options={projectsOptions?.map((project) => ({
-                    label: project.nameEn,
+                    label: `${project.id} - ${project.nameTh}`,
                     value: project.id,
+                  }))}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={6}>
+              <Form.Item
+                label="ห้อง"
+                name="unitIds"
+                colon={false}
+                style={{ marginBottom: 0 }}
+              >
+                <Select
+                  {...sharedSelectProps}
+                  mode="multiple"
+                  placeholder="ห้อง"
+                  loading={unitsLoading}
+                  value={unitIds}
+                  onChange={(value) => {
+                    handleSearch("unitIds", value.join(","));
+                  }}
+                  options={unitsOptions?.map((unit) => ({
+                    label: unit.unitNumber,
+                    value: unit.id,
                   }))}
                 />
               </Form.Item>

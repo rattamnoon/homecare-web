@@ -26,6 +26,17 @@ fragment Task on Task {
   createdAt
   updatedAt
   deletedAt
+  project {
+    id
+    nameTh
+    nameEn
+  }
+  unit {
+    id
+    projectId
+    unitNumber
+    houseNumber
+  }
 }
 
 fragment TaskStatusDto on TaskStatusDto {
@@ -40,7 +51,7 @@ query Tasks(
   $limit: Int!
   $searchText: String
   $statuses: [TaskStatus!]
-  $projectIds: [String!]
+  $projectId: String
   $unitIds: [String!]
 ) {
   tasks(
@@ -48,7 +59,7 @@ query Tasks(
     limit: $limit
     searchText: $searchText
     statuses: $statuses
-    projectIds: $projectIds
+    projectId: $projectId
     unitIds: $unitIds
   ) {
     meta {
