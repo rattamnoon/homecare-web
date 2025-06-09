@@ -1,7 +1,6 @@
 import { getSession } from "@/auth";
 import { ApolloClientProvider } from "@/components/ApolloClientProvider";
 import { NextAuthProvider } from "@/components/NextAuthProvider";
-import { StagewiseToolbar } from "@/components/StagewiseToolbar";
 import { notoSansThai } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
@@ -36,10 +35,7 @@ export default async function RootLayout({
         <NextTopLoader color="#EA7F2F" showSpinner={false} />
         <AntdRegistry>
           <NextAuthProvider session={session}>
-            <ApolloClientProvider>
-              {children}
-              <StagewiseToolbar />
-            </ApolloClientProvider>
+            <ApolloClientProvider>{children}</ApolloClientProvider>
           </NextAuthProvider>
         </AntdRegistry>
       </body>
