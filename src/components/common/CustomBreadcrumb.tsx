@@ -5,12 +5,15 @@ import { useMemo } from "react";
 
 const route: { [key: string]: string } = {
   "/home": "หน้าหลัก",
-  "/tasks": "งานที่ต้องทำ",
-  "/dashboard": "กระดานข่าว",
-  "/admin": "ระบบจัดการผู้ใช้งาน",
-  "/admin/users": "ผู้ใช้งาน",
-  "/admin/roles": "สิทธิ์การใช้งาน",
-  "/system": "ระบบจัดการระบบ",
+  "/tasks": "จัดการงาน",
+  "/tasks/repair": "งานแจ้งซ่อม",
+  "/tasks/juristic/service": "Service",
+  "/tasks/juristic/central": "ส่วนกลาง",
+  "/dashboard": "Dashboard",
+  "/admin": "จัดการผู้ใช้งาน",
+  "/admin/user": "ผู้ใช้งาน",
+  "/admin/role": "สิทธิ์การใช้งาน",
+  "/system": "ตั้งค่า",
 };
 
 type BreadcrumbItem = {

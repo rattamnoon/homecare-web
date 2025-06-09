@@ -7,7 +7,7 @@ import {
   faUsers,
 } from "@fortawesome/pro-regular-svg-icons";
 
-import { AdminMenu, Routes } from "./routes";
+import { Routes } from "./routes";
 
 export type SiteConfig = typeof siteConfig;
 
@@ -18,7 +18,7 @@ export const siteConfig = {
     {
       label: "เข้าสู่ระบบ",
       href: Routes.Login,
-      key: "login",
+      key: "/login",
       icon: faSignInAlt,
     },
   ],
@@ -26,31 +26,31 @@ export const siteConfig = {
     {
       label: "หน้าหลัก",
       href: Routes.Home,
-      key: "home",
+      key: "/home",
       icon: faHouse,
     },
     {
       label: "จัดการงาน",
       href: Routes.Tasks,
-      key: "tasks",
+      key: "/tasks",
       icon: faListCheck,
     },
     {
       label: "Dashboard",
       href: Routes.Dashboard,
-      key: "dashboard",
+      key: "/dashboard",
       icon: faDisplayChartUpCircleDollar,
     },
     {
       label: "จัดการผู้ใช้งาน",
-      href: Routes.Admin(AdminMenu.Users),
-      key: "admin",
+      href: Routes.Admin,
+      key: "/admin",
       icon: faUsers,
     },
     {
       label: "ตั้งค่า",
       href: Routes.System,
-      key: "system",
+      key: "/system",
       icon: faGear,
     },
   ],

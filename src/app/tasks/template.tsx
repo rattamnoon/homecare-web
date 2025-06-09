@@ -1,8 +1,9 @@
 "use client";
 
 import { CustomBreadcrumb } from "@/components/common/CustomBreadcrumb";
-import { AdminMenu, Routes } from "@/config/routes";
-import { UsergroupAddOutlined, UserOutlined } from "@ant-design/icons";
+import { Routes, TaskMenu } from "@/config/routes";
+import { faBuilding, faWrench } from "@fortawesome/pro-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Layout, Menu, theme } from "antd";
 import { useParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
@@ -13,24 +14,11 @@ const { Content, Sider } = Layout;
 export default function Template({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const params = useParams();
-  const menu = (params.menu as AdminMenu) || AdminMenu.User;
+  const menu = (params.menu as TaskMenu) || TaskMenu.Repair;
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
   const [collapsed, setCollapsed] = useState(false);
-
-  const handleMenuClick = (key: string) => {
-    switch (key) {
-      case AdminMenu.User:
-        router.push(Routes.AdminUsers);
-        break;
-      case AdminMenu.Role:
-        router.push(Routes.AdminRoles);
-        break;
-      default:
-        router.push(Routes.Admin);
-    }
-  };
 
   return (
     <Layout>
@@ -52,16 +40,29 @@ export default function Template({ children }: { children: React.ReactNode }) {
           style={{ height: "100%", borderRight: 0 }}
           items={[
             {
-              key: AdminMenu.User,
-              label: "ผู้ใช้งาน",
-              icon: <UserOutlined />,
-              onClick: () => handleMenuClick("users"),
+              key: TaskMenu.Repair,
+              label: "งานแจ้งซ่อม",
+              icon: <FontAwesomeIcon icon={faWrench} />,
+              onClick: () => router.push(Routes.TasksRepair),
             },
             {
-              key: AdminMenu.Role,
-              label: "สิทธิ์การใช้งาน",
-              icon: <UsergroupAddOutlined />,
-              onClick: () => handleMenuClick("roles"),
+              key: TaskMenu.Juristic,
+              label: "นิติบุคคล",
+              icon: <FontAwesomeIcon icon={faBuilding} />,
+              children: [
+                {
+                  key: TaskMenu.Service,
+                  label: "Service",
+                  icon: <FontAwesomeIcon icon={faWrench} />,
+                  onClick: () => router.push(Routes.TasksJuristicService),
+                },
+                {
+                  key: TaskMenu.Central,
+                  label: "ส่วนกลาง",
+                  icon: <FontAwesomeIcon icon={faBuilding} />,
+                  onClick: () => router.push(Routes.TasksJuristicCentral),
+                },
+              ],
             },
           ]}
         />
