@@ -12,10 +12,15 @@ import { UserPage } from "./UserPage";
 
 const { Content, Sider } = Layout;
 
+enum Tab {
+  Users = "users",
+  Roles = "roles",
+}
+
 export const AdminPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const tab = searchParams.get("tab") || "users";
+  const tab = searchParams.get("tab") || Tab.Users;
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -27,9 +32,9 @@ export const AdminPage = () => {
 
   const renderContent = () => {
     switch (tab) {
-      case "users":
+      case Tab.Users:
         return <UserPage />;
-      case "roles":
+      case Tab.Roles:
         return <RolePage />;
       default:
         return <UserPage />;
@@ -56,18 +61,18 @@ export const AdminPage = () => {
       >
         <Menu
           mode="inline"
-          defaultSelectedKeys={["users"]}
-          defaultOpenKeys={["users"]}
+          defaultSelectedKeys={[tab]}
+          defaultOpenKeys={[tab]}
           style={{ height: "100%", borderRight: 0 }}
           items={[
             {
-              key: "users",
+              key: Tab.Users,
               label: "ผู้ใช้งาน",
               icon: <UserOutlined />,
               onClick: () => handleMenuClick("users"),
             },
             {
-              key: "roles",
+              key: Tab.Roles,
               label: "สิทธิ์การใช้งาน",
               icon: <UsergroupAddOutlined />,
               onClick: () => handleMenuClick("roles"),

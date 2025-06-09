@@ -1,13 +1,18 @@
 import { getSession } from "@/auth";
 import { ApolloClientProvider } from "@/components/ApolloClientProvider";
 import { NextAuthProvider } from "@/components/NextAuthProvider";
+import { StagewiseToolbar } from "@/components/StagewiseToolbar";
 import { notoSansThai } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
+
+config.autoAddCss = false;
 
 export const metadata: Metadata = {
   title: siteConfig.name,
@@ -31,7 +36,10 @@ export default async function RootLayout({
         <NextTopLoader color="#EA7F2F" showSpinner={false} />
         <AntdRegistry>
           <NextAuthProvider session={session}>
-            <ApolloClientProvider>{children}</ApolloClientProvider>
+            <ApolloClientProvider>
+              {children}
+              <StagewiseToolbar />
+            </ApolloClientProvider>
           </NextAuthProvider>
         </AntdRegistry>
       </body>

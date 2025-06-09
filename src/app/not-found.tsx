@@ -6,7 +6,7 @@ import styled from "@emotion/styled";
 import { Button, Result } from "antd";
 import { useRouter } from "nextjs-toploader/app";
 
-const Container = styled.div`
+export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

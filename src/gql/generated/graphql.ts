@@ -196,6 +196,7 @@ export type Query = {
   __typename?: "Query";
   master: Master;
   masters: Array<Master>;
+  me: User;
   project: Project;
   projects: Array<Project>;
   task: Task;

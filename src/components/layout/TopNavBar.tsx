@@ -65,6 +65,7 @@ export const ProfilePlaceholder = ({
 
     return {
       name: `${data?.user?.firstName} ${data?.user?.lastName}`,
+      description: data?.user.employeeId,
     };
   }, [data?.user]);
 

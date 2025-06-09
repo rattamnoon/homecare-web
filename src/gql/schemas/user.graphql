@@ -25,3 +25,9 @@ query Users($page: Int!, $limit: Int!, $searchText: String) {
     }
   }
 }
+
+query Me {
+  me {
+    ...User
+  }
+}
