@@ -8,6 +8,8 @@ const route: { [key: string]: string } = {
   "/tasks": "งานที่ต้องทำ",
   "/dashboard": "กระดานข่าว",
   "/admin": "ระบบจัดการผู้ใช้งาน",
+  "/admin/users": "ผู้ใช้งาน",
+  "/admin/roles": "สิทธิ์การใช้งาน",
   "/system": "ระบบจัดการระบบ",
 };
 

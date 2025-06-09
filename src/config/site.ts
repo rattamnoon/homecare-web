@@ -8,7 +8,7 @@ import {
 } from "@fortawesome/pro-regular-svg-icons";
 
 import { faUser } from "@fortawesome/pro-regular-svg-icons";
-import { Routes } from "./routes";
+import { AdminMenu, Routes } from "./routes";
 
 export type SiteConfig = typeof siteConfig;
 
@@ -56,7 +56,7 @@ export const siteConfig = {
     },
     {
       label: "ระบบจัดการผู้ใช้งาน",
-      href: Routes.Admin,
+      href: Routes.Admin(AdminMenu.Users),
       key: "admin",
       icon: faUsers,
     },
