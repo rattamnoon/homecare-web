@@ -1,0 +1,26 @@
+fragment Task on Task {
+  id
+  code
+  projectId
+  unitId
+  unitNumber
+  status
+  source
+  customerName
+  customerPhone
+  checkInDate
+  checkInRangeTime
+  insuranceDateDefault
+  insuranceDate
+  transferDate
+  customerRequestedRepairDate
+  createdAt
+  updatedAt
+  deletedAt
+}
+
+query Tasks {
+  tasks {
+    ...Task
+  }
+}

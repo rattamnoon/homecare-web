@@ -1,15 +1,3 @@
-export enum AdminMenu {
-  User = "user",
-  Role = "role",
-}
-
-export enum TaskMenu {
-  Repair = "repair",
-  Juristic = "juristic",
-  Service = "service",
-  Central = "central",
-}
-
 export const Routes = {
   Home: "/home",
   Login: "/login",

@@ -1,36 +1,26 @@
 "use client";
 
 import { CustomBreadcrumb } from "@/components/common/CustomBreadcrumb";
-import { AdminMenu, Routes } from "@/config/routes";
+import { Routes } from "@/config/routes";
 import { UsergroupAddOutlined, UserOutlined } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
-import { useParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
 
 const { Content, Sider } = Layout;
 
-export default function Template({ children }: { children: React.ReactNode }) {
+export default function AdminTemplate({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const router = useRouter();
-  const params = useParams();
-  const menu = (params.menu as AdminMenu) || AdminMenu.User;
+  const pathname = usePathname();
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
   const [collapsed, setCollapsed] = useState(false);
-
-  const handleMenuClick = (key: string) => {
-    switch (key) {
-      case AdminMenu.User:
-        router.push(Routes.AdminUsers);
-        break;
-      case AdminMenu.Role:
-        router.push(Routes.AdminRoles);
-        break;
-      default:
-        router.push(Routes.Admin);
-    }
-  };
 
   return (
     <Layout>
@@ -47,21 +37,21 @@ export default function Template({ children }: { children: React.ReactNode }) {
       >
         <Menu
           mode="inline"
-          defaultSelectedKeys={[menu]}
-          defaultOpenKeys={[menu]}
+          defaultSelectedKeys={[pathname]}
+          defaultOpenKeys={[pathname]}
           style={{ height: "100%", borderRight: 0 }}
           items={[
             {
-              key: AdminMenu.User,
+              key: Routes.AdminUsers,
               label: "ผู้ใช้งาน",
               icon: <UserOutlined />,
-              onClick: () => handleMenuClick("users"),
+              onClick: () => router.push(Routes.AdminUsers),
             },
             {
-              key: AdminMenu.Role,
+              key: Routes.AdminRoles,
               label: "สิทธิ์การใช้งาน",
               icon: <UsergroupAddOutlined />,
-              onClick: () => handleMenuClick("roles"),
+              onClick: () => router.push(Routes.AdminRoles),
             },
           ]}
         />

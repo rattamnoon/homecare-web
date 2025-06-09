@@ -1,20 +1,24 @@
 "use client";
 
 import { CustomBreadcrumb } from "@/components/common/CustomBreadcrumb";
-import { Routes, TaskMenu } from "@/config/routes";
+import { Routes } from "@/config/routes";
 import { faBuilding, faWrench } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Layout, Menu, theme } from "antd";
-import { useParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
 
 const { Content, Sider } = Layout;
 
-export default function Template({ children }: { children: React.ReactNode }) {
+export default function TasksTemplate({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const router = useRouter();
-  const params = useParams();
-  const menu = (params.menu as TaskMenu) || TaskMenu.Repair;
+  const pathname = usePathname();
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -35,29 +39,29 @@ export default function Template({ children }: { children: React.ReactNode }) {
       >
         <Menu
           mode="inline"
-          defaultSelectedKeys={[menu]}
-          defaultOpenKeys={[menu]}
+          defaultSelectedKeys={[pathname]}
+          defaultOpenKeys={[pathname]}
           style={{ height: "100%", borderRight: 0 }}
           items={[
             {
-              key: TaskMenu.Repair,
+              key: Routes.TasksRepair,
               label: "งานแจ้งซ่อม",
               icon: <FontAwesomeIcon icon={faWrench} />,
               onClick: () => router.push(Routes.TasksRepair),
             },
             {
-              key: TaskMenu.Juristic,
+              key: "juristic",
               label: "นิติบุคคล",
               icon: <FontAwesomeIcon icon={faBuilding} />,
               children: [
                 {
-                  key: TaskMenu.Service,
+                  key: Routes.TasksJuristicService,
                   label: "Service",
                   icon: <FontAwesomeIcon icon={faWrench} />,
                   onClick: () => router.push(Routes.TasksJuristicService),
                 },
                 {
-                  key: TaskMenu.Central,
+                  key: Routes.TasksJuristicCentral,
                   label: "ส่วนกลาง",
                   icon: <FontAwesomeIcon icon={faBuilding} />,
                   onClick: () => router.push(Routes.TasksJuristicCentral),
