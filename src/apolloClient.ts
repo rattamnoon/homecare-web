@@ -99,7 +99,7 @@ const refreshMiddleware = onError(
         );
       }
       graphQLErrors?.forEach(({ message, locations, path }) => {
-        console.log(
+        console.error(
           `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, isServer: ${isServer}`
         );
       });

@@ -2,8 +2,8 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "ORIGIN | HOMECARE - ระบบจัดการงาน",
-  description: "ORIGIN | HOMECARE - ระบบจัดการงาน",
+  title: "ORIGIN | HOMECARE - จัดการงาน",
+  description: "ORIGIN | HOMECARE - จัดการงาน",
 };
 
 export default async function TasksLayout({

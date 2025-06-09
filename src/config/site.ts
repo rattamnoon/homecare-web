@@ -1,13 +1,12 @@
 import {
-  faBuilding,
   faDisplayChartUpCircleDollar,
-  faFileChartColumn,
-  faGrid2,
+  faGear,
+  faHouse,
+  faListCheck,
   faSignInAlt,
   faUsers,
 } from "@fortawesome/pro-regular-svg-icons";
 
-import { faUser } from "@fortawesome/pro-regular-svg-icons";
 import { AdminMenu, Routes } from "./routes";
 
 export type SiteConfig = typeof siteConfig;
@@ -28,13 +27,13 @@ export const siteConfig = {
       label: "หน้าหลัก",
       href: Routes.Home,
       key: "home",
-      icon: faGrid2,
+      icon: faHouse,
     },
     {
-      label: "ระบบจัดการงาน",
+      label: "จัดการงาน",
       href: Routes.Tasks,
       key: "tasks",
-      icon: faUser,
+      icon: faListCheck,
     },
     {
       label: "Dashboard",
@@ -43,22 +42,16 @@ export const siteConfig = {
       icon: faDisplayChartUpCircleDollar,
     },
     {
-      label: "Dashboard",
-      href: Routes.Dashboard,
-      key: "dashboard",
-      icon: faFileChartColumn,
-    },
-    {
-      label: "จัดการระบบ",
-      href: Routes.System,
-      key: "system",
-      icon: faBuilding,
-    },
-    {
-      label: "ระบบจัดการผู้ใช้งาน",
+      label: "จัดการผู้ใช้งาน",
       href: Routes.Admin(AdminMenu.Users),
       key: "admin",
       icon: faUsers,
+    },
+    {
+      label: "ตั้งค่า",
+      href: Routes.System,
+      key: "system",
+      icon: faGear,
     },
   ],
 };

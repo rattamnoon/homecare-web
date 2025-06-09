@@ -2,6 +2,7 @@ import { getSession } from "@/auth";
 import { ApolloClientProvider } from "@/components/ApolloClientProvider";
 import { NextAuthProvider } from "@/components/NextAuthProvider";
 import { notoSansThai } from "@/config/fonts";
+import { Routes } from "@/config/routes";
 import { siteConfig } from "@/config/site";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { config } from "@fortawesome/fontawesome-svg-core";
@@ -26,7 +27,7 @@ export default async function RootLayout({
   const session = await getSession();
 
   if (session?.error === "RefreshAccessTokenError") {
-    redirect("/login");
+    redirect(Routes.Login);
   }
 
   return (
