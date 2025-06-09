@@ -1,5 +1,5 @@
 import { getSession } from "@/auth";
-import { Routes } from "@/constant/routes";
+import { Routes } from "@/config/routes";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";

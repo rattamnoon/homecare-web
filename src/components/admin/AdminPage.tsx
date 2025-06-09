@@ -1,6 +1,6 @@
 "use client";
 
-import { Routes } from "@/constant/routes";
+import { Routes } from "@/config/routes";
 import { UsergroupAddOutlined, UserOutlined } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
 import { useSearchParams } from "next/navigation";

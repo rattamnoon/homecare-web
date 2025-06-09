@@ -1,7 +1,7 @@
 "use client";
 
 import { withTheme } from "@/components/layout/MainLayout";
-import { Routes } from "@/constant/routes";
+import { Routes } from "@/config/routes";
 import styled from "@emotion/styled";
 import { Button, Result } from "antd";
 import { useRouter } from "nextjs-toploader/app";

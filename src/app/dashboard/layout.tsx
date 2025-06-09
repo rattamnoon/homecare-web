@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "ORIGIN | HOMECARE - Dashboard",
 };
 
-export default async function RootLayout({
+export default async function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

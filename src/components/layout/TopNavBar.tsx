@@ -1,17 +1,11 @@
 "use client";
 
 import { makeClient } from "@/apolloClient";
-import { Routes } from "@/constant/routes";
+import { Routes } from "@/config/routes";
+import { siteConfig } from "@/config/site";
 import { imageBlob } from "@/utils/imageBlob";
-import {
-  AppstoreOutlined,
-  DashboardOutlined,
-  HomeOutlined,
-  LogoutOutlined,
-  MenuOutlined,
-  SettingOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { LogoutOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Avatar,
   Button,
@@ -102,36 +96,12 @@ const MainMenu = () => {
   };
 
   const menuItems: MenuProps["items"] = [
-    {
-      label: "หน้าหลัก",
-      key: Routes.Home,
-      icon: <HomeOutlined />,
-      onClick: () => router.push(Routes.Home),
-    },
-    {
-      label: "ระบบจัดการงาน",
-      key: Routes.Tasks,
-      icon: <AppstoreOutlined />,
-      onClick: () => router.push(Routes.Tasks),
-    },
-    {
-      label: "Dashboard",
-      key: Routes.Dashboard,
-      icon: <DashboardOutlined />,
-      onClick: () => router.push(Routes.Dashboard),
-    },
-    {
-      label: "จัดการระบบ",
-      key: Routes.System,
-      icon: <SettingOutlined />,
-      onClick: () => router.push(Routes.System),
-    },
-    {
-      label: "ระบบจัดการผู้ใช้งาน",
-      key: Routes.Admin,
-      icon: <UserOutlined />,
-      onClick: () => router.push(Routes.Admin),
-    },
+    ...siteConfig.navMenuItems.map((item) => ({
+      ...item,
+      icon: <FontAwesomeIcon icon={item.icon} />,
+      key: item.key,
+      onClick: () => router.push(item.href),
+    })),
     ...(!isMobile
       ? []
       : [

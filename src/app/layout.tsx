@@ -1,7 +1,8 @@
 import { getSession } from "@/auth";
 import { ApolloClientProvider } from "@/components/ApolloClientProvider";
 import { NextAuthProvider } from "@/components/NextAuthProvider";
-import { notoSansThai } from "@/theme/themeConfig";
+import { notoSansThai } from "@/config/fonts";
+import { siteConfig } from "@/config/site";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -9,8 +10,8 @@ import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ORIGIN | HOMECARE",
-  description: "ORIGIN | HOMECARE - บริการดูแลสุขภาพที่ดีที่สุด",
+  title: siteConfig.name,
+  description: siteConfig.description,
 };
 
 export default async function RootLayout({

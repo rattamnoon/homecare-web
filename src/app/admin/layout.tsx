@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "ORIGIN | HOMECARE - ระบบจัดการผู้ใช้งาน",
 };
 
-export default async function RootLayout({
+export default async function AdminLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

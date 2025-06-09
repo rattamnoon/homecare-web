@@ -1,5 +1,5 @@
 import { withAuth } from "next-auth/middleware";
-import { Routes } from "./constant/routes";
+import { Routes } from "./config/routes";
 
 export default withAuth({
   callbacks: {
