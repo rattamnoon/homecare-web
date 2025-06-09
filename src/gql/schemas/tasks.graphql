@@ -4,12 +4,21 @@ fragment Task on Task {
   projectId
   unitId
   unitNumber
-  status
+  status {
+    id
+    nameEn
+    nameTh
+    color
+  }
   source
   customerName
   customerPhone
   checkInDate
-  checkInRangeTime
+  checkInRangeTime {
+    id
+    nameEn
+    nameTh
+  }
   insuranceDateDefault
   insuranceDate
   transferDate
@@ -19,8 +28,43 @@ fragment Task on Task {
   deletedAt
 }
 
-query Tasks {
-  tasks {
-    ...Task
+fragment TaskStatusDto on TaskStatusDto {
+  id
+  nameEn
+  nameTh
+  color
+}
+
+query Tasks(
+  $page: Int!
+  $limit: Int!
+  $searchText: String
+  $statuses: [TaskStatus!]
+  $projectIds: [String!]
+  $unitIds: [String!]
+) {
+  tasks(
+    page: $page
+    limit: $limit
+    searchText: $searchText
+    statuses: $statuses
+    projectIds: $projectIds
+    unitIds: $unitIds
+  ) {
+    meta {
+      ...IPaginateMeta
+    }
+    links {
+      ...IPaginateLinks
+    }
+    items {
+      ...Task
+    }
+  }
+}
+
+query TaskStatuses {
+  taskStatuses {
+    ...TaskStatusDto
   }
 }

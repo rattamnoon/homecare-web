@@ -46,6 +46,19 @@ export const UserPage = () => {
           loading={loading}
           dataSource={dataSource}
           scroll={{ x: "max-content" }}
+          pagination={{
+            position: ["bottomCenter"],
+            ...getTablePaginationProps(meta),
+            onChange: (page) => {
+              setCurrentPage(page);
+            },
+            showQuickJumper: true,
+            showSizeChanger: true,
+            pageSizeOptions: ["10", "20", "30", "40", "50"],
+            onShowSizeChange: (page, size) => {
+              setPageSize(size);
+            },
+          }}
           columns={[
             {
               title: "ชื่อผู้ใช้งาน",
@@ -111,19 +124,6 @@ export const UserPage = () => {
               render: (text) => dayjs(text).format("DD/MM/YYYY HH:mm:ss"),
             },
           ]}
-          pagination={{
-            position: ["bottomCenter"],
-            ...getTablePaginationProps(meta),
-            onChange: (page) => {
-              setCurrentPage(page);
-            },
-            showQuickJumper: true,
-            showSizeChanger: true,
-            pageSizeOptions: ["10", "20", "30", "40", "50"],
-            onShowSizeChange: (page, size) => {
-              setPageSize(size);
-            },
-          }}
         />
       </Col>
     </Row>

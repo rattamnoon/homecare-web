@@ -54,6 +54,7 @@ export type CreateTaskInput = {
   channel: Scalars["String"]["input"];
   code: Scalars["String"]["input"];
   projectId: Scalars["String"]["input"];
+  status: TaskStatus;
   unitId: Scalars["String"]["input"];
   unitNumber: Scalars["String"]["input"];
 };
@@ -200,7 +201,9 @@ export type Query = {
   project: Project;
   projects: Array<Project>;
   task: Task;
-  tasks: Array<Task>;
+  taskRangeTimes: Array<TaskRangeTimeDto>;
+  taskStatuses: Array<TaskStatusDto>;
+  tasks: TaskPaginate;
   user: User;
   users: UserPaginate;
 };
@@ -217,6 +220,15 @@ export type QueryTaskArgs = {
   id: Scalars["ID"]["input"];
 };
 
+export type QueryTasksArgs = {
+  limit?: Scalars["Int"]["input"];
+  page?: Scalars["Int"]["input"];
+  projectIds?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  searchText?: InputMaybe<Scalars["String"]["input"]>;
+  statuses?: InputMaybe<Array<TaskStatus>>;
+  unitIds?: InputMaybe<Array<Scalars["String"]["input"]>>;
+};
+
 export type QueryUserArgs = {
   id: Scalars["ID"]["input"];
 };
@@ -230,7 +242,7 @@ export type QueryUsersArgs = {
 export type Task = {
   __typename?: "Task";
   checkInDate: Scalars["Date"]["output"];
-  checkInRangeTime: Scalars["String"]["output"];
+  checkInRangeTime: TaskRangeTimeDto;
   code: Scalars["String"]["output"];
   createdAt: Scalars["Date"]["output"];
   customerName?: Maybe<Scalars["String"]["output"]>;
@@ -242,11 +254,25 @@ export type Task = {
   insuranceDateDefault?: Maybe<Scalars["Date"]["output"]>;
   projectId: Scalars["String"]["output"];
   source?: Maybe<Scalars["String"]["output"]>;
-  status: TaskStatus;
+  status: TaskStatusDto;
   transferDate?: Maybe<Scalars["Date"]["output"]>;
   unitId?: Maybe<Scalars["String"]["output"]>;
   unitNumber: Scalars["String"]["output"];
   updatedAt: Scalars["Date"]["output"];
+};
+
+export type TaskPaginate = {
+  __typename?: "TaskPaginate";
+  items: Array<Task>;
+  links?: Maybe<IPaginateLinks>;
+  meta?: Maybe<IPaginateMeta>;
+};
+
+export type TaskRangeTimeDto = {
+  __typename?: "TaskRangeTimeDto";
+  id: Scalars["String"]["output"];
+  nameEn: Scalars["String"]["output"];
+  nameTh: Scalars["String"]["output"];
 };
 
 export enum TaskStatus {
@@ -258,6 +284,14 @@ export enum TaskStatus {
   Open = "OPEN",
   Pending = "PENDING",
 }
+
+export type TaskStatusDto = {
+  __typename?: "TaskStatusDto";
+  color: Scalars["String"]["output"];
+  id: TaskStatus;
+  nameEn: Scalars["String"]["output"];
+  nameTh: Scalars["String"]["output"];
+};
 
 export type Unit = {
   __typename?: "Unit";
@@ -293,6 +327,7 @@ export type UpdateTaskInput = {
   code?: InputMaybe<Scalars["String"]["input"]>;
   id: Scalars["ID"]["input"];
   projectId?: InputMaybe<Scalars["String"]["input"]>;
+  status?: InputMaybe<TaskStatus>;
   unitId?: InputMaybe<Scalars["String"]["input"]>;
   unitNumber?: InputMaybe<Scalars["String"]["input"]>;
 };

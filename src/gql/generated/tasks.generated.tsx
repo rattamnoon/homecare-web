@@ -1,6 +1,10 @@
 import * as Types from "./graphql";
 
 import { gql } from "@apollo/client";
+import {
+  IPaginateMetaFragmentDoc,
+  IPaginateLinksFragmentDoc,
+} from "./paginate.generated";
 import * as Apollo from "@apollo/client";
 const defaultOptions = {} as const;
 export type TaskFragment = {
@@ -10,12 +14,10 @@ export type TaskFragment = {
   projectId: string;
   unitId?: string | null;
   unitNumber: string;
-  status: Types.TaskStatus;
   source?: string | null;
   customerName?: string | null;
   customerPhone?: string | null;
   checkInDate: any;
-  checkInRangeTime: string;
   insuranceDateDefault?: any | null;
   insuranceDate?: any | null;
   transferDate?: any | null;
@@ -23,32 +25,106 @@ export type TaskFragment = {
   createdAt: any;
   updatedAt: any;
   deletedAt?: any | null;
+  status: {
+    __typename?: "TaskStatusDto";
+    id: Types.TaskStatus;
+    nameEn: string;
+    nameTh: string;
+    color: string;
+  };
+  checkInRangeTime: {
+    __typename?: "TaskRangeTimeDto";
+    id: string;
+    nameEn: string;
+    nameTh: string;
+  };
 };
 
-export type TasksQueryVariables = Types.Exact<{ [key: string]: never }>;
+export type TaskStatusDtoFragment = {
+  __typename?: "TaskStatusDto";
+  id: Types.TaskStatus;
+  nameEn: string;
+  nameTh: string;
+  color: string;
+};
+
+export type TasksQueryVariables = Types.Exact<{
+  page: Types.Scalars["Int"]["input"];
+  limit: Types.Scalars["Int"]["input"];
+  searchText?: Types.InputMaybe<Types.Scalars["String"]["input"]>;
+  statuses?: Types.InputMaybe<Array<Types.TaskStatus> | Types.TaskStatus>;
+  projectIds?: Types.InputMaybe<
+    Array<Types.Scalars["String"]["input"]> | Types.Scalars["String"]["input"]
+  >;
+  unitIds?: Types.InputMaybe<
+    Array<Types.Scalars["String"]["input"]> | Types.Scalars["String"]["input"]
+  >;
+}>;
 
 export type TasksQuery = {
   __typename?: "Query";
-  tasks: Array<{
-    __typename?: "Task";
-    id: string;
-    code: string;
-    projectId: string;
-    unitId?: string | null;
-    unitNumber: string;
-    status: Types.TaskStatus;
-    source?: string | null;
-    customerName?: string | null;
-    customerPhone?: string | null;
-    checkInDate: any;
-    checkInRangeTime: string;
-    insuranceDateDefault?: any | null;
-    insuranceDate?: any | null;
-    transferDate?: any | null;
-    customerRequestedRepairDate?: any | null;
-    createdAt: any;
-    updatedAt: any;
-    deletedAt?: any | null;
+  tasks: {
+    __typename?: "TaskPaginate";
+    meta?: {
+      __typename?: "IPaginateMeta";
+      totalItems?: number | null;
+      itemCount: number;
+      itemsPerPage: number;
+      totalPages?: number | null;
+      currentPage: number;
+    } | null;
+    links?: {
+      __typename?: "IPaginateLinks";
+      first?: string | null;
+      previous?: string | null;
+      next?: string | null;
+      last?: string | null;
+    } | null;
+    items: Array<{
+      __typename?: "Task";
+      id: string;
+      code: string;
+      projectId: string;
+      unitId?: string | null;
+      unitNumber: string;
+      source?: string | null;
+      customerName?: string | null;
+      customerPhone?: string | null;
+      checkInDate: any;
+      insuranceDateDefault?: any | null;
+      insuranceDate?: any | null;
+      transferDate?: any | null;
+      customerRequestedRepairDate?: any | null;
+      createdAt: any;
+      updatedAt: any;
+      deletedAt?: any | null;
+      status: {
+        __typename?: "TaskStatusDto";
+        id: Types.TaskStatus;
+        nameEn: string;
+        nameTh: string;
+        color: string;
+      };
+      checkInRangeTime: {
+        __typename?: "TaskRangeTimeDto";
+        id: string;
+        nameEn: string;
+        nameTh: string;
+      };
+    }>;
+  };
+};
+
+export type TaskStatusesQueryVariables = Types.Exact<{ [key: string]: never }>;
+
+export type TaskStatusesQuery = {
+  __typename?: "Query";
+  taskStatuses: Array<{
+    __typename?: "TaskStatusDto";
+    id: Types.TaskStatus;
+    nameEn: string;
+    nameTh: string;
+    color: string;
   }>;
 };
 
@@ -59,12 +135,21 @@ export const TaskFragmentDoc = gql`
     projectId
     unitId
     unitNumber
-    status
+    status {
+      id
+      nameEn
+      nameTh
+      color
+    }
     source
     customerName
     customerPhone
     checkInDate
-    checkInRangeTime
+    checkInRangeTime {
+      id
+      nameEn
+      nameTh
+    }
     insuranceDateDefault
     insuranceDate
     transferDate
@@ -74,12 +159,44 @@ export const TaskFragmentDoc = gql`
     deletedAt
   }
 `;
+export const TaskStatusDtoFragmentDoc = gql`
+  fragment TaskStatusDto on TaskStatusDto {
+    id
+    nameEn
+    nameTh
+    color
+  }
+`;
 export const TasksDocument = gql`
-  query Tasks {
-    tasks {
-      ...Task
+  query Tasks(
+    $page: Int!
+    $limit: Int!
+    $searchText: String
+    $statuses: [TaskStatus!]
+    $projectIds: [String!]
+    $unitIds: [String!]
+  ) {
+    tasks(
+      page: $page
+      limit: $limit
+      searchText: $searchText
+      statuses: $statuses
+      projectIds: $projectIds
+      unitIds: $unitIds
+    ) {
+      meta {
+        ...IPaginateMeta
+      }
+      links {
+        ...IPaginateLinks
+      }
+      items {
+        ...Task
+      }
     }
   }
+  ${IPaginateMetaFragmentDoc}
+  ${IPaginateLinksFragmentDoc}
   ${TaskFragmentDoc}
 `;
 
@@ -95,11 +212,18 @@ export const TasksDocument = gql`
  * @example
  * const { data, loading, error } = useTasksQuery({
  *   variables: {
+ *      page: // value for 'page'
+ *      limit: // value for 'limit'
+ *      searchText: // value for 'searchText'
+ *      statuses: // value for 'statuses'
+ *      projectIds: // value for 'projectIds'
+ *      unitIds: // value for 'unitIds'
  *   },
  * });
  */
 export function useTasksQuery(
-  baseOptions?: Apollo.QueryHookOptions<TasksQuery, TasksQueryVariables>,
+  baseOptions: Apollo.QueryHookOptions<TasksQuery, TasksQueryVariables> &
+    ({ variables: TasksQueryVariables; skip?: boolean } | { skip: boolean }),
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<TasksQuery, TasksQueryVariables>(
@@ -138,4 +262,82 @@ export type TasksSuspenseQueryHookResult = ReturnType<
 export type TasksQueryResult = Apollo.QueryResult<
   TasksQuery,
   TasksQueryVariables
+>;
+export const TaskStatusesDocument = gql`
+  query TaskStatuses {
+    taskStatuses {
+      ...TaskStatusDto
+    }
+  }
+  ${TaskStatusDtoFragmentDoc}
+`;
+
+/**
+ * __useTaskStatusesQuery__
+ *
+ * To run a query within a React component, call `useTaskStatusesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTaskStatusesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTaskStatusesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTaskStatusesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    TaskStatusesQuery,
+    TaskStatusesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<TaskStatusesQuery, TaskStatusesQueryVariables>(
+    TaskStatusesDocument,
+    options,
+  );
+}
+export function useTaskStatusesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    TaskStatusesQuery,
+    TaskStatusesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<TaskStatusesQuery, TaskStatusesQueryVariables>(
+    TaskStatusesDocument,
+    options,
+  );
+}
+export function useTaskStatusesSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        TaskStatusesQuery,
+        TaskStatusesQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<TaskStatusesQuery, TaskStatusesQueryVariables>(
+    TaskStatusesDocument,
+    options,
+  );
+}
+export type TaskStatusesQueryHookResult = ReturnType<
+  typeof useTaskStatusesQuery
+>;
+export type TaskStatusesLazyQueryHookResult = ReturnType<
+  typeof useTaskStatusesLazyQuery
+>;
+export type TaskStatusesSuspenseQueryHookResult = ReturnType<
+  typeof useTaskStatusesSuspenseQuery
+>;
+export type TaskStatusesQueryResult = Apollo.QueryResult<
+  TaskStatusesQuery,
+  TaskStatusesQueryVariables
 >;
