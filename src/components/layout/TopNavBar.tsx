@@ -118,7 +118,7 @@ const MainMenu = () => {
   return (
     <Menu
       mode={isMobile ? "vertical" : "horizontal"}
-      selectedKeys={[pathname]}
+      selectedKeys={[pathname.split("/")[1]]}
       style={{
         flex: 1,
         minWidth: 0,
