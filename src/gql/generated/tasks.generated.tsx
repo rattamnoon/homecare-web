@@ -51,6 +51,13 @@ export type TaskFragment = {
     unitNumber?: string | null;
     houseNumber?: string | null;
   } | null;
+  area?: { __typename?: "Master"; id: string; nameEn?: string | null } | null;
+  building?: {
+    __typename?: "Master";
+    id: string;
+    nameEn?: string | null;
+  } | null;
+  floor?: { __typename?: "Master"; id: string; nameEn?: string | null } | null;
 };
 
 export type TaskStatusDtoFragment = {
@@ -136,6 +143,21 @@ export type TasksQuery = {
         unitNumber?: string | null;
         houseNumber?: string | null;
       } | null;
+      area?: {
+        __typename?: "Master";
+        id: string;
+        nameEn?: string | null;
+      } | null;
+      building?: {
+        __typename?: "Master";
+        id: string;
+        nameEn?: string | null;
+      } | null;
+      floor?: {
+        __typename?: "Master";
+        id: string;
+        nameEn?: string | null;
+      } | null;
     }>;
   };
 };
@@ -192,6 +214,21 @@ export const TaskFragmentDoc = gql`
       projectId
       unitNumber
       houseNumber
+    }
+    area {
+      id
+      nameEn
+      nameEn
+    }
+    building {
+      id
+      nameEn
+      nameEn
+    }
+    floor {
+      id
+      nameEn
+      nameEn
     }
   }
 `;

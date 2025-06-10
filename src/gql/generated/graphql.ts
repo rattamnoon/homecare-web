@@ -37,8 +37,13 @@ export type Auth = {
 };
 
 export type CreateMasterInput = {
+  SLA?: InputMaybe<Scalars["Int"]["input"]>;
+  areaTypeEn?: InputMaybe<Scalars["String"]["input"]>;
+  areaTypeTh?: InputMaybe<Scalars["String"]["input"]>;
   days?: InputMaybe<Scalars["Int"]["input"]>;
+  defaultScore?: InputMaybe<Scalars["String"]["input"]>;
   hours?: InputMaybe<Scalars["Int"]["input"]>;
+  maxScore?: InputMaybe<Scalars["String"]["input"]>;
   nameEn?: InputMaybe<Scalars["String"]["input"]>;
   nameTh?: InputMaybe<Scalars["String"]["input"]>;
   sequence?: InputMaybe<Scalars["Int"]["input"]>;
@@ -87,12 +92,17 @@ export type IPaginateMeta = {
 
 export type Master = {
   __typename?: "Master";
+  SLA?: Maybe<Scalars["Int"]["output"]>;
+  areaTypeEn?: Maybe<Scalars["String"]["output"]>;
+  areaTypeTh?: Maybe<Scalars["String"]["output"]>;
   children: Array<Master>;
   createdAt: Scalars["Date"]["output"];
   days?: Maybe<Scalars["Int"]["output"]>;
+  defaultScore?: Maybe<Scalars["String"]["output"]>;
   deletedAt?: Maybe<Scalars["Date"]["output"]>;
   hours?: Maybe<Scalars["Int"]["output"]>;
   id: Scalars["ID"]["output"];
+  maxScore?: Maybe<Scalars["String"]["output"]>;
   nameEn?: Maybe<Scalars["String"]["output"]>;
   nameTh?: Maybe<Scalars["String"]["output"]>;
   parent?: Maybe<Master>;
@@ -103,10 +113,13 @@ export type Master = {
 };
 
 export enum MasterType {
+  Area = "AREA",
   Category = "CATEGORY",
   Cause = "CAUSE",
+  Central = "CENTRAL",
   Contractor = "CONTRACTOR",
   Csat = "CSAT",
+  Service = "SERVICE",
   Sla = "SLA",
 }
 
@@ -118,6 +131,7 @@ export type Mutation = {
   createUser: User;
   login: Auth;
   migrateMasters: Array<Master>;
+  migrateMastersServiceAndCentral: Array<Master>;
   migrateProjects: Array<Project>;
   migrateTasks: Array<Task>;
   migrateTasksService: Array<Task>;
@@ -248,6 +262,10 @@ export type QueryUsersArgs = {
 
 export type Task = {
   __typename?: "Task";
+  area?: Maybe<Master>;
+  areaId?: Maybe<Scalars["String"]["output"]>;
+  building?: Maybe<Master>;
+  buildingId?: Maybe<Scalars["String"]["output"]>;
   checkInDate?: Maybe<Scalars["Date"]["output"]>;
   checkInRangeTime?: Maybe<TaskRangeTimeDto>;
   code: Scalars["String"]["output"];
@@ -256,6 +274,8 @@ export type Task = {
   customerPhone?: Maybe<Scalars["String"]["output"]>;
   customerRequestedRepairDate?: Maybe<Scalars["Date"]["output"]>;
   deletedAt?: Maybe<Scalars["Date"]["output"]>;
+  floor?: Maybe<Master>;
+  floorId?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["String"]["output"];
   insuranceDate?: Maybe<Scalars["Date"]["output"]>;
   insuranceDateDefault?: Maybe<Scalars["Date"]["output"]>;
@@ -322,9 +342,14 @@ export type Unit = {
 };
 
 export type UpdateMasterInput = {
+  SLA?: InputMaybe<Scalars["Int"]["input"]>;
+  areaTypeEn?: InputMaybe<Scalars["String"]["input"]>;
+  areaTypeTh?: InputMaybe<Scalars["String"]["input"]>;
   days?: InputMaybe<Scalars["Int"]["input"]>;
+  defaultScore?: InputMaybe<Scalars["String"]["input"]>;
   hours?: InputMaybe<Scalars["Int"]["input"]>;
   id?: InputMaybe<Scalars["ID"]["input"]>;
+  maxScore?: InputMaybe<Scalars["String"]["input"]>;
   nameEn?: InputMaybe<Scalars["String"]["input"]>;
   nameTh?: InputMaybe<Scalars["String"]["input"]>;
   parentId?: InputMaybe<Scalars["ID"]["input"]>;

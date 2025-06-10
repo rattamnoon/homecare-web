@@ -98,7 +98,7 @@ export const JuristicCentralPage = () => {
             },
           },
           {
-            title: "ชื่อลูกค้า",
+            title: "ผู้แจ้งซ่อม",
             dataIndex: "customerName",
             key: "customerName",
             align: "center",
@@ -110,11 +110,56 @@ export const JuristicCentralPage = () => {
             }),
           },
           {
-            title: "เบอร์โทรลูกค้า",
+            title: "เบอร์โทรผู้แจ้งซ่อม",
             dataIndex: "customerPhone",
             key: "customerPhone",
             align: "center",
-            width: 120,
+            width: 150,
+          },
+          {
+            title: "บริเวณ",
+            dataIndex: "area",
+            key: "area",
+            align: "center",
+            width: 200,
+            render: (_, record) => {
+              return record.area ? `${record.area.nameEn}` : "-";
+            },
+            onCell: () => ({
+              style: {
+                textAlign: "left",
+              },
+            }),
+          },
+          {
+            title: "ตึก",
+            dataIndex: "building",
+            key: "building",
+            align: "center",
+            width: 200,
+            render: (_, record) => {
+              return record.building ? `${record.building.nameEn}` : "-";
+            },
+            onCell: () => ({
+              style: {
+                textAlign: "left",
+              },
+            }),
+          },
+          {
+            title: "ชั้น",
+            dataIndex: "floor",
+            key: "floor",
+            align: "center",
+            width: 200,
+            render: (_, record) => {
+              return record.floor ? `${record.floor.nameEn}` : "-";
+            },
+            onCell: () => ({
+              style: {
+                textAlign: "left",
+              },
+            }),
           },
         ]}
       />

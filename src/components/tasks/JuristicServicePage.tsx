@@ -116,7 +116,7 @@ export const JuristicServicePage = () => {
             },
           },
           {
-            title: "ชื่อลูกค้า",
+            title: "ผู้แจ้งซ่อม",
             dataIndex: "customerName",
             key: "customerName",
             align: "center",
@@ -128,11 +128,11 @@ export const JuristicServicePage = () => {
             }),
           },
           {
-            title: "เบอร์โทรลูกค้า",
+            title: "เบอร์โทรผู้แจ้งซ่อม",
             dataIndex: "customerPhone",
             key: "customerPhone",
             align: "center",
-            width: 120,
+            width: 150,
           },
           {
             title: "วันหมดประกัน",
@@ -166,6 +166,18 @@ export const JuristicServicePage = () => {
             render: (_, record) => {
               return record.transferDate
                 ? dayjs(record.transferDate).format("DD/MM/YYYY")
+                : "-";
+            },
+          },
+          {
+            title: "วันที่แจ้งซ่อม",
+            dataIndex: "createdAt",
+            key: "createdAt",
+            align: "center",
+            width: 150,
+            render: (_, record) => {
+              return record.createdAt
+                ? dayjs(record.createdAt).format("DD/MM/YYYY")
                 : "-";
             },
           },

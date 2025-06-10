@@ -37,6 +37,21 @@ fragment Task on Task {
     unitNumber
     houseNumber
   }
+  area {
+    id
+    nameEn
+    nameEn
+  }
+  building {
+    id
+    nameEn
+    nameEn
+  }
+  floor {
+    id
+    nameEn
+    nameEn
+  }
 }
 
 fragment TaskStatusDto on TaskStatusDto {

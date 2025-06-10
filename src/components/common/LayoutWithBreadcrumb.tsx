@@ -1,51 +1,70 @@
 "use client";
 
 import { Layout, theme } from "antd";
+import { CSSProperties } from "react";
 import { BreadcrumbItem, CustomBreadcrumb } from "./CustomBreadcrumb";
 
 const { Content } = Layout;
 
-const getPadding = (withBreadcrumb: boolean, fullWidth: boolean) => {
-  if (fullWidth) {
-    return "0";
-  }
-  if (withBreadcrumb) {
-    return "0 24px 24px";
-  }
-  return "24px";
+interface LayoutWithBreadcrumbProps {
+  children: React.ReactNode;
+  withBreadcrumb?: boolean;
+  fullWidth?: boolean;
+  breadcrumb?: BreadcrumbItem[];
+}
+
+interface PaddingConfig {
+  withBreadcrumb: boolean;
+  fullWidth: boolean;
+}
+
+const PADDING_VALUES = {
+  FULL_WIDTH: "0",
+  WITH_BREADCRUMB: "0 24px 24px",
+  DEFAULT: "24px",
+} as const;
+
+const CONTENT_STYLES = {
+  padding: 24,
+  margin: 0,
+  minHeight: 280,
+} as const;
+
+const calculatePadding = ({
+  withBreadcrumb,
+  fullWidth,
+}: PaddingConfig): string => {
+  if (fullWidth) return PADDING_VALUES.FULL_WIDTH;
+  if (withBreadcrumb) return PADDING_VALUES.WITH_BREADCRUMB;
+  return PADDING_VALUES.DEFAULT;
 };
+
+const createContentStyle = (
+  colorBgContainer: string,
+  borderRadiusLG: number
+): CSSProperties => ({
+  ...CONTENT_STYLES,
+  background: colorBgContainer,
+  borderRadius: borderRadiusLG,
+});
 
 export const LayoutWithBreadcrumb = ({
   children,
   withBreadcrumb = true,
   breadcrumb,
   fullWidth = false,
-}: {
-  children: React.ReactNode;
-  withBreadcrumb?: boolean;
-  fullWidth?: boolean;
-  breadcrumb?: BreadcrumbItem[];
-}) => {
+}: LayoutWithBreadcrumbProps) => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const padding = getPadding(withBreadcrumb, fullWidth);
+  const padding = calculatePadding({ withBreadcrumb, fullWidth });
+  const contentStyle = createContentStyle(colorBgContainer, borderRadiusLG);
 
   return (
     <Layout style={{ padding }}>
       {withBreadcrumb && <CustomBreadcrumb breadcrumb={breadcrumb} />}
-      <Content
-        style={{
-          padding: 24,
-          margin: 0,
-          minHeight: 280,
-          background: colorBgContainer,
-          borderRadius: borderRadiusLG,
-        }}
-      >
-        {children}
-      </Content>
+      <Content style={contentStyle}>{children}</Content>
     </Layout>
   );
 };
