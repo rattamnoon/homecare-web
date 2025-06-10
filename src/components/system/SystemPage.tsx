@@ -7,6 +7,29 @@ import { Table } from "antd";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 
+const getBreadcrumb = (type: MasterType) => {
+  switch (type) {
+    case MasterType.Sla:
+      return [{ title: "ข้อตกลงการให้บริการ (SLA)" }];
+    case MasterType.Contractor:
+      return [{ title: "ผู้รับเหมา" }];
+    case MasterType.Central:
+      return [{ title: "หมวดหมู่งานส่วนกลาง" }];
+    case MasterType.Area:
+      return [{ title: "แผนที่งานส่วนกลาง" }];
+    case MasterType.Service:
+      return [{ title: "หมวดหมู่งาน Service" }];
+    case MasterType.Csat:
+      return [{ title: "CSAT" }];
+    case MasterType.Category:
+      return [{ title: "หมวดหมู่งานแจ้งซ่อม" }];
+    case MasterType.Cause:
+      return [{ title: "สาเหตุ" }];
+    default:
+      return [];
+  }
+};
+
 export const SystemPage = () => {
   const searchParams = useSearchParams();
   const type = (searchParams.get("type") as MasterType) || MasterType.Sla;
@@ -19,7 +42,7 @@ export const SystemPage = () => {
   const dataSource = useMemo(() => data?.masters, [data]);
 
   return (
-    <LayoutWithBreadcrumb>
+    <LayoutWithBreadcrumb breadcrumb={getBreadcrumb(type)}>
       <Table
         rowKey="id"
         dataSource={dataSource}
