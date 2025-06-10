@@ -16,7 +16,7 @@ const route: { [key: string]: string } = {
   "/system": "ตั้งค่า",
 };
 
-type BreadcrumbItem = {
+export type BreadcrumbItem = {
   title: string;
   href?: string;
 };

@@ -13,11 +13,11 @@ export type TaskFragment = {
   code: string;
   projectId: string;
   unitId?: string | null;
-  unitNumber: string;
+  unitNumber?: string | null;
   source?: string | null;
   customerName?: string | null;
   customerPhone?: string | null;
-  checkInDate: any;
+  checkInDate?: any | null;
   insuranceDateDefault?: any | null;
   insuranceDate?: any | null;
   transferDate?: any | null;
@@ -32,12 +32,12 @@ export type TaskFragment = {
     nameTh: string;
     color: string;
   };
-  checkInRangeTime: {
+  checkInRangeTime?: {
     __typename?: "TaskRangeTimeDto";
     id: string;
     nameEn: string;
     nameTh: string;
-  };
+  } | null;
   project: {
     __typename?: "Project";
     id: string;
@@ -62,6 +62,7 @@ export type TaskStatusDtoFragment = {
 };
 
 export type TasksQueryVariables = Types.Exact<{
+  type: Types.TaskType;
   page: Types.Scalars["Int"]["input"];
   limit: Types.Scalars["Int"]["input"];
   searchText?: Types.InputMaybe<Types.Scalars["String"]["input"]>;
@@ -97,11 +98,11 @@ export type TasksQuery = {
       code: string;
       projectId: string;
       unitId?: string | null;
-      unitNumber: string;
+      unitNumber?: string | null;
       source?: string | null;
       customerName?: string | null;
       customerPhone?: string | null;
-      checkInDate: any;
+      checkInDate?: any | null;
       insuranceDateDefault?: any | null;
       insuranceDate?: any | null;
       transferDate?: any | null;
@@ -116,12 +117,12 @@ export type TasksQuery = {
         nameTh: string;
         color: string;
       };
-      checkInRangeTime: {
+      checkInRangeTime?: {
         __typename?: "TaskRangeTimeDto";
         id: string;
         nameEn: string;
         nameTh: string;
-      };
+      } | null;
       project: {
         __typename?: "Project";
         id: string;
@@ -204,6 +205,7 @@ export const TaskStatusDtoFragmentDoc = gql`
 `;
 export const TasksDocument = gql`
   query Tasks(
+    $type: TaskType!
     $page: Int!
     $limit: Int!
     $searchText: String
@@ -212,6 +214,7 @@ export const TasksDocument = gql`
     $unitIds: [String!]
   ) {
     tasks(
+      type: $type
       page: $page
       limit: $limit
       searchText: $searchText
@@ -247,6 +250,7 @@ export const TasksDocument = gql`
  * @example
  * const { data, loading, error } = useTasksQuery({
  *   variables: {
+ *      type: // value for 'type'
  *      page: // value for 'page'
  *      limit: // value for 'limit'
  *      searchText: // value for 'searchText'

@@ -1,6 +1,5 @@
 "use client";
 
-import { CustomBreadcrumb } from "@/components/common/CustomBreadcrumb";
 import { Routes } from "@/config/routes";
 import { UsergroupAddOutlined, UserOutlined } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
@@ -8,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
 
-const { Content, Sider } = Layout;
+const { Sider } = Layout;
 
 export default function AdminTemplate({
   children,
@@ -18,7 +17,7 @@ export default function AdminTemplate({
   const router = useRouter();
   const pathname = usePathname();
   const {
-    token: { colorBgContainer, borderRadiusLG },
+    token: { colorBgContainer },
   } = theme.useToken();
   const [collapsed, setCollapsed] = useState(false);
 
@@ -56,20 +55,7 @@ export default function AdminTemplate({
           ]}
         />
       </Sider>
-      <Layout style={{ padding: "0 24px 24px" }}>
-        <CustomBreadcrumb />
-        <Content
-          style={{
-            padding: 24,
-            margin: 0,
-            minHeight: 280,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
-          }}
-        >
-          {children}
-        </Content>
-      </Layout>
+      {children}
     </Layout>
   );
 }

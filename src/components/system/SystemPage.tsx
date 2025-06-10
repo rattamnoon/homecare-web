@@ -1,9 +1,10 @@
+import { LayoutWithBreadcrumb } from "@/components/common/LayoutWithBreadcrumb";
 import { Result } from "antd";
 
 export const SystemPage = () => {
   return (
-    <div>
+    <LayoutWithBreadcrumb>
       <Result status="403" title="403" subTitle="Forbidden" />
-    </div>
+    </LayoutWithBreadcrumb>
   );
 };

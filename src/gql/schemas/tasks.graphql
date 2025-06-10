@@ -47,6 +47,7 @@ fragment TaskStatusDto on TaskStatusDto {
 }
 
 query Tasks(
+  $type: TaskType!
   $page: Int!
   $limit: Int!
   $searchText: String
@@ -55,6 +56,7 @@ query Tasks(
   $unitIds: [String!]
 ) {
   tasks(
+    type: $type
     page: $page
     limit: $limit
     searchText: $searchText

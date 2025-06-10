@@ -120,6 +120,7 @@ export type Mutation = {
   migrateMasters: Array<Master>;
   migrateProjects: Array<Project>;
   migrateTasks: Array<Task>;
+  migrateTasksService: Array<Task>;
   migrateUsers: Array<User>;
   refreshToken?: Maybe<Auth>;
   removeMaster: Scalars["Boolean"]["output"];
@@ -227,6 +228,7 @@ export type QueryTasksArgs = {
   projectId?: InputMaybe<Scalars["String"]["input"]>;
   searchText?: InputMaybe<Scalars["String"]["input"]>;
   statuses?: InputMaybe<Array<TaskStatus>>;
+  type?: TaskType;
   unitIds?: InputMaybe<Array<Scalars["String"]["input"]>>;
 };
 
@@ -246,8 +248,8 @@ export type QueryUsersArgs = {
 
 export type Task = {
   __typename?: "Task";
-  checkInDate: Scalars["Date"]["output"];
-  checkInRangeTime: TaskRangeTimeDto;
+  checkInDate?: Maybe<Scalars["Date"]["output"]>;
+  checkInRangeTime?: Maybe<TaskRangeTimeDto>;
   code: Scalars["String"]["output"];
   createdAt: Scalars["Date"]["output"];
   customerName?: Maybe<Scalars["String"]["output"]>;
@@ -264,7 +266,7 @@ export type Task = {
   transferDate?: Maybe<Scalars["Date"]["output"]>;
   unit?: Maybe<Unit>;
   unitId?: Maybe<Scalars["String"]["output"]>;
-  unitNumber: Scalars["String"]["output"];
+  unitNumber?: Maybe<Scalars["String"]["output"]>;
   updatedAt: Scalars["Date"]["output"];
 };
 
@@ -283,6 +285,7 @@ export type TaskRangeTimeDto = {
 };
 
 export enum TaskStatus {
+  Assigned = "ASSIGNED",
   Checking = "CHECKING",
   Closed = "CLOSED",
   Finished = "FINISHED",
@@ -299,6 +302,12 @@ export type TaskStatusDto = {
   nameEn: Scalars["String"]["output"];
   nameTh: Scalars["String"]["output"];
 };
+
+export enum TaskType {
+  Centeal = "CENTEAL",
+  Repair = "REPAIR",
+  Service = "SERVICE",
+}
 
 export type Unit = {
   __typename?: "Unit";

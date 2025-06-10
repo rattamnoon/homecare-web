@@ -1,3 +1,9 @@
+import { LayoutWithBreadcrumb } from "../common/LayoutWithBreadcrumb";
+
 export const DashboardPage = () => {
-  return <div>DashboardPage</div>;
+  return (
+    <LayoutWithBreadcrumb>
+      <div>DashboardPage</div>
+    </LayoutWithBreadcrumb>
+  );
 };

@@ -1,15 +1,18 @@
 "use client";
 
-import { CustomBreadcrumb } from "@/components/common/CustomBreadcrumb";
 import { Routes } from "@/config/routes";
-import { faBuilding, faWrench } from "@fortawesome/pro-regular-svg-icons";
+import {
+  faBuilding,
+  faScrewdriverWrench,
+  faWrench,
+} from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Layout, Menu, theme } from "antd";
 import { usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
 
-const { Content, Sider } = Layout;
+const { Sider } = Layout;
 
 export default function TasksTemplate({
   children,
@@ -20,7 +23,7 @@ export default function TasksTemplate({
   const pathname = usePathname();
 
   const {
-    token: { colorBgContainer, borderRadiusLG },
+    token: { colorBgContainer },
   } = theme.useToken();
   const [collapsed, setCollapsed] = useState(false);
 
@@ -57,7 +60,7 @@ export default function TasksTemplate({
                 {
                   key: Routes.TasksJuristicService,
                   label: "Service",
-                  icon: <FontAwesomeIcon icon={faWrench} />,
+                  icon: <FontAwesomeIcon icon={faScrewdriverWrench} />,
                   onClick: () => router.push(Routes.TasksJuristicService),
                 },
                 {
@@ -71,20 +74,7 @@ export default function TasksTemplate({
           ]}
         />
       </Sider>
-      <Layout style={{ padding: "0 24px 24px" }}>
-        <CustomBreadcrumb />
-        <Content
-          style={{
-            padding: 24,
-            margin: 0,
-            minHeight: 280,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
-          }}
-        >
-          {children}
-        </Content>
-      </Layout>
+      {children}
     </Layout>
   );
 }

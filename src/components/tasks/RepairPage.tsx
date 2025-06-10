@@ -1,6 +1,7 @@
 "use client";
 
-import { TaskStatus } from "@/gql/generated/graphql";
+import { LayoutWithBreadcrumb } from "@/components/common/LayoutWithBreadcrumb";
+import { TaskStatus, TaskType } from "@/gql/generated/graphql";
 import { useTasksQuery } from "@/gql/generated/tasks.generated";
 import { getTablePaginationProps } from "@/utils/utils";
 import { Col, Row, Table, Tag, theme } from "antd";
@@ -17,6 +18,7 @@ export const RepairPage = () => {
   } = theme.useToken();
   const { data, loading } = useTasksQuery({
     variables: {
+      type: TaskType.Repair,
       page: currentPage,
       limit: pageSize,
       searchText,
@@ -31,179 +33,185 @@ export const RepairPage = () => {
   const meta = useMemo(() => tasks?.meta, [tasks]);
 
   return (
-    <Row gutter={[16, 16]}>
-      <Col span={24}>
-        <RepairFilter />
-      </Col>
-      <Col span={24}>
-        <Table
-          rowKey="id"
-          loading={loading}
-          dataSource={dataSource}
-          scroll={{ x: "max-content" }}
-          pagination={{
-            position: ["bottomCenter"],
-            ...getTablePaginationProps(meta),
-            onChange: (page) => {
-              setCurrentPage(page);
-            },
-            showQuickJumper: true,
-            showSizeChanger: true,
-            pageSizeOptions: ["10", "20", "30", "40", "50"],
-            onShowSizeChange: (page, size) => {
-              setPageSize(size);
-            },
-          }}
-          onRow={() => ({
-            style: {
-              cursor: "pointer",
-            },
-          })}
-          columns={[
-            {
-              title: "รหัสงาน",
-              dataIndex: "code",
-              key: "code",
-              align: "center",
-              width: 100,
-              onCell: () => ({
-                style: {
-                  cursor: "pointer",
-                  textAlign: "center",
-                  fontWeight: "bold",
-                  color: colorPrimary,
+    <LayoutWithBreadcrumb>
+      <Row gutter={[16, 16]}>
+        <Col span={24}>
+          <RepairFilter />
+        </Col>
+        <Col span={24}>
+          <Table
+            rowKey="id"
+            loading={loading}
+            dataSource={dataSource}
+            scroll={{ x: "max-content" }}
+            pagination={{
+              position: ["bottomCenter"],
+              ...getTablePaginationProps(meta),
+              onChange: (page) => {
+                setCurrentPage(page);
+              },
+              showQuickJumper: true,
+              showSizeChanger: true,
+              pageSizeOptions: ["10", "20", "30", "40", "50"],
+              onShowSizeChange: (page, size) => {
+                setPageSize(size);
+              },
+            }}
+            onRow={() => ({
+              style: {
+                cursor: "pointer",
+              },
+            })}
+            columns={[
+              {
+                title: "รหัสงาน",
+                dataIndex: "code",
+                key: "code",
+                align: "center",
+                width: 100,
+                onCell: () => ({
+                  style: {
+                    cursor: "pointer",
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    color: colorPrimary,
+                  },
+                }),
+              },
+              {
+                title: "โครงการ",
+                dataIndex: "project",
+                key: "project",
+                align: "center",
+                width: 300,
+                render: (_, record) => {
+                  return record.project
+                    ? `${record.project.id} - ${record.project.nameTh}`
+                    : "-";
                 },
-              }),
-            },
-            {
-              title: "โครงการ",
-              dataIndex: "project",
-              key: "project",
-              align: "center",
-              width: 300,
-              render: (_, record) => {
-                return record.project
-                  ? `${record.project.id} - ${record.project.nameTh}`
-                  : "-";
+                onCell: () => ({
+                  style: {
+                    textAlign: "left",
+                  },
+                }),
               },
-              onCell: () => ({
-                style: {
-                  textAlign: "left",
+              {
+                title: "ห้อง (เลขที่ห้อง)",
+                dataIndex: "unit",
+                key: "unit",
+                align: "center",
+                width: 200,
+                render: (_, record) => {
+                  return record.unit
+                    ? `${record.unit.unitNumber} (${record.unit.houseNumber})`
+                    : "-";
                 },
-              }),
-            },
-            {
-              title: "ห้อง (เลขที่ห้อง)",
-              dataIndex: "unit",
-              key: "unit",
-              align: "center",
-              width: 200,
-              render: (_, record) => {
-                return record.unit
-                  ? `${record.unit.unitNumber} (${record.unit.houseNumber})`
-                  : "-";
+                onCell: () => ({
+                  style: {
+                    textAlign: "left",
+                  },
+                }),
               },
-              onCell: () => ({
-                style: {
-                  textAlign: "left",
+              {
+                title: "สถานะ",
+                dataIndex: "status",
+                key: "status",
+                align: "center",
+                width: 100,
+                render: (_, record) => {
+                  return record.status ? (
+                    <Tag color={record.status.color}>
+                      {record.status.nameEn}
+                    </Tag>
+                  ) : (
+                    "-"
+                  );
                 },
-              }),
-            },
-            {
-              title: "สถานะ",
-              dataIndex: "status",
-              key: "status",
-              align: "center",
-              width: 100,
-              render: (_, record) => {
-                return record.status ? (
-                  <Tag color={record.status.color}>{record.status.nameEn}</Tag>
-                ) : (
-                  "-"
-                );
               },
-            },
-            {
-              title: "ชื่อลูกค้า",
-              dataIndex: "customerName",
-              key: "customerName",
-              align: "center",
-              width: 200,
-              onCell: () => ({
-                style: {
-                  textAlign: "left",
+              {
+                title: "ชื่อลูกค้า",
+                dataIndex: "customerName",
+                key: "customerName",
+                align: "center",
+                width: 200,
+                onCell: () => ({
+                  style: {
+                    textAlign: "left",
+                  },
+                }),
+              },
+              {
+                title: "เบอร์โทรลูกค้า",
+                dataIndex: "customerPhone",
+                key: "customerPhone",
+                align: "center",
+                width: 120,
+              },
+              {
+                title: "วันที่นัดตรวจสอบ",
+                dataIndex: "checkInDate",
+                key: "checkInDate",
+                align: "center",
+                width: 150,
+                render: (_, record) => {
+                  return record.checkInDate
+                    ? dayjs(record.checkInDate).format("DD/MM/YYYY")
+                    : "-";
                 },
-              }),
-            },
-            {
-              title: "เบอร์โทรลูกค้า",
-              dataIndex: "customerPhone",
-              key: "customerPhone",
-              align: "center",
-              width: 120,
-            },
-            {
-              title: "วันที่นัดตรวจสอบ",
-              dataIndex: "checkInDate",
-              key: "checkInDate",
-              align: "center",
-              width: 150,
-              render: (_, record) => {
-                return record.checkInDate
-                  ? dayjs(record.checkInDate).format("DD/MM/YYYY")
-                  : "-";
               },
-            },
-            {
-              title: "ช่วงเวลานัดตรวจสอบ",
-              dataIndex: "checkInRangeTime",
-              key: "checkInRangeTime",
-              align: "center",
-              width: 150,
-              render: (_, record) => {
-                return record.checkInRangeTime
-                  ? record.checkInRangeTime.nameTh
-                  : "-";
-              },
-            },
-            {
-              title: "วันหมดประกัน",
-              dataIndex: "insuranceDate",
-              key: "insuranceDate",
-              align: "center",
-              width: 150,
-              render: (_, record) => {
-                return record.insuranceDate
-                  ? dayjs(record.insuranceDate).format("DD/MM/YYYY")
-                  : "-";
-              },
-              onCell: (record) => ({
-                style: {
-                  color: dayjs(record.insuranceDate).isBefore(dayjs())
-                    ? "red"
-                    : "green",
-                  fontWeight: "bold",
-                  textDecoration: dayjs(record.insuranceDate).isBefore(dayjs())
-                    ? "line-through"
-                    : "none",
+              {
+                title: "ช่วงเวลานัดตรวจสอบ",
+                dataIndex: "checkInRangeTime",
+                key: "checkInRangeTime",
+                align: "center",
+                width: 150,
+                render: (_, record) => {
+                  return record.checkInRangeTime
+                    ? record.checkInRangeTime.nameTh
+                    : "-";
                 },
-              }),
-            },
-            {
-              title: "วันที่โอนกรรมสิทธิ์",
-              dataIndex: "transferDate",
-              key: "transferDate",
-              align: "center",
-              width: 150,
-              render: (_, record) => {
-                return record.transferDate
-                  ? dayjs(record.transferDate).format("DD/MM/YYYY")
-                  : "-";
               },
-            },
-          ]}
-        />
-      </Col>
-    </Row>
+              {
+                title: "วันหมดประกัน",
+                dataIndex: "insuranceDate",
+                key: "insuranceDate",
+                align: "center",
+                width: 150,
+                render: (_, record) => {
+                  return record.insuranceDate
+                    ? dayjs(record.insuranceDate).format("DD/MM/YYYY")
+                    : "-";
+                },
+                onCell: (record) => ({
+                  style: {
+                    color: dayjs(record.insuranceDate).isBefore(dayjs())
+                      ? "red"
+                      : "green",
+                    fontWeight: "bold",
+                    textDecoration: dayjs(record.insuranceDate).isBefore(
+                      dayjs()
+                    )
+                      ? "line-through"
+                      : "none",
+                  },
+                }),
+              },
+              {
+                title: "วันที่โอนกรรมสิทธิ์",
+                dataIndex: "transferDate",
+                key: "transferDate",
+                align: "center",
+                width: 150,
+                render: (_, record) => {
+                  return record.transferDate
+                    ? dayjs(record.transferDate).format("DD/MM/YYYY")
+                    : "-";
+                },
+              },
+            ]}
+          />
+        </Col>
+      </Row>
+    </LayoutWithBreadcrumb>
   );
 };
