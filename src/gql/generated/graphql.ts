@@ -130,11 +130,11 @@ export type Mutation = {
   createTask: Task;
   createUser: User;
   login: Auth;
+  migrateFile: Array<Task>;
   migrateMasters: Array<Master>;
   migrateMastersServiceAndCentral: Array<Master>;
   migrateProjects: Array<Project>;
   migrateTasks: Array<Task>;
-  migrateTasksService: Array<Task>;
   migrateUsers: Array<User>;
   refreshToken?: Maybe<Auth>;
   removeMaster: Scalars["Boolean"]["output"];
@@ -226,6 +226,11 @@ export type Query = {
 
 export type QueryMasterArgs = {
   id: Scalars["ID"]["input"];
+};
+
+export type QueryMastersArgs = {
+  searchText?: InputMaybe<Scalars["String"]["input"]>;
+  types?: Array<MasterType>;
 };
 
 export type QueryProjectArgs = {
@@ -324,7 +329,7 @@ export type TaskStatusDto = {
 };
 
 export enum TaskType {
-  Centeal = "CENTEAL",
+  Central = "CENTRAL",
   Repair = "REPAIR",
   Service = "SERVICE",
 }

@@ -15,7 +15,7 @@ export const JuristicCentralPage = () => {
   } = theme.useToken();
   const { data, loading } = useTasksQuery({
     variables: {
-      type: TaskType.Centeal,
+      type: TaskType.Central,
       page: currentPage,
       limit: pageSize,
     },

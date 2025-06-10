@@ -2,7 +2,7 @@ import { LayoutWithBreadcrumb } from "@/components/common/LayoutWithBreadcrumb";
 
 export const HomePage = () => {
   return (
-    <LayoutWithBreadcrumb>
+    <LayoutWithBreadcrumb withBreadcrumb={false}>
       <div>HomePage</div>
     </LayoutWithBreadcrumb>
   );

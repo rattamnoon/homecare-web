@@ -1,0 +1,27 @@
+fragment Master on Master {
+  id
+  parentId
+  type
+  sequence
+  nameTh
+  nameEn
+  hours
+  days
+  maxScore
+  defaultScore
+  areaTypeTh
+  areaTypeEn
+  SLA
+  createdAt
+  updatedAt
+  deletedAt
+}
+
+query Masters($types: [MasterType!]!, $searchText: String) {
+  masters(types: $types, searchText: $searchText) {
+    ...Master
+    children {
+      ...Master
+    }
+  }
+}

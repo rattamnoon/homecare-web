@@ -1,3 +1,5 @@
+"use client";
+
 import { LayoutWithBreadcrumb } from "@/components/common/LayoutWithBreadcrumb";
 import { Result } from "antd";
 
