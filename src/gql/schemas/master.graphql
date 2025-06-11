@@ -5,13 +5,16 @@ fragment Master on Master {
   sequence
   nameTh
   nameEn
-  hours
-  days
   maxScore
   defaultScore
   areaTypeTh
   areaTypeEn
-  SLA
+  SLA1H
+  SLA1D
+  SLA2H
+  SLA2D
+  SLA3H
+  SLA3D
   createdAt
   updatedAt
   deletedAt

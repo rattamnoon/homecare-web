@@ -37,12 +37,15 @@ export type Auth = {
 };
 
 export type CreateMasterInput = {
-  SLA?: InputMaybe<Scalars["Int"]["input"]>;
+  SLA1D?: InputMaybe<Scalars["Int"]["input"]>;
+  SLA1H?: InputMaybe<Scalars["Int"]["input"]>;
+  SLA2D?: InputMaybe<Scalars["Int"]["input"]>;
+  SLA2H?: InputMaybe<Scalars["Int"]["input"]>;
+  SLA3D?: InputMaybe<Scalars["Int"]["input"]>;
+  SLA3H?: InputMaybe<Scalars["Int"]["input"]>;
   areaTypeEn?: InputMaybe<Scalars["String"]["input"]>;
   areaTypeTh?: InputMaybe<Scalars["String"]["input"]>;
-  days?: InputMaybe<Scalars["Int"]["input"]>;
   defaultScore?: InputMaybe<Scalars["String"]["input"]>;
-  hours?: InputMaybe<Scalars["Int"]["input"]>;
   maxScore?: InputMaybe<Scalars["String"]["input"]>;
   nameEn?: InputMaybe<Scalars["String"]["input"]>;
   nameTh?: InputMaybe<Scalars["String"]["input"]>;
@@ -90,17 +93,26 @@ export type IPaginateMeta = {
   totalPages?: Maybe<Scalars["Float"]["output"]>;
 };
 
+export type LegacyMigration = {
+  __typename?: "LegacyMigration";
+  syncDate: Scalars["Date"]["output"];
+  total: Scalars["Int"]["output"];
+};
+
 export type Master = {
   __typename?: "Master";
-  SLA?: Maybe<Scalars["Int"]["output"]>;
+  SLA1D?: Maybe<Scalars["Int"]["output"]>;
+  SLA1H?: Maybe<Scalars["Int"]["output"]>;
+  SLA2D?: Maybe<Scalars["Int"]["output"]>;
+  SLA2H?: Maybe<Scalars["Int"]["output"]>;
+  SLA3D?: Maybe<Scalars["Int"]["output"]>;
+  SLA3H?: Maybe<Scalars["Int"]["output"]>;
   areaTypeEn?: Maybe<Scalars["String"]["output"]>;
   areaTypeTh?: Maybe<Scalars["String"]["output"]>;
   children: Array<Master>;
   createdAt: Scalars["Date"]["output"];
-  days?: Maybe<Scalars["Int"]["output"]>;
   defaultScore?: Maybe<Scalars["String"]["output"]>;
   deletedAt?: Maybe<Scalars["Date"]["output"]>;
-  hours?: Maybe<Scalars["Int"]["output"]>;
   id: Scalars["ID"]["output"];
   maxScore?: Maybe<Scalars["String"]["output"]>;
   nameEn?: Maybe<Scalars["String"]["output"]>;
@@ -125,17 +137,12 @@ export enum MasterType {
 
 export type Mutation = {
   __typename?: "Mutation";
+  createLegacyMigration: LegacyMigration;
   createMaster: Master;
   createProject: Project;
   createTask: Task;
   createUser: User;
   login: Auth;
-  migrateFile: Array<Task>;
-  migrateMasters: Array<Master>;
-  migrateMastersServiceAndCentral: Array<Master>;
-  migrateProjects: Array<Project>;
-  migrateTasks: Array<Task>;
-  migrateUsers: Array<User>;
   refreshToken?: Maybe<Auth>;
   removeMaster: Scalars["Boolean"]["output"];
   removeProject: Scalars["Boolean"]["output"];
@@ -347,12 +354,15 @@ export type Unit = {
 };
 
 export type UpdateMasterInput = {
-  SLA?: InputMaybe<Scalars["Int"]["input"]>;
+  SLA1D?: InputMaybe<Scalars["Int"]["input"]>;
+  SLA1H?: InputMaybe<Scalars["Int"]["input"]>;
+  SLA2D?: InputMaybe<Scalars["Int"]["input"]>;
+  SLA2H?: InputMaybe<Scalars["Int"]["input"]>;
+  SLA3D?: InputMaybe<Scalars["Int"]["input"]>;
+  SLA3H?: InputMaybe<Scalars["Int"]["input"]>;
   areaTypeEn?: InputMaybe<Scalars["String"]["input"]>;
   areaTypeTh?: InputMaybe<Scalars["String"]["input"]>;
-  days?: InputMaybe<Scalars["Int"]["input"]>;
   defaultScore?: InputMaybe<Scalars["String"]["input"]>;
-  hours?: InputMaybe<Scalars["Int"]["input"]>;
   id?: InputMaybe<Scalars["ID"]["input"]>;
   maxScore?: InputMaybe<Scalars["String"]["input"]>;
   nameEn?: InputMaybe<Scalars["String"]["input"]>;

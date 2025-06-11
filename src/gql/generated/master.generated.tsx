@@ -11,13 +11,16 @@ export type MasterFragment = {
   sequence?: number | null;
   nameTh?: string | null;
   nameEn?: string | null;
-  hours?: number | null;
-  days?: number | null;
   maxScore?: string | null;
   defaultScore?: string | null;
   areaTypeTh?: string | null;
   areaTypeEn?: string | null;
-  SLA?: number | null;
+  SLA1H?: number | null;
+  SLA1D?: number | null;
+  SLA2H?: number | null;
+  SLA2D?: number | null;
+  SLA3H?: number | null;
+  SLA3D?: number | null;
   createdAt: any;
   updatedAt: any;
   deletedAt?: any | null;
@@ -38,13 +41,16 @@ export type MastersQuery = {
     sequence?: number | null;
     nameTh?: string | null;
     nameEn?: string | null;
-    hours?: number | null;
-    days?: number | null;
     maxScore?: string | null;
     defaultScore?: string | null;
     areaTypeTh?: string | null;
     areaTypeEn?: string | null;
-    SLA?: number | null;
+    SLA1H?: number | null;
+    SLA1D?: number | null;
+    SLA2H?: number | null;
+    SLA2D?: number | null;
+    SLA3H?: number | null;
+    SLA3D?: number | null;
     createdAt: any;
     updatedAt: any;
     deletedAt?: any | null;
@@ -56,13 +62,16 @@ export type MastersQuery = {
       sequence?: number | null;
       nameTh?: string | null;
       nameEn?: string | null;
-      hours?: number | null;
-      days?: number | null;
       maxScore?: string | null;
       defaultScore?: string | null;
       areaTypeTh?: string | null;
       areaTypeEn?: string | null;
-      SLA?: number | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
       createdAt: any;
       updatedAt: any;
       deletedAt?: any | null;
@@ -78,13 +87,16 @@ export const MasterFragmentDoc = gql`
     sequence
     nameTh
     nameEn
-    hours
-    days
     maxScore
     defaultScore
     areaTypeTh
     areaTypeEn
-    SLA
+    SLA1H
+    SLA1D
+    SLA2H
+    SLA2D
+    SLA3H
+    SLA3D
     createdAt
     updatedAt
     deletedAt
