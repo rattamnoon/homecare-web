@@ -8,6 +8,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import type { Metadata } from "next";
+import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
@@ -27,6 +28,7 @@ export default async function RootLayout({
   const session = await getSession();
 
   if (session?.error === "RefreshAccessTokenError") {
+    await signOut();
     redirect(Routes.Login);
   }
 

@@ -7,6 +7,7 @@ const route: { [key: string]: string } = {
   "/home": "หน้าหลัก",
   "/tasks": "จัดการงาน",
   "/tasks/repair": "งานแจ้งซ่อม",
+  "/tasks/repair/create": "เพิ่มงานแจ้งซ่อม",
   "/tasks/repair/calendar": "ปฏิทินงาน",
   "/tasks/juristic/service": "Service",
   "/tasks/juristic/central": "ส่วนกลาง",

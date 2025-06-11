@@ -3,7 +3,20 @@ import { useUnitsQuery } from "@/gql/generated/project.generated";
 import { useTaskStatusesQuery } from "@/gql/generated/tasks.generated";
 import { useProjectsQuery } from "@/gql/src/gql/generated/project.generated";
 import { useCreateSearchParams } from "@/hooks/useCreateSearchParams";
-import { Col, Form, Input, Row, Select, SelectProps, Tag, Tooltip } from "antd";
+import { faPlus } from "@fortawesome/pro-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  Button,
+  Col,
+  Flex,
+  Form,
+  Input,
+  Row,
+  Select,
+  SelectProps,
+  Tag,
+  Tooltip,
+} from "antd";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 
@@ -88,22 +101,34 @@ export const RepairFilter = () => {
   return (
     <Form layout="horizontal">
       <Row gutter={[16, 16]}>
-        <Col>
-          <Form.Item
-            label="ค้นหา"
-            name="searchText"
-            colon={false}
-            style={{ marginBottom: 0 }}
-          >
-            <Input
-              placeholder="ค้นหา"
-              allowClear
-              value={searchText}
-              onChange={(e) => {
-                handleSearch("searchText", e.target.value);
+        <Col span={24}>
+          <Flex justify="space-between">
+            <Form.Item
+              label="ค้นหา"
+              name="searchText"
+              colon={false}
+              style={{ marginBottom: 0 }}
+            >
+              <Input
+                placeholder="ค้นหา"
+                allowClear
+                value={searchText}
+                onChange={(e) => {
+                  handleSearch("searchText", e.target.value);
+                }}
+              />
+            </Form.Item>
+            <Button
+              variant="solid"
+              color="primary"
+              icon={<FontAwesomeIcon icon={faPlus} />}
+              onClick={() => {
+                router.push(Routes.TasksRepairCreate);
               }}
-            />
-          </Form.Item>
+            >
+              เพิ่มงานแจ้งซ่อม
+            </Button>
+          </Flex>
         </Col>
         <Col span={24}>
           <Row gutter={[8, 8]}>

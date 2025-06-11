@@ -4,6 +4,7 @@ import { Routes } from "@/config/routes";
 import {
   faBuilding,
   faCalendarDays,
+  faList,
   faScrewdriverWrench,
   faWrench,
 } from "@fortawesome/pro-regular-svg-icons";
@@ -50,7 +51,7 @@ export default function TasksTemplate({
             {
               key: Routes.TasksRepair,
               label: "รายการแจ้งซ่อม",
-              icon: <FontAwesomeIcon icon={faWrench} />,
+              icon: <FontAwesomeIcon icon={faList} />,
               children: [
                 {
                   key: Routes.TasksRepair,
