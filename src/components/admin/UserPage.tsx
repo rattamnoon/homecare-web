@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutWithBreadcrumb } from "@/components/common/LayoutWithBreadcrumb";
+import { LayoutWithBreadcrumb } from "@/components/layout/LayoutWithBreadcrumb";
 import { useUsersQuery } from "@/gql/generated/user.generated";
 import { getTablePaginationProps } from "@/utils/utils";
 import { Col, Form, Input, Row, Table, Tag } from "antd";

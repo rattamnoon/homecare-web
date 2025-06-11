@@ -2,7 +2,7 @@
 
 import { Layout, theme } from "antd";
 import { CSSProperties } from "react";
-import { BreadcrumbItem, CustomBreadcrumb } from "./CustomBreadcrumb";
+import { BreadcrumbItem, CustomBreadcrumb } from "../common/CustomBreadcrumb";
 
 const { Content } = Layout;
 

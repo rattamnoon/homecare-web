@@ -3,6 +3,7 @@ export const Routes = {
   Login: "/login",
   Tasks: "/tasks",
   TasksRepair: "/tasks/repair",
+  TasksRepairCalendar: "/tasks/repair/calendar",
   TasksJuristicService: "/tasks/juristic/service",
   TasksJuristicCentral: "/tasks/juristic/central",
   Dashboard: "/dashboard",

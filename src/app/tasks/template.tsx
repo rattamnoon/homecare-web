@@ -3,6 +3,7 @@
 import { Routes } from "@/config/routes";
 import {
   faBuilding,
+  faCalendarDays,
   faScrewdriverWrench,
   faWrench,
 } from "@fortawesome/pro-regular-svg-icons";
@@ -48,9 +49,22 @@ export default function TasksTemplate({
           items={[
             {
               key: Routes.TasksRepair,
-              label: "งานแจ้งซ่อม",
+              label: "รายการแจ้งซ่อม",
               icon: <FontAwesomeIcon icon={faWrench} />,
-              onClick: () => router.push(Routes.TasksRepair),
+              children: [
+                {
+                  key: Routes.TasksRepair,
+                  label: "งานแจ้งซ่อม",
+                  icon: <FontAwesomeIcon icon={faWrench} />,
+                  onClick: () => router.push(Routes.TasksRepair),
+                },
+                {
+                  key: Routes.TasksRepairCalendar,
+                  label: "ปฏิทินงาน",
+                  icon: <FontAwesomeIcon icon={faCalendarDays} />,
+                  onClick: () => router.push(Routes.TasksRepairCalendar),
+                },
+              ],
             },
             {
               key: "juristic",

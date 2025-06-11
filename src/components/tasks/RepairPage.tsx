@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutWithBreadcrumb } from "@/components/common/LayoutWithBreadcrumb";
+import { LayoutWithBreadcrumb } from "@/components/layout/LayoutWithBreadcrumb";
 import { TaskStatus, TaskType } from "@/gql/generated/graphql";
 import { useTasksQuery } from "@/gql/generated/tasks.generated";
 import { getTablePaginationProps } from "@/utils/utils";

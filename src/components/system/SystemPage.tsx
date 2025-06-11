@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutWithBreadcrumb } from "@/components/common/LayoutWithBreadcrumb";
+import { LayoutWithBreadcrumb } from "@/components/layout/LayoutWithBreadcrumb";
 import { MasterType } from "@/gql/generated/graphql";
 import { useMastersQuery } from "@/gql/generated/master.generated";
 import { Table } from "antd";
