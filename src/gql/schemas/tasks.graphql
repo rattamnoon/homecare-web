@@ -101,3 +101,15 @@ query TaskStatuses {
     ...TaskStatusDto
   }
 }
+
+mutation CreateTask(
+  $createTaskInput: CreateTaskInput!
+  $createTaskDetailInput: [CreateTaskDetailInput!]!
+) {
+  createTask(
+    createTaskInput: $createTaskInput
+    createTaskDetailInput: $createTaskDetailInput
+  ) {
+    ...Task
+  }
+}

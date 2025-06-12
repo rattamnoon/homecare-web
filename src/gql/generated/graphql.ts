@@ -58,13 +58,68 @@ export type CreateProjectInput = {
   nameTh: Scalars["String"]["input"];
 };
 
+export type CreateTaskDetailInput = {
+  CSATComment?: InputMaybe<Scalars["String"]["input"]>;
+  appointmentDate?: InputMaybe<Scalars["Date"]["input"]>;
+  appointmentRepairComment?: InputMaybe<Scalars["String"]["input"]>;
+  appointmentRepairDate?: InputMaybe<Scalars["Date"]["input"]>;
+  appointmentRepairTime?: InputMaybe<Scalars["String"]["input"]>;
+  appointmentTime?: InputMaybe<Scalars["String"]["input"]>;
+  assignDate?: InputMaybe<Scalars["Date"]["input"]>;
+  assignInDate?: InputMaybe<Scalars["Date"]["input"]>;
+  assignRangeTime?: InputMaybe<Scalars["String"]["input"]>;
+  callingDate?: InputMaybe<Scalars["Date"]["input"]>;
+  categoryId?: InputMaybe<Scalars["String"]["input"]>;
+  causeId?: InputMaybe<Scalars["String"]["input"]>;
+  closeDate?: InputMaybe<Scalars["Date"]["input"]>;
+  code?: InputMaybe<Scalars["String"]["input"]>;
+  contractorId?: InputMaybe<Scalars["String"]["input"]>;
+  description?: InputMaybe<Scalars["String"]["input"]>;
+  files: Array<CreateUploadFileInput>;
+  finishDate?: InputMaybe<Scalars["Date"]["input"]>;
+  homecareComment?: InputMaybe<Scalars["String"]["input"]>;
+  homecareId?: InputMaybe<Scalars["String"]["input"]>;
+  homecareInDate?: InputMaybe<Scalars["Date"]["input"]>;
+  homecareRangeTime?: InputMaybe<Scalars["String"]["input"]>;
+  inProgressDate?: InputMaybe<Scalars["Date"]["input"]>;
+  isCSAT?: InputMaybe<Scalars["Boolean"]["input"]>;
+  priority?: InputMaybe<Scalars["Int"]["input"]>;
+  reProcessDate?: InputMaybe<Scalars["Date"]["input"]>;
+  slaId?: InputMaybe<Scalars["String"]["input"]>;
+  status?: TaskDetailStatus;
+  subCategoryId?: InputMaybe<Scalars["String"]["input"]>;
+};
+
 export type CreateTaskInput = {
-  channel: Scalars["String"]["input"];
-  code: Scalars["String"]["input"];
-  projectId: Scalars["String"]["input"];
-  status: TaskStatus;
-  unitId: Scalars["String"]["input"];
-  unitNumber: Scalars["String"]["input"];
+  areaId?: InputMaybe<Scalars["String"]["input"]>;
+  buildingId?: InputMaybe<Scalars["String"]["input"]>;
+  checkInDate?: InputMaybe<Scalars["Date"]["input"]>;
+  checkInRangeTime: Scalars["String"]["input"];
+  customerName?: InputMaybe<Scalars["String"]["input"]>;
+  customerPhone?: InputMaybe<Scalars["String"]["input"]>;
+  customerRequestedRepairDate?: InputMaybe<Scalars["Date"]["input"]>;
+  floorId?: InputMaybe<Scalars["String"]["input"]>;
+  insuranceDate?: InputMaybe<Scalars["Date"]["input"]>;
+  insuranceDateDefault?: InputMaybe<Scalars["Date"]["input"]>;
+  projectId?: InputMaybe<Scalars["String"]["input"]>;
+  source: Scalars["String"]["input"];
+  status?: TaskStatus;
+  transferDate?: InputMaybe<Scalars["Date"]["input"]>;
+  type?: InputMaybe<TaskType>;
+  unitId?: InputMaybe<Scalars["String"]["input"]>;
+  unitNumber?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type CreateUploadFileInput = {
+  fileBucket?: InputMaybe<Scalars["String"]["input"]>;
+  fileExtension?: InputMaybe<Scalars["String"]["input"]>;
+  fileFolder?: InputMaybe<Scalars["String"]["input"]>;
+  fileId?: InputMaybe<Scalars["String"]["input"]>;
+  fileName?: InputMaybe<Scalars["String"]["input"]>;
+  filePath?: InputMaybe<Scalars["String"]["input"]>;
+  fileType?: InputMaybe<UploadFileType>;
+  isPublic?: InputMaybe<Scalars["Boolean"]["input"]>;
+  refId?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type CreateUserInput = {
@@ -141,16 +196,19 @@ export type Mutation = {
   createMaster: Master;
   createProject: Project;
   createTask: Task;
+  createUploadFile: UploadFile;
   createUser: User;
   login: Auth;
   refreshToken?: Maybe<Auth>;
   removeMaster: Scalars["Boolean"]["output"];
   removeProject: Scalars["Boolean"]["output"];
   removeTask: Scalars["Boolean"]["output"];
+  removeUploadFile: Scalars["Boolean"]["output"];
   removeUser: Scalars["Boolean"]["output"];
   updateMaster: Master;
   updateProject: Project;
   updateTask: Task;
+  updateUploadFile: UploadFile;
   updateUser: User;
 };
 
@@ -163,7 +221,12 @@ export type MutationCreateProjectArgs = {
 };
 
 export type MutationCreateTaskArgs = {
+  createTaskDetailInput: Array<CreateTaskDetailInput>;
   createTaskInput: CreateTaskInput;
+};
+
+export type MutationCreateUploadFileArgs = {
+  createUploadFileInput: CreateUploadFileInput;
 };
 
 export type MutationCreateUserArgs = {
@@ -187,6 +250,10 @@ export type MutationRemoveTaskArgs = {
   id: Scalars["ID"]["input"];
 };
 
+export type MutationRemoveUploadFileArgs = {
+  id: Scalars["ID"]["input"];
+};
+
 export type MutationRemoveUserArgs = {
   id: Scalars["ID"]["input"];
 };
@@ -201,6 +268,10 @@ export type MutationUpdateProjectArgs = {
 
 export type MutationUpdateTaskArgs = {
   updateTaskInput: UpdateTaskInput;
+};
+
+export type MutationUpdateUploadFileArgs = {
+  updateUploadFileInput: UpdateUploadFileInput;
 };
 
 export type MutationUpdateUserArgs = {
@@ -228,6 +299,8 @@ export type Query = {
   taskStatuses: Array<TaskStatusDto>;
   tasks: TaskPaginate;
   units: Array<Unit>;
+  uploadFile: UploadFile;
+  uploadFiles: Array<UploadFile>;
   user: User;
   users: UserPaginate;
 };
@@ -261,6 +334,10 @@ export type QueryTasksArgs = {
 
 export type QueryUnitsArgs = {
   projectId: Scalars["String"]["input"];
+};
+
+export type QueryUploadFileArgs = {
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryUserArgs = {
@@ -297,11 +374,30 @@ export type Task = {
   source?: Maybe<TaskSourceDto>;
   status: TaskStatusDto;
   transferDate?: Maybe<Scalars["Date"]["output"]>;
+  type: TaskType;
   unit?: Maybe<Unit>;
   unitId?: Maybe<Scalars["String"]["output"]>;
   unitNumber?: Maybe<Scalars["String"]["output"]>;
   updatedAt: Scalars["Date"]["output"];
 };
+
+export enum TaskDetailStatus {
+  Assigned = "ASSIGNED",
+  BeforeChecking = "BEFORE_CHECKING",
+  Checking = "CHECKING",
+  Closed = "CLOSED",
+  CustomerFinished = "CUSTOMER_FINISHED",
+  Finished = "FINISHED",
+  Hold = "HOLD",
+  HoldApproved = "HOLD_APPROVED",
+  HomecareFinished = "HOMECARE_FINISHED",
+  InProgress = "IN_PROGRESS",
+  Open = "OPEN",
+  OverServiceLevelAgreement = "OVER_SERVICE_LEVEL_AGREEMENT",
+  Pending = "PENDING",
+  ReInProgress = "RE_IN_PROGRESS",
+  WaitingConstructionMaterial = "WAITING_CONSTRUCTION_MATERIAL",
+}
 
 export type TaskPaginate = {
   __typename?: "TaskPaginate";
@@ -388,13 +484,37 @@ export type UpdateProjectInput = {
 };
 
 export type UpdateTaskInput = {
-  channel?: InputMaybe<Scalars["String"]["input"]>;
-  code?: InputMaybe<Scalars["String"]["input"]>;
+  areaId?: InputMaybe<Scalars["String"]["input"]>;
+  buildingId?: InputMaybe<Scalars["String"]["input"]>;
+  checkInDate?: InputMaybe<Scalars["Date"]["input"]>;
+  checkInRangeTime?: InputMaybe<Scalars["String"]["input"]>;
+  customerName?: InputMaybe<Scalars["String"]["input"]>;
+  customerPhone?: InputMaybe<Scalars["String"]["input"]>;
+  customerRequestedRepairDate?: InputMaybe<Scalars["Date"]["input"]>;
+  floorId?: InputMaybe<Scalars["String"]["input"]>;
   id: Scalars["ID"]["input"];
+  insuranceDate?: InputMaybe<Scalars["Date"]["input"]>;
+  insuranceDateDefault?: InputMaybe<Scalars["Date"]["input"]>;
   projectId?: InputMaybe<Scalars["String"]["input"]>;
+  source?: InputMaybe<Scalars["String"]["input"]>;
   status?: InputMaybe<TaskStatus>;
+  transferDate?: InputMaybe<Scalars["Date"]["input"]>;
+  type?: InputMaybe<TaskType>;
   unitId?: InputMaybe<Scalars["String"]["input"]>;
   unitNumber?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type UpdateUploadFileInput = {
+  fileBucket?: InputMaybe<Scalars["String"]["input"]>;
+  fileExtension?: InputMaybe<Scalars["String"]["input"]>;
+  fileFolder?: InputMaybe<Scalars["String"]["input"]>;
+  fileId?: InputMaybe<Scalars["String"]["input"]>;
+  fileName?: InputMaybe<Scalars["String"]["input"]>;
+  filePath?: InputMaybe<Scalars["String"]["input"]>;
+  fileType?: InputMaybe<UploadFileType>;
+  id: Scalars["ID"]["input"];
+  isPublic?: InputMaybe<Scalars["Boolean"]["input"]>;
+  refId?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type UpdateUserInput = {
@@ -406,6 +526,35 @@ export type UpdateUserInput = {
   lastName?: InputMaybe<Scalars["String"]["input"]>;
   username?: InputMaybe<Scalars["String"]["input"]>;
 };
+
+export type UploadFile = {
+  __typename?: "UploadFile";
+  createdAt: Scalars["Date"]["output"];
+  deletedAt?: Maybe<Scalars["Date"]["output"]>;
+  fileBucket?: Maybe<Scalars["String"]["output"]>;
+  fileExtension?: Maybe<Scalars["String"]["output"]>;
+  fileFolder?: Maybe<Scalars["String"]["output"]>;
+  fileId?: Maybe<Scalars["String"]["output"]>;
+  fileName?: Maybe<Scalars["String"]["output"]>;
+  filePath?: Maybe<Scalars["String"]["output"]>;
+  fileType: UploadFileType;
+  id: Scalars["ID"]["output"];
+  isPublic: Scalars["Boolean"]["output"];
+  refId?: Maybe<Scalars["String"]["output"]>;
+  updatedAt: Scalars["Date"]["output"];
+};
+
+export enum UploadFileType {
+  AssignBefore = "ASSIGN_BEFORE",
+  AssignDoing = "ASSIGN_DOING",
+  AssignFinish = "ASSIGN_FINISH",
+  AssignProtection = "ASSIGN_PROTECTION",
+  AssignUploadFinish = "ASSIGN_UPLOAD_FINISH",
+  Customer = "CUSTOMER",
+  CustomerSign = "CUSTOMER_SIGN",
+  Other = "OTHER",
+  Task = "TASK",
+}
 
 export type User = {
   __typename?: "User";

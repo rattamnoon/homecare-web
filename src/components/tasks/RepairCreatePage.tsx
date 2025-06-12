@@ -1,13 +1,23 @@
 "use client";
 
 import { LayoutWithBreadcrumb } from "@/components/layout/LayoutWithBreadcrumb";
-import { MasterType } from "@/gql/generated/graphql";
+import { Routes } from "@/config/routes";
+import {
+  CreateTaskDetailInput,
+  CreateTaskInput,
+  MasterType,
+  TaskDetailStatus,
+  TaskStatus,
+  TaskType,
+  UploadFileType,
+} from "@/gql/generated/graphql";
 import { useMastersQuery } from "@/gql/generated/master.generated";
 import { useTaskOptionsQuery } from "@/gql/generated/option.generated";
 import {
   useProjectsQuery,
   useUnitsQuery,
 } from "@/gql/generated/project.generated";
+import { useCreateTaskMutation } from "@/gql/generated/tasks.generated";
 import {
   faPlus,
   faSave,
@@ -29,8 +39,11 @@ import {
   Select,
   Typography,
   Upload,
+  UploadFile,
+  notification,
 } from "antd";
 import dayjs from "dayjs";
+import { useRouter } from "nextjs-toploader/app";
 import { useMemo } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { v7 as uuidv7 } from "uuid";
@@ -50,7 +63,7 @@ const schema = z.object({
         categoryId: z.string({ message: "กรุณาเลือกประเภท" }),
         subCategoryId: z.string({ message: "กรุณาเลือกประเภทย่อย" }),
         description: z.string({ message: "กรุณากรอกรายละเอียด" }),
-        images: z.array(z.any()).optional(),
+        images: z.array(z.custom<UploadFile>()).optional(),
       },
       {
         invalid_type_error: "กรุณากรอกรายละเอียด",
@@ -62,6 +75,8 @@ const schema = z.object({
 const { Title } = Typography;
 
 export const RepairCreatePage = () => {
+  const [notificationApi, contextHolder] = notification.useNotification();
+  const router = useRouter();
   const { control, handleSubmit, watch } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -87,6 +102,23 @@ export const RepairCreatePage = () => {
   const { data: mastersData, loading: mastersLoading } = useMastersQuery({
     variables: {
       types: [MasterType.Category],
+    },
+  });
+
+  const [createTask, { loading: createTaskLoading }] = useCreateTaskMutation({
+    onCompleted: () => {
+      notificationApi.success({
+        message: "สำเร็จ",
+        description: "สร้างงานแจ้งซ่อมสำเร็จ",
+      });
+      router.push(Routes.Tasks);
+    },
+    onError: (error) => {
+      notificationApi.error({
+        message: "เกิดข้อผิดพลาด",
+        description: error.message,
+        duration: 5,
+      });
     },
   });
 
@@ -145,8 +177,64 @@ export const RepairCreatePage = () => {
     }));
   }, [options]);
 
+  const onSubmit = handleSubmit(async (data) => {
+    const {
+      projectId,
+      unitId,
+      customerName,
+      customerPhone,
+      checkInDate,
+      source,
+      checkInRangeTime,
+      taskDetails,
+    } = data;
+
+    const unit = units?.units.find((unit) => unit.id === unitId);
+
+    const createTaskInput: CreateTaskInput = {
+      projectId,
+      unitId,
+      unitNumber: unit?.unitNumber ?? "",
+      customerName,
+      customerPhone,
+      checkInDate,
+      source,
+      checkInRangeTime,
+      customerRequestedRepairDate: dayjs().toDate(),
+      status: TaskStatus.Pending,
+      type: TaskType.Repair,
+    };
+
+    const createTaskDetailInput: CreateTaskDetailInput[] = taskDetails.map(
+      (taskDetail) => ({
+        status: TaskDetailStatus.Pending,
+        categoryId: taskDetail.categoryId,
+        subCategoryId: taskDetail.subCategoryId,
+        description: taskDetail.description,
+        files:
+          taskDetail.images?.map((image) => ({
+            fileType: UploadFileType.Customer,
+            fileId: image.response?.fileId,
+            fileName: image.response?.fileName,
+            fileFolder: image.response?.fileFolder,
+            filePath: image.response?.filePath,
+            fileBucket: image.response?.fileBucket,
+            fileExtension: image.response?.fileExtension,
+          })) ?? [],
+      })
+    );
+
+    await createTask({
+      variables: {
+        createTaskInput,
+        createTaskDetailInput,
+      },
+    });
+  });
+
   return (
     <LayoutWithBreadcrumb>
+      {contextHolder}
       <Flex vertical gap={16}>
         <Flex justify="center">
           <Title level={3}>เพิ่มงานแจ้งซ่อม</Title>
@@ -264,6 +352,9 @@ export const RepairCreatePage = () => {
                   >
                     <DatePicker
                       {...field}
+                      onChange={(value) => {
+                        field.onChange(dayjs(value).toDate());
+                      }}
                       placeholder="วันที่เข้าตรวจสอบ"
                       format="YYYY-MM-DD"
                       style={{ width: "100%" }}
@@ -456,17 +547,38 @@ export const RepairCreatePage = () => {
                                   action={`${process.env.NEXT_PUBLIC_API_URL}/upload`}
                                   data={(file) => {
                                     const mimetype = file.type?.split("/")[1];
-                                    const name = `${uuidv7()}.${mimetype}`;
+                                    const fileId = uuidv7();
+                                    const fileName = `${fileId}.${mimetype}`;
 
                                     return {
-                                      folder: "task",
-                                      name,
+                                      fileFolder: "task",
+                                      fileId,
+                                      fileName,
                                     };
                                   }}
                                   onChange={(info) => {
                                     field.onChange(info.fileList);
                                   }}
-                                  fileList={field.value || []}
+                                  onPreview={async (file) => {
+                                    let src = file.url as string;
+                                    if (!src) {
+                                      src = await new Promise((resolve) => {
+                                        const reader = new FileReader();
+                                        reader.readAsDataURL(
+                                          file.originFileObj as File
+                                        );
+                                        reader.onload = () =>
+                                          resolve(reader.result as string);
+                                      });
+                                    }
+                                    const image = new Image();
+                                    image.src = src;
+                                    const imgWindow = window.open(src);
+                                    imgWindow?.document.write(image.outerHTML);
+                                  }}
+                                  fileList={
+                                    field.value as unknown as UploadFile[]
+                                  }
                                   listType="picture"
                                   accept="image/*"
                                 >
@@ -512,9 +624,8 @@ export const RepairCreatePage = () => {
                     htmlType="submit"
                     variant="solid"
                     color="primary"
-                    onClick={handleSubmit((data) => {
-                      console.log(data);
-                    })}
+                    onClick={onSubmit}
+                    loading={createTaskLoading}
                     icon={<FontAwesomeIcon icon={faSave} />}
                   >
                     บันทึกข้อมูล

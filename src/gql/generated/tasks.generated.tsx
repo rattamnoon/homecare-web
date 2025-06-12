@@ -187,6 +187,79 @@ export type TaskStatusesQuery = {
   }>;
 };
 
+export type CreateTaskMutationVariables = Types.Exact<{
+  createTaskInput: Types.CreateTaskInput;
+  createTaskDetailInput:
+    | Array<Types.CreateTaskDetailInput>
+    | Types.CreateTaskDetailInput;
+}>;
+
+export type CreateTaskMutation = {
+  __typename?: "Mutation";
+  createTask: {
+    __typename?: "Task";
+    id: string;
+    code: string;
+    projectId: string;
+    unitId?: string | null;
+    unitNumber?: string | null;
+    customerName?: string | null;
+    customerPhone?: string | null;
+    checkInDate?: any | null;
+    insuranceDateDefault?: any | null;
+    insuranceDate?: any | null;
+    transferDate?: any | null;
+    customerRequestedRepairDate?: any | null;
+    createdAt: any;
+    updatedAt: any;
+    deletedAt?: any | null;
+    status: {
+      __typename?: "TaskStatusDto";
+      id: Types.TaskStatus;
+      nameEn: string;
+      nameTh: string;
+      color: string;
+    };
+    source?: {
+      __typename?: "TaskSourceDto";
+      id: string;
+      nameEn: string;
+      nameTh: string;
+      color?: string | null;
+    } | null;
+    checkInRangeTime?: {
+      __typename?: "TaskRangeTimeDto";
+      id: string;
+      nameEn: string;
+      nameTh: string;
+    } | null;
+    project: {
+      __typename?: "Project";
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    };
+    unit?: {
+      __typename?: "Unit";
+      id: string;
+      projectId: string;
+      unitNumber?: string | null;
+      houseNumber?: string | null;
+    } | null;
+    area?: { __typename?: "Master"; id: string; nameEn?: string | null } | null;
+    building?: {
+      __typename?: "Master";
+      id: string;
+      nameEn?: string | null;
+    } | null;
+    floor?: {
+      __typename?: "Master";
+      id: string;
+      nameEn?: string | null;
+    } | null;
+  };
+};
+
 export const TaskFragmentDoc = gql`
   fragment Task on Task {
     id
@@ -433,4 +506,62 @@ export type TaskStatusesSuspenseQueryHookResult = ReturnType<
 export type TaskStatusesQueryResult = Apollo.QueryResult<
   TaskStatusesQuery,
   TaskStatusesQueryVariables
+>;
+export const CreateTaskDocument = gql`
+  mutation CreateTask(
+    $createTaskInput: CreateTaskInput!
+    $createTaskDetailInput: [CreateTaskDetailInput!]!
+  ) {
+    createTask(
+      createTaskInput: $createTaskInput
+      createTaskDetailInput: $createTaskDetailInput
+    ) {
+      ...Task
+    }
+  }
+  ${TaskFragmentDoc}
+`;
+export type CreateTaskMutationFn = Apollo.MutationFunction<
+  CreateTaskMutation,
+  CreateTaskMutationVariables
+>;
+
+/**
+ * __useCreateTaskMutation__
+ *
+ * To run a mutation, you first call `useCreateTaskMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTaskMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTaskMutation, { data, loading, error }] = useCreateTaskMutation({
+ *   variables: {
+ *      createTaskInput: // value for 'createTaskInput'
+ *      createTaskDetailInput: // value for 'createTaskDetailInput'
+ *   },
+ * });
+ */
+export function useCreateTaskMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateTaskMutation,
+    CreateTaskMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateTaskMutation, CreateTaskMutationVariables>(
+    CreateTaskDocument,
+    options,
+  );
+}
+export type CreateTaskMutationHookResult = ReturnType<
+  typeof useCreateTaskMutation
+>;
+export type CreateTaskMutationResult =
+  Apollo.MutationResult<CreateTaskMutation>;
+export type CreateTaskMutationOptions = Apollo.BaseMutationOptions<
+  CreateTaskMutation,
+  CreateTaskMutationVariables
 >;
