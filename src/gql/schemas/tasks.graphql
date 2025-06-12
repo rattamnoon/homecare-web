@@ -10,7 +10,12 @@ fragment Task on Task {
     nameTh
     color
   }
-  source
+  source {
+    id
+    nameEn
+    nameTh
+    color
+  }
   customerName
   customerPhone
   checkInDate

@@ -1,0 +1,19 @@
+query TaskOptions {
+  rangeTimes: taskRangeTimes {
+    id
+    nameEn
+    nameTh
+  }
+  statuses: taskStatuses {
+    id
+    nameTh
+    nameEn
+    color
+  }
+  sources: taskSources {
+    id
+    nameTh
+    nameEn
+    color
+  }
+}

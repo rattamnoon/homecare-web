@@ -14,7 +14,6 @@ export type TaskFragment = {
   projectId: string;
   unitId?: string | null;
   unitNumber?: string | null;
-  source?: string | null;
   customerName?: string | null;
   customerPhone?: string | null;
   checkInDate?: any | null;
@@ -32,6 +31,13 @@ export type TaskFragment = {
     nameTh: string;
     color: string;
   };
+  source?: {
+    __typename?: "TaskSourceDto";
+    id: string;
+    nameEn: string;
+    nameTh: string;
+    color?: string | null;
+  } | null;
   checkInRangeTime?: {
     __typename?: "TaskRangeTimeDto";
     id: string;
@@ -106,7 +112,6 @@ export type TasksQuery = {
       projectId: string;
       unitId?: string | null;
       unitNumber?: string | null;
-      source?: string | null;
       customerName?: string | null;
       customerPhone?: string | null;
       checkInDate?: any | null;
@@ -124,6 +129,13 @@ export type TasksQuery = {
         nameTh: string;
         color: string;
       };
+      source?: {
+        __typename?: "TaskSourceDto";
+        id: string;
+        nameEn: string;
+        nameTh: string;
+        color?: string | null;
+      } | null;
       checkInRangeTime?: {
         __typename?: "TaskRangeTimeDto";
         id: string;
@@ -188,7 +200,12 @@ export const TaskFragmentDoc = gql`
       nameTh
       color
     }
-    source
+    source {
+      id
+      nameEn
+      nameTh
+      color
+    }
     customerName
     customerPhone
     checkInDate

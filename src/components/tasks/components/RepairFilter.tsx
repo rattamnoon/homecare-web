@@ -17,7 +17,8 @@ import {
   Tag,
   Tooltip,
 } from "antd";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { useMemo } from "react";
 
 type TagRender = SelectProps["tagRender"];

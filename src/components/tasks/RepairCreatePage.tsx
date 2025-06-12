@@ -1,14 +1,24 @@
 "use client";
 
 import { LayoutWithBreadcrumb } from "@/components/layout/LayoutWithBreadcrumb";
+import { MasterType } from "@/gql/generated/graphql";
+import { useMastersQuery } from "@/gql/generated/master.generated";
+import { useTaskOptionsQuery } from "@/gql/generated/option.generated";
 import {
   useProjectsQuery,
   useUnitsQuery,
 } from "@/gql/generated/project.generated";
-import { faSave } from "@fortawesome/pro-regular-svg-icons";
+import {
+  faPlus,
+  faSave,
+  faTrash,
+  faUpload,
+} from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
+  Card,
   Col,
   DatePicker,
   Divider,
@@ -18,14 +28,52 @@ import {
   Row,
   Select,
   Typography,
+  Upload,
 } from "antd";
+import dayjs from "dayjs";
 import { useMemo } from "react";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { z } from "zod";
+
+const schema = z.object({
+  projectId: z.string({ message: "กรุณาเลือกโครงการ" }),
+  unitId: z.string({ message: "กรุณาเลือกหน่วย" }),
+  customerName: z.string({ message: "กรุณากรอกชื่อ-นามสกุล" }),
+  customerPhone: z.string({ message: "กรุณากรอกเบอร์โทร" }),
+  checkInDate: z.date({ message: "กรุณากรอกวันที่เข้าตรวจสอบ" }),
+  source: z.string({ message: "กรุณาเลือกช่องทาง" }),
+  checkInRangeTime: z.string({ message: "กรุณาเลือกช่วงเวลา" }),
+  taskDetails: z.array(
+    z.object(
+      {
+        categoryId: z.string({ message: "กรุณาเลือกประเภท" }),
+        subCategoryId: z.string({ message: "กรุณาเลือกประเภทย่อย" }),
+        description: z.string({ message: "กรุณากรอกรายละเอียด" }),
+        images: z.array(z.any()).optional(),
+      },
+      {
+        invalid_type_error: "กรุณากรอกรายละเอียด",
+      }
+    )
+  ),
+});
 
 const { Title } = Typography;
 
 export const RepairCreatePage = () => {
-  const [form] = Form.useForm();
-  const projectId = Form.useWatch("projectId", form);
+  const { control, handleSubmit, watch } = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      taskDetails: [{}],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "taskDetails",
+  });
+
+  const projectId = watch("projectId");
 
   const { data: projects, loading: projectsLoading } = useProjectsQuery();
   const { data: units, loading: unitsLoading } = useUnitsQuery({
@@ -34,6 +82,14 @@ export const RepairCreatePage = () => {
     },
     skip: !projectId,
   });
+
+  const { data: mastersData, loading: mastersLoading } = useMastersQuery({
+    variables: {
+      types: [MasterType.Category],
+    },
+  });
+
+  const { data: options, loading: optionsLoading } = useTaskOptionsQuery();
 
   const projectsOptions = useMemo(() => {
     return projects?.projects.map((project) => ({
@@ -49,101 +105,389 @@ export const RepairCreatePage = () => {
     }));
   }, [units]);
 
+  const masters = useMemo(() => mastersData?.masters, [mastersData]);
+
+  const categoryOptions = useMemo(() => {
+    return masters?.map((master) => ({
+      label: master.nameTh,
+      value: master.id,
+    }));
+  }, [masters]);
+
+  const getSubCategoryOptions = (categoryId: string) => {
+    const options = masters?.filter((master) => {
+      return master.id === categoryId;
+    });
+
+    if (!options) return [];
+
+    return options
+      .map((master) => master.children)
+      .flat()
+      .map((child) => ({
+        label: child.nameTh,
+        value: child.id,
+      }));
+  };
+
+  const rangeTimesOptions = useMemo(() => {
+    return options?.rangeTimes.map((rangeTime) => ({
+      label: rangeTime.nameTh,
+      value: rangeTime.id,
+    }));
+  }, [options]);
+
+  const sourcesOptions = useMemo(() => {
+    return options?.sources.map((source) => ({
+      label: source.nameTh,
+      value: source.id,
+    }));
+  }, [options]);
+
   return (
     <LayoutWithBreadcrumb>
       <Flex vertical gap={16}>
         <Flex justify="center">
           <Title level={3}>เพิ่มงานแจ้งซ่อม</Title>
         </Flex>
-        <Form form={form} layout="inline" labelCol={{ span: 8 }}>
+        <Form
+          layout="inline"
+          labelCol={{ span: 8 }}
+          autoComplete="off"
+          preserve={false}
+          name="task"
+          initialValues={{
+            taskDetails: [{}],
+          }}
+        >
           <Row gutter={[16, 16]}>
             <Col span={24}>
               <Divider orientation="left">ข้อมูลผู้แจ้งซ่อม</Divider>
             </Col>
             <Col span={12}>
-              <Form.Item
-                label="โครงการ"
+              <Controller
+                control={control}
                 name="projectId"
-                rules={[{ required: true, message: "กรุณาเลือกโครงการ" }]}
-              >
-                <Select
-                  loading={projectsLoading}
-                  options={projectsOptions}
-                  placeholder="เลือกโครงการ"
-                  allowClear
-                  showSearch
-                />
-              </Form.Item>
+                render={({ field, formState: { errors } }) => (
+                  <Form.Item
+                    label="โครงการ"
+                    name="projectId"
+                    required
+                    validateStatus={errors.projectId ? "error" : ""}
+                    help={errors.projectId?.message}
+                  >
+                    <Select
+                      {...field}
+                      loading={projectsLoading}
+                      options={projectsOptions}
+                      placeholder="เลือกโครงการ"
+                      allowClear
+                      showSearch
+                      optionFilterProp="label"
+                    />
+                  </Form.Item>
+                )}
+              />
             </Col>
             <Col span={12}>
-              <Form.Item
-                label="เลขยูนิต"
+              <Controller
+                control={control}
                 name="unitId"
-                rules={[{ required: true, message: "กรุณาเลือกเลขยูนิต" }]}
-              >
-                <Select
-                  loading={unitsLoading}
-                  options={unitsOptions}
-                  placeholder="เลือกหน่วย"
-                  allowClear
-                />
-              </Form.Item>
+                render={({ field, formState: { errors } }) => (
+                  <Form.Item
+                    label="เลขยูนิต"
+                    name="unitId"
+                    required
+                    validateStatus={errors.unitId ? "error" : ""}
+                    help={errors.unitId?.message}
+                  >
+                    <Select
+                      {...field}
+                      loading={unitsLoading}
+                      options={unitsOptions}
+                      placeholder="เลือกหน่วย"
+                      allowClear
+                      showSearch
+                      optionFilterProp="label"
+                      disabled={!projectId}
+                    />
+                  </Form.Item>
+                )}
+              />
             </Col>
             <Col span={12}>
-              <Form.Item
-                label="ชื่อ-นามสกุล"
+              <Controller
+                control={control}
                 name="customerName"
-                rules={[{ required: true, message: "กรุณากรอกชื่อ-นามสกุล" }]}
-              >
-                <Input placeholder="ชื่อ-นามสกุล" />
-              </Form.Item>
+                render={({ field, formState: { errors } }) => (
+                  <Form.Item
+                    label="ชื่อ-นามสกุล"
+                    name="customerName"
+                    required
+                    validateStatus={errors.customerName ? "error" : ""}
+                    help={errors.customerName?.message}
+                  >
+                    <Input {...field} placeholder="ชื่อ-นามสกุล" />
+                  </Form.Item>
+                )}
+              />
             </Col>
             <Col span={12}>
-              <Form.Item
-                label="เบอร์โทรผู้แจ้งซ่อม"
+              <Controller
+                control={control}
                 name="customerPhone"
-                rules={[
-                  { required: true, message: "กรุณากรอกเบอร์โทรผู้แจ้งซ่อม" },
-                ]}
-              >
-                <Input placeholder="เบอร์โทรผู้แจ้งซ่อม" />
-              </Form.Item>
+                render={({ field, formState: { errors } }) => (
+                  <Form.Item
+                    label="เบอร์โทร"
+                    name="customerPhone"
+                    required
+                    validateStatus={errors.customerPhone ? "error" : ""}
+                    help={errors.customerPhone?.message}
+                  >
+                    <Input {...field} placeholder="เบอร์โทร" />
+                  </Form.Item>
+                )}
+              />
             </Col>
             <Col span={12}>
-              <Form.Item
-                label="วันที่เข้าตรวจสอบ"
+              <Controller
+                control={control}
                 name="checkInDate"
-                rules={[
-                  { required: true, message: "กรุณากรอกวันที่เข้าตรวจสอบ" },
-                ]}
-              >
-                <DatePicker
-                  placeholder="วันที่เข้าตรวจสอบ"
-                  format="YYYY-MM-DD"
-                  style={{ width: "100%" }}
-                />
-              </Form.Item>
+                render={({ field, formState: { errors } }) => (
+                  <Form.Item
+                    label="วันที่เข้าตรวจสอบ"
+                    name="checkInDate"
+                    required
+                    validateStatus={errors.checkInDate ? "error" : ""}
+                    help={errors.checkInDate?.message}
+                  >
+                    <DatePicker
+                      {...field}
+                      placeholder="วันที่เข้าตรวจสอบ"
+                      format="YYYY-MM-DD"
+                      style={{ width: "100%" }}
+                      disabledDate={(current) => {
+                        return current && current < dayjs().startOf("day");
+                      }}
+                    />
+                  </Form.Item>
+                )}
+              />
             </Col>
             <Col span={12}>
-              <Form.Item
-                label="แจ้งผ่านช่องทาง"
+              <Controller
+                control={control}
                 name="source"
-                rules={[{ required: true, message: "กรุณาเลือกช่องทาง" }]}
-              >
-                <Select options={[]} placeholder="เลือกช่องทาง" />
-              </Form.Item>
+                render={({ field, formState: { errors } }) => (
+                  <Form.Item
+                    label="แจ้งผ่านช่องทาง"
+                    name="source"
+                    required
+                    validateStatus={errors.source ? "error" : ""}
+                    help={errors.source?.message}
+                  >
+                    <Select
+                      {...field}
+                      loading={optionsLoading}
+                      options={sourcesOptions}
+                      placeholder="เลือกช่องทาง"
+                    />
+                  </Form.Item>
+                )}
+              />
             </Col>
             <Col span={12}>
-              <Form.Item
-                label="ช่วงเวลา"
+              <Controller
+                control={control}
                 name="checkInRangeTime"
-                rules={[{ required: true, message: "กรุณาเลือกช่วงเวลา" }]}
-              >
-                <Select options={[]} placeholder="เลือกช่วงเวลา" />
-              </Form.Item>
+                render={({ field, formState: { errors } }) => (
+                  <Form.Item
+                    label="ช่วงเวลา"
+                    name="checkInRangeTime"
+                    required
+                    validateStatus={errors.checkInRangeTime ? "error" : ""}
+                    help={errors.checkInRangeTime?.message}
+                  >
+                    <Select
+                      {...field}
+                      loading={optionsLoading}
+                      options={rangeTimesOptions}
+                      placeholder="เลือกช่วงเวลา"
+                    />
+                  </Form.Item>
+                )}
+              />
             </Col>
             <Col span={24}>
               <Divider orientation="left">รายการแจ้งซ่อม</Divider>
+              <Row gutter={[16, 16]} justify="center">
+                {fields.map((field, index) => {
+                  const categoryId = watch(`taskDetails.${index}.categoryId`);
+                  const subCategoryOptions = getSubCategoryOptions(categoryId);
+
+                  return (
+                    <Col span={24} key={field.id}>
+                      <Card
+                        title={`รายการแจ้งซ่อมที่ ${index + 1}`}
+                        extra={[
+                          <Button
+                            key="delete"
+                            variant="filled"
+                            color="danger"
+                            icon={<FontAwesomeIcon icon={faTrash} />}
+                            onClick={() => remove(index)}
+                          />,
+                        ]}
+                      >
+                        <Flex vertical gap={16}>
+                          <Controller
+                            control={control}
+                            name={`taskDetails.${index}.categoryId`}
+                            render={({ field, formState: { errors } }) => (
+                              <Form.Item
+                                label="ประเภท"
+                                name={`taskDetails.${index}.categoryId`}
+                                required
+                                validateStatus={
+                                  errors.taskDetails?.[index]?.categoryId
+                                    ? "error"
+                                    : ""
+                                }
+                                help={
+                                  errors.taskDetails?.[index]?.categoryId
+                                    ?.message
+                                }
+                                labelCol={{ span: 4 }}
+                              >
+                                <Select
+                                  {...field}
+                                  loading={mastersLoading}
+                                  options={categoryOptions}
+                                  placeholder="เลือกประเภท"
+                                  allowClear
+                                  showSearch
+                                  optionFilterProp="label"
+                                />
+                              </Form.Item>
+                            )}
+                          />
+                          <Controller
+                            control={control}
+                            name={`taskDetails.${index}.subCategoryId`}
+                            render={({ field, formState: { errors } }) => (
+                              <Form.Item
+                                label="ประเภทย่อย"
+                                name={`taskDetails.${index}.subCategoryId`}
+                                required
+                                validateStatus={
+                                  errors.taskDetails?.[index]?.subCategoryId
+                                    ? "error"
+                                    : ""
+                                }
+                                help={
+                                  errors.taskDetails?.[index]?.subCategoryId
+                                    ?.message
+                                }
+                                labelCol={{ span: 4 }}
+                              >
+                                <Select
+                                  {...field}
+                                  options={subCategoryOptions}
+                                  disabled={!categoryId}
+                                  placeholder="เลือกประเภทย่อย"
+                                  allowClear
+                                  showSearch
+                                  optionFilterProp="label"
+                                />
+                              </Form.Item>
+                            )}
+                          />
+                          <Controller
+                            control={control}
+                            name={`taskDetails.${index}.description`}
+                            render={({ field, formState: { errors } }) => (
+                              <Form.Item
+                                label="รายละเอียด"
+                                name={`taskDetails.${index}.description`}
+                                required
+                                validateStatus={
+                                  errors.taskDetails?.[index]?.description
+                                    ? "error"
+                                    : ""
+                                }
+                                help={
+                                  errors.taskDetails?.[index]?.description
+                                    ?.message
+                                }
+                                labelCol={{ span: 4 }}
+                              >
+                                <Input.TextArea
+                                  {...field}
+                                  placeholder="รายละเอียด"
+                                  rows={4}
+                                />
+                              </Form.Item>
+                            )}
+                          />
+                          <Controller
+                            control={control}
+                            name={`taskDetails.${index}.images`}
+                            render={({ field, formState: { errors } }) => (
+                              <Form.Item
+                                label="รูปภาพ"
+                                name={`taskDetails.${index}.images`}
+                                required
+                                validateStatus={
+                                  errors.taskDetails?.[index]?.images
+                                    ? "error"
+                                    : ""
+                                }
+                                help={
+                                  errors.taskDetails?.[index]?.images?.message
+                                }
+                                labelCol={{ span: 4 }}
+                              >
+                                <Upload
+                                  {...field}
+                                  multiple
+                                  listType="picture"
+                                  accept="image/*"
+                                  showUploadList={false}
+                                >
+                                  <Button
+                                    icon={<FontAwesomeIcon icon={faUpload} />}
+                                  >
+                                    อัพโหลดรูปภาพ
+                                  </Button>
+                                </Upload>
+                              </Form.Item>
+                            )}
+                          />
+                        </Flex>
+                      </Card>
+                    </Col>
+                  );
+                })}
+                <Col>
+                  <Button
+                    variant="filled"
+                    color="primary"
+                    icon={<FontAwesomeIcon icon={faPlus} />}
+                    onClick={() =>
+                      append({
+                        categoryId: "",
+                        subCategoryId: "",
+                        description: "",
+                      })
+                    }
+                  >
+                    เพิ่มรายการแจ้งซ่อม
+                  </Button>
+                </Col>
+              </Row>
+            </Col>
+            <Col span={24}>
+              <Divider />
             </Col>
             <Col span={24}>
               <Flex justify="center">
@@ -152,6 +496,9 @@ export const RepairCreatePage = () => {
                     htmlType="submit"
                     variant="solid"
                     color="primary"
+                    onClick={handleSubmit((data) => {
+                      console.log(data);
+                    })}
                     icon={<FontAwesomeIcon icon={faSave} />}
                   >
                     บันทึกข้อมูล

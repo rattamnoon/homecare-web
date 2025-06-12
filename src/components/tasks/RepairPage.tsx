@@ -148,6 +148,26 @@ export const RepairPage = () => {
                 width: 120,
               },
               {
+                title: "ช่องทาง",
+                dataIndex: "source",
+                key: "source",
+                align: "center",
+                width: 100,
+                render: (_, record) => {
+                  return record.source ? (
+                    <Tag
+                      {...(record.source.color
+                        ? { color: record.source.color }
+                        : {})}
+                    >
+                      {record.source.nameTh}
+                    </Tag>
+                  ) : (
+                    "-"
+                  );
+                },
+              },
+              {
                 title: "วันที่นัดตรวจสอบ",
                 dataIndex: "checkInDate",
                 key: "checkInDate",

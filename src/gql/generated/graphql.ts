@@ -224,6 +224,7 @@ export type Query = {
   projects: Array<Project>;
   task: Task;
   taskRangeTimes: Array<TaskRangeTimeDto>;
+  taskSources: Array<TaskSourceDto>;
   taskStatuses: Array<TaskStatusDto>;
   tasks: TaskPaginate;
   units: Array<Unit>;
@@ -293,7 +294,7 @@ export type Task = {
   insuranceDateDefault?: Maybe<Scalars["Date"]["output"]>;
   project: Project;
   projectId: Scalars["String"]["output"];
-  source?: Maybe<Scalars["String"]["output"]>;
+  source?: Maybe<TaskSourceDto>;
   status: TaskStatusDto;
   transferDate?: Maybe<Scalars["Date"]["output"]>;
   unit?: Maybe<Unit>;
@@ -311,6 +312,14 @@ export type TaskPaginate = {
 
 export type TaskRangeTimeDto = {
   __typename?: "TaskRangeTimeDto";
+  id: Scalars["String"]["output"];
+  nameEn: Scalars["String"]["output"];
+  nameTh: Scalars["String"]["output"];
+};
+
+export type TaskSourceDto = {
+  __typename?: "TaskSourceDto";
+  color?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["String"]["output"];
   nameEn: Scalars["String"]["output"];
   nameTh: Scalars["String"]["output"];
