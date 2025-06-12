@@ -16,13 +16,6 @@ export type ProjectFragment = {
   id: string;
   nameTh: string;
   nameEn: string;
-  units: Array<{
-    __typename?: "Unit";
-    id: string;
-    projectId: string;
-    unitNumber?: string | null;
-    houseNumber?: string | null;
-  }>;
 };
 
 export type ProjectsQueryVariables = Types.Exact<{ [key: string]: never }>;
@@ -34,13 +27,6 @@ export type ProjectsQuery = {
     id: string;
     nameTh: string;
     nameEn: string;
-    units: Array<{
-      __typename?: "Unit";
-      id: string;
-      projectId: string;
-      unitNumber?: string | null;
-      houseNumber?: string | null;
-    }>;
   }>;
 };
 
@@ -72,11 +58,7 @@ export const ProjectFragmentDoc = gql`
     id
     nameTh
     nameEn
-    units {
-      ...Unit
-    }
   }
-  ${UnitFragmentDoc}
 `;
 export const ProjectsDocument = gql`
   query Projects {

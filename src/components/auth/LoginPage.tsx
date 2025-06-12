@@ -67,7 +67,7 @@ export const LoginPage = () => {
         alt="logo-login"
         style={{ objectFit: "contain" }}
       />
-      <Card style={{ minWidth: 400 }}>
+      <Card style={{ maxWidth: 400, width: "100%" }}>
         <Form
           form={form}
           name="login-form"

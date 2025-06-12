@@ -33,6 +33,7 @@ import {
 import dayjs from "dayjs";
 import { useMemo } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { v7 as uuidv7 } from "uuid";
 import { z } from "zod";
 
 const schema = z.object({
@@ -449,10 +450,25 @@ export const RepairCreatePage = () => {
                               >
                                 <Upload
                                   {...field}
+                                  name="file"
                                   multiple
+                                  method="POST"
+                                  action={`${process.env.NEXT_PUBLIC_API_URL}/upload`}
+                                  data={(file) => {
+                                    const mimetype = file.type?.split("/")[1];
+                                    const name = `${uuidv7()}.${mimetype}`;
+
+                                    return {
+                                      folder: "task",
+                                      name,
+                                    };
+                                  }}
+                                  onChange={(info) => {
+                                    field.onChange(info.fileList);
+                                  }}
+                                  fileList={field.value || []}
                                   listType="picture"
                                   accept="image/*"
-                                  showUploadList={false}
                                 >
                                   <Button
                                     icon={<FontAwesomeIcon icon={faUpload} />}
