@@ -2,6 +2,7 @@ import type { NextAuthOptions } from "next-auth";
 import { getServerSession } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { signOut } from "next-auth/react";
 import { authClient } from "./apolloClient";
 import {
   LoginDocument,
@@ -37,9 +38,11 @@ const requestRefreshOfAccessToken = async (token: JWT) => {
       firstName: data?.refreshToken?.user.firstName,
       lastName: data?.refreshToken?.user.lastName,
       email: data?.refreshToken?.user.email,
+      error: null,
     };
   } catch (error) {
     console.error(error);
+    await signOut();
     return { ...token, error: "RefreshAccessTokenError" };
   }
 };
@@ -132,7 +135,8 @@ const authOptions: NextAuthOptions = {
       }
 
       try {
-        return requestRefreshOfAccessToken(token);
+        const newToken = await requestRefreshOfAccessToken(token);
+        return newToken;
       } catch (error) {
         console.error("Error refreshing access token", error);
         return { ...token, error: "RefreshAccessTokenError" };

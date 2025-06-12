@@ -18,7 +18,7 @@ declare module "next-auth" {
     token: string;
     refreshToken: string;
     expiresAt: number;
-    error?: "RefreshAccessTokenError";
+    error?: string | null;
     user: {
       id: string;
       employeeId: string;
@@ -40,7 +40,7 @@ declare module "next-auth/jwt" {
     firstName?: string | null;
     lastName?: string | null;
     email?: string;
-    error?: string;
+    error?: string | null;
     expiresAt: number;
   }
 }
