@@ -108,10 +108,23 @@ query Tasks(
   }
 }
 
+fragment TaskDetailStatus on TaskDetailStatusDto {
+  id
+  nameTh
+  nameEn
+  color
+}
+
 fragment TaskDetail on TaskDetail {
   id
   taskId
   code
+  status {
+    ...TaskDetailStatus
+  }
+  homecareStatus {
+    ...TaskDetailStatus
+  }
   priority
   description
   categoryId

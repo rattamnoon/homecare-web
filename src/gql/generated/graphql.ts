@@ -412,6 +412,7 @@ export type TaskDetail = {
   homecareId?: Maybe<Scalars["String"]["output"]>;
   homecareInDate?: Maybe<Scalars["Date"]["output"]>;
   homecareInRangeTime?: Maybe<TaskRangeTimeDto>;
+  homecareStatus: TaskDetailStatusDto;
   id: Scalars["ID"]["output"];
   images: Array<UploadFile>;
   inProgressDate?: Maybe<Scalars["Date"]["output"]>;
@@ -420,6 +421,7 @@ export type TaskDetail = {
   reProcessDate?: Maybe<Scalars["Date"]["output"]>;
   sla?: Maybe<Master>;
   slaId?: Maybe<Scalars["String"]["output"]>;
+  status: TaskDetailStatusDto;
   subCategory?: Maybe<Master>;
   subCategoryId?: Maybe<Scalars["String"]["output"]>;
   task: Task;
@@ -445,6 +447,14 @@ export enum TaskDetailStatus {
   ReInProgress = "RE_IN_PROGRESS",
   WaitingConstructionMaterial = "WAITING_CONSTRUCTION_MATERIAL",
 }
+
+export type TaskDetailStatusDto = {
+  __typename?: "TaskDetailStatusDto";
+  color: Scalars["String"]["output"];
+  id: TaskDetailStatus;
+  nameEn: Scalars["String"]["output"];
+  nameTh: Scalars["String"]["output"];
+};
 
 export type TaskPaginate = {
   __typename?: "TaskPaginate";

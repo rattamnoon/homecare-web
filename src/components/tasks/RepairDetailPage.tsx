@@ -311,10 +311,17 @@ export const RepairDetailPage = () => {
                       {dayjs(detail.homecareInDate).format("DD/MM/YYYY")}
                       {detail.homecareInRangeTime?.nameTh}
                     </Descriptions.Item>
-                    <Descriptions.Item label="สถานะงาน" span={3}>
-                      {""}
+                    <Descriptions.Item label="สถานะเคส">
+                      <Tag color={detail.status?.color}>
+                        {detail.status?.nameEn}
+                      </Tag>
                     </Descriptions.Item>
-                    <Descriptions.Item label="รูปขั้นตอน SOP" span={3}>
+                    <Descriptions.Item label="สถานะผู้รับผิดชอบ" span={3}>
+                      <Tag color={detail.homecareStatus?.color}>
+                        {detail.homecareStatus?.nameEn}
+                      </Tag>
+                    </Descriptions.Item>
+                    <Descriptions.Item label="รูปขั้นตอน SOP">
                       {""}
                     </Descriptions.Item>
                   </Descriptions>
