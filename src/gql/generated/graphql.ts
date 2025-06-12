@@ -364,6 +364,7 @@ export type Task = {
   customerPhone?: Maybe<Scalars["String"]["output"]>;
   customerRequestedRepairDate?: Maybe<Scalars["Date"]["output"]>;
   deletedAt?: Maybe<Scalars["Date"]["output"]>;
+  details: Array<TaskDetail>;
   floor?: Maybe<Master>;
   floorId?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["String"]["output"];
@@ -379,6 +380,52 @@ export type Task = {
   unitId?: Maybe<Scalars["String"]["output"]>;
   unitNumber?: Maybe<Scalars["String"]["output"]>;
   updatedAt: Scalars["Date"]["output"];
+};
+
+export type TaskDetail = {
+  __typename?: "TaskDetail";
+  CSATComment?: Maybe<Scalars["String"]["output"]>;
+  appointmentDate?: Maybe<Scalars["Date"]["output"]>;
+  appointmentRepairComment?: Maybe<Scalars["String"]["output"]>;
+  appointmentRepairDate?: Maybe<Scalars["Date"]["output"]>;
+  appointmentRepairTime?: Maybe<Scalars["String"]["output"]>;
+  appointmentTime?: Maybe<Scalars["String"]["output"]>;
+  assignDate?: Maybe<Scalars["Date"]["output"]>;
+  assignInDate?: Maybe<Scalars["Date"]["output"]>;
+  assignRangeTime?: Maybe<TaskRangeTimeDto>;
+  callingDate?: Maybe<Scalars["Date"]["output"]>;
+  category?: Maybe<Master>;
+  categoryId?: Maybe<Scalars["String"]["output"]>;
+  cause?: Maybe<Master>;
+  causeId?: Maybe<Scalars["String"]["output"]>;
+  closeDate?: Maybe<Scalars["Date"]["output"]>;
+  code: Scalars["String"]["output"];
+  contractor?: Maybe<Master>;
+  contractorId?: Maybe<Scalars["String"]["output"]>;
+  createdAt: Scalars["Date"]["output"];
+  createdBy?: Maybe<User>;
+  deletedAt?: Maybe<Scalars["Date"]["output"]>;
+  description?: Maybe<Scalars["String"]["output"]>;
+  finishDate?: Maybe<Scalars["Date"]["output"]>;
+  homecare?: Maybe<User>;
+  homecareComment?: Maybe<Scalars["String"]["output"]>;
+  homecareId?: Maybe<Scalars["String"]["output"]>;
+  homecareInDate?: Maybe<Scalars["Date"]["output"]>;
+  homecareInRangeTime?: Maybe<TaskRangeTimeDto>;
+  id: Scalars["ID"]["output"];
+  images: Array<UploadFile>;
+  inProgressDate?: Maybe<Scalars["Date"]["output"]>;
+  isCSAT?: Maybe<Scalars["Boolean"]["output"]>;
+  priority?: Maybe<Scalars["Int"]["output"]>;
+  reProcessDate?: Maybe<Scalars["Date"]["output"]>;
+  sla?: Maybe<Master>;
+  slaId?: Maybe<Scalars["String"]["output"]>;
+  subCategory?: Maybe<Master>;
+  subCategoryId?: Maybe<Scalars["String"]["output"]>;
+  task: Task;
+  taskId: Scalars["String"]["output"];
+  updatedAt: Scalars["Date"]["output"];
+  updatedBy?: Maybe<User>;
 };
 
 export enum TaskDetailStatus {
@@ -538,6 +585,7 @@ export type UploadFile = {
   fileName?: Maybe<Scalars["String"]["output"]>;
   filePath?: Maybe<Scalars["String"]["output"]>;
   fileType: UploadFileType;
+  fileUrl: Scalars["String"]["output"];
   id: Scalars["ID"]["output"];
   isPublic: Scalars["Boolean"]["output"];
   refId?: Maybe<Scalars["String"]["output"]>;

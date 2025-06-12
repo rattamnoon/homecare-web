@@ -19,7 +19,7 @@ const route: { [key: string]: string } = {
 };
 
 export type BreadcrumbItem = {
-  title: string;
+  title: string | React.ReactNode;
   href?: string;
 };
 

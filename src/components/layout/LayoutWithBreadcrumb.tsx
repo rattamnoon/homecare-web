@@ -1,16 +1,21 @@
 "use client";
 
-import { Layout, theme } from "antd";
+import { faArrowLeftLong } from "@fortawesome/pro-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Layout, Space, theme, Typography } from "antd";
+import { useRouter } from "nextjs-toploader/app";
 import { CSSProperties } from "react";
 import { BreadcrumbItem, CustomBreadcrumb } from "../common/CustomBreadcrumb";
 
 const { Content } = Layout;
+const { Text } = Typography;
 
 interface LayoutWithBreadcrumbProps {
   children: React.ReactNode;
   withBreadcrumb?: boolean;
   fullWidth?: boolean;
   breadcrumb?: BreadcrumbItem[];
+  showBackButton?: boolean;
 }
 
 interface PaddingConfig {
@@ -53,7 +58,9 @@ export const LayoutWithBreadcrumb = ({
   withBreadcrumb = true,
   breadcrumb,
   fullWidth = false,
+  showBackButton = false,
 }: LayoutWithBreadcrumbProps) => {
+  const router = useRouter();
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -64,7 +71,21 @@ export const LayoutWithBreadcrumb = ({
   return (
     <Layout style={{ padding }}>
       {withBreadcrumb && <CustomBreadcrumb breadcrumb={breadcrumb} />}
-      <Content style={contentStyle}>{children}</Content>
+
+      <Content style={contentStyle}>
+        {showBackButton && (
+          <Space align="baseline" size={16} style={{ marginBottom: 16 }}>
+            <FontAwesomeIcon
+              icon={faArrowLeftLong}
+              onClick={() => router.back()}
+              style={{ cursor: "pointer" }}
+              size="lg"
+            />
+            <Text strong>{breadcrumb?.[breadcrumb.length - 1]?.title}</Text>
+          </Space>
+        )}
+        {children}
+      </Content>
     </Layout>
   );
 };

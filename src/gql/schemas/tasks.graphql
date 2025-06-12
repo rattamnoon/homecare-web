@@ -1,3 +1,23 @@
+fragment TaskStatus on TaskStatusDto {
+  id
+  nameTh
+  nameEn
+  color
+}
+
+fragment TaskSource on TaskSourceDto {
+  id
+  nameTh
+  nameEn
+  color
+}
+
+fragment TaskRangeTime on TaskRangeTimeDto {
+  id
+  nameTh
+  nameEn
+}
+
 fragment Task on Task {
   id
   code
@@ -5,24 +25,16 @@ fragment Task on Task {
   unitId
   unitNumber
   status {
-    id
-    nameEn
-    nameTh
-    color
+    ...TaskStatus
   }
   source {
-    id
-    nameEn
-    nameTh
-    color
+    ...TaskSource
   }
   customerName
   customerPhone
   checkInDate
   checkInRangeTime {
-    id
-    nameEn
-    nameTh
+    ...TaskRangeTime
   }
   insuranceDateDefault
   insuranceDate
@@ -92,6 +104,95 @@ query Tasks(
     }
     items {
       ...Task
+    }
+  }
+}
+
+fragment TaskDetail on TaskDetail {
+  id
+  taskId
+  code
+  priority
+  description
+  categoryId
+  subCategoryId
+  slaId
+  causeId
+  contractorId
+  homecareId
+  homecareInDate
+  homecareComment
+  assignInDate
+  appointmentDate
+  appointmentTime
+  appointmentRepairDate
+  appointmentRepairTime
+  appointmentRepairComment
+  callingDate
+  assignDate
+  inProgressDate
+  reProcessDate
+  finishDate
+  closeDate
+  isCSAT
+  CSATComment
+  createdAt
+  updatedAt
+  deletedAt
+  homecareInRangeTime {
+    ...TaskRangeTime
+  }
+  assignRangeTime {
+    ...TaskRangeTime
+  }
+}
+
+fragment UploadFile on UploadFile {
+  id
+  refId
+  fileId
+  fileType
+  fileName
+  fileFolder
+  filePath
+  fileBucket
+  fileExtension
+  fileUrl
+  isPublic
+  createdAt
+  updatedAt
+  deletedAt
+}
+
+query Task($id: ID!) {
+  task(id: $id) {
+    ...Task
+    details {
+      ...TaskDetail
+      images {
+        ...UploadFile
+      }
+      category {
+        ...Master
+      }
+      subCategory {
+        ...Master
+      }
+      homecare {
+        ...User
+      }
+      cause {
+        ...Master
+      }
+      contractor {
+        ...Master
+      }
+      sla {
+        ...Master
+        parent {
+          ...Master
+        }
+      }
     }
   }
 }

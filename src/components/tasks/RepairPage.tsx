@@ -1,15 +1,18 @@
 "use client";
 
 import { LayoutWithBreadcrumb } from "@/components/layout/LayoutWithBreadcrumb";
+import { Routes } from "@/config/routes";
 import { TaskStatus, TaskType } from "@/gql/generated/graphql";
 import { useTasksQuery } from "@/gql/generated/tasks.generated";
 import { getTablePaginationProps } from "@/utils/utils";
 import { Col, Row, Table, Tag, theme } from "antd";
 import dayjs from "dayjs";
+import { useRouter } from "nextjs-toploader/app";
 import { useMemo, useState } from "react";
 import { RepairFilter, useRepairFilter } from "./components/RepairFilter";
 
 export const RepairPage = () => {
+  const router = useRouter();
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const { searchText, statuses, projectId, unitIds } = useRepairFilter();
@@ -57,9 +60,12 @@ export const RepairPage = () => {
                 setPageSize(size);
               },
             }}
-            onRow={() => ({
+            onRow={(record) => ({
               style: {
                 cursor: "pointer",
+              },
+              onClick: () => {
+                router.push(Routes.TasksRepairDetail(record.id));
               },
             })}
             columns={[
@@ -68,7 +74,7 @@ export const RepairPage = () => {
                 dataIndex: "code",
                 key: "code",
                 align: "center",
-                width: 100,
+                width: 150,
                 onCell: () => ({
                   style: {
                     cursor: "pointer",

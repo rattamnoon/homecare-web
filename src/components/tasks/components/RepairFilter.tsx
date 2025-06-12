@@ -51,6 +51,10 @@ export const RepairFilter = () => {
     skip: !projectId,
   });
 
+  console.log({
+    statuses,
+  });
+
   const statusesOptions = useMemo(
     () => statusesData?.taskStatuses || [],
     [statusesData]
@@ -145,7 +149,7 @@ export const RepairFilter = () => {
                   mode="multiple"
                   placeholder="สถานะ"
                   loading={statusesLoading}
-                  value={statuses}
+                  defaultValue={statuses}
                   tagRender={tagRender}
                   onChange={(value) => {
                     handleSearch("statuses", value.join(","));
@@ -177,7 +181,7 @@ export const RepairFilter = () => {
                   {...sharedSelectProps}
                   placeholder="โครงการ"
                   loading={projectsLoading}
-                  value={projectId}
+                  defaultValue={projectId}
                   onChange={(value) => {
                     handleSearch("projectId", value);
                   }}
@@ -200,7 +204,7 @@ export const RepairFilter = () => {
                   mode="multiple"
                   placeholder="ห้อง"
                   loading={unitsLoading}
-                  value={unitIds}
+                  defaultValue={unitIds}
                   onChange={(value) => {
                     handleSearch("unitIds", value.join(","));
                   }}
