@@ -5,7 +5,12 @@ import { Routes } from "@/config/routes";
 import { TaskStatus, TaskType } from "@/gql/generated/graphql";
 import { useTasksQuery } from "@/gql/generated/tasks.generated";
 import { getTablePaginationProps } from "@/utils/utils";
-import { Col, Row, Table, Tag, theme } from "antd";
+import {
+  faHouseCircleCheck,
+  faHouseCircleXmark,
+} from "@fortawesome/pro-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Col, Row, Space, Table, Tag, theme } from "antd";
 import dayjs from "dayjs";
 import { useRouter } from "nextjs-toploader/app";
 import { useMemo } from "react";
@@ -215,9 +220,21 @@ export const RepairPage = () => {
                 align: "center",
                 width: 150,
                 render: (_, record) => {
-                  return record.insuranceDate
-                    ? dayjs(record.insuranceDate).format("DD/MM/YYYY")
-                    : "-";
+                  const isBefore = dayjs(record.insuranceDate).isBefore(
+                    dayjs()
+                  );
+                  return (
+                    <Space>
+                      <FontAwesomeIcon
+                        icon={
+                          isBefore ? faHouseCircleXmark : faHouseCircleCheck
+                        }
+                      />
+                      {record.insuranceDate
+                        ? dayjs(record.insuranceDate).format("DD/MM/YYYY")
+                        : "-"}
+                    </Space>
+                  );
                 },
                 onCell: (record) => ({
                   style: {
