@@ -21,9 +21,9 @@ export type MasterFragment = {
   SLA2D?: number | null;
   SLA3H?: number | null;
   SLA3D?: number | null;
-  createdAt: any;
-  updatedAt: any;
-  deletedAt?: any | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
 };
 
 export type MastersQueryVariables = Types.Exact<{
@@ -51,9 +51,9 @@ export type MastersQuery = {
     SLA2D?: number | null;
     SLA3H?: number | null;
     SLA3D?: number | null;
-    createdAt: any;
-    updatedAt: any;
-    deletedAt?: any | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
     children: Array<{
       __typename?: "Master";
       id: string;
@@ -72,9 +72,9 @@ export type MastersQuery = {
       SLA2D?: number | null;
       SLA3H?: number | null;
       SLA3D?: number | null;
-      createdAt: any;
-      updatedAt: any;
-      deletedAt?: any | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
     }>;
   }>;
 };

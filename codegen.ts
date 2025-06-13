@@ -9,6 +9,12 @@ const config: CodegenConfig = {
   generates: {
     "src/gql/generated/graphql.ts": {
       plugins: ["typescript"],
+      config: {
+        scalars: {
+          DateTime: "Date",
+          Date: "Date",
+        },
+      },
     },
     "src/gql/generated/": {
       preset: "near-operation-file",
@@ -18,7 +24,13 @@ const config: CodegenConfig = {
         folder: "../generated",
       },
       plugins: ["typescript-operations", "typescript-react-apollo"],
-      config: { withHooks: true },
+      config: {
+        withHooks: true,
+        scalars: {
+          DateTime: "Date",
+          Date: "Date",
+        },
+      },
     },
   },
   hooks: { afterAllFileWrite: ["npx prettier --write"] },

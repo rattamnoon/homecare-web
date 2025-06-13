@@ -15,11 +15,11 @@ export type UserFragment = {
   firstName?: string | null;
   lastName?: string | null;
   email: string;
-  lastLoginAt: any;
+  lastLoginAt: Date;
   status: string;
-  createdAt: any;
-  updatedAt: any;
-  deletedAt?: any | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
 };
 
 export type UsersQueryVariables = Types.Exact<{
@@ -55,11 +55,11 @@ export type UsersQuery = {
       firstName?: string | null;
       lastName?: string | null;
       email: string;
-      lastLoginAt: any;
+      lastLoginAt: Date;
       status: string;
-      createdAt: any;
-      updatedAt: any;
-      deletedAt?: any | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
     }>;
   };
 };
@@ -76,11 +76,11 @@ export type MeQuery = {
     firstName?: string | null;
     lastName?: string | null;
     email: string;
-    lastLoginAt: any;
+    lastLoginAt: Date;
     status: string;
-    createdAt: any;
-    updatedAt: any;
-    deletedAt?: any | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
   };
 };
 

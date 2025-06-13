@@ -41,14 +41,14 @@ export type TaskFragment = {
   unitNumber?: string | null;
   customerName?: string | null;
   customerPhone?: string | null;
-  checkInDate?: any | null;
-  insuranceDateDefault?: any | null;
-  insuranceDate?: any | null;
-  transferDate?: any | null;
-  customerRequestedRepairDate?: any | null;
-  createdAt: any;
-  updatedAt: any;
-  deletedAt?: any | null;
+  checkInDate?: Date | null;
+  insuranceDateDefault?: Date | null;
+  insuranceDate?: Date | null;
+  transferDate?: Date | null;
+  customerRequestedRepairDate?: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
   status: {
     __typename?: "TaskStatusDto";
     id: Types.TaskStatus;
@@ -146,14 +146,14 @@ export type TasksQuery = {
       unitNumber?: string | null;
       customerName?: string | null;
       customerPhone?: string | null;
-      checkInDate?: any | null;
-      insuranceDateDefault?: any | null;
-      insuranceDate?: any | null;
-      transferDate?: any | null;
-      customerRequestedRepairDate?: any | null;
-      createdAt: any;
-      updatedAt: any;
-      deletedAt?: any | null;
+      checkInDate?: Date | null;
+      insuranceDateDefault?: Date | null;
+      insuranceDate?: Date | null;
+      transferDate?: Date | null;
+      customerRequestedRepairDate?: Date | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
       status: {
         __typename?: "TaskStatusDto";
         id: Types.TaskStatus;
@@ -220,25 +220,25 @@ export type TaskDetailFragment = {
   causeId?: string | null;
   contractorId?: string | null;
   homecareId?: string | null;
-  homecareInDate?: any | null;
+  homecareInDate?: Date | null;
   homecareComment?: string | null;
-  assignInDate?: any | null;
-  appointmentDate?: any | null;
+  assignInDate?: Date | null;
+  appointmentDate?: Date | null;
   appointmentTime?: string | null;
-  appointmentRepairDate?: any | null;
+  appointmentRepairDate?: Date | null;
   appointmentRepairTime?: string | null;
   appointmentRepairComment?: string | null;
-  callingDate?: any | null;
-  assignDate?: any | null;
-  inProgressDate?: any | null;
-  reProcessDate?: any | null;
-  finishDate?: any | null;
-  closeDate?: any | null;
+  callingDate?: Date | null;
+  assignDate?: Date | null;
+  inProgressDate?: Date | null;
+  reProcessDate?: Date | null;
+  finishDate?: Date | null;
+  closeDate?: Date | null;
   isCSAT?: boolean | null;
   CSATComment?: string | null;
-  createdAt: any;
-  updatedAt: any;
-  deletedAt?: any | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
   status?: {
     __typename?: "TaskStatusDto";
     id: Types.TaskStatus;
@@ -280,9 +280,9 @@ export type UploadFileFragment = {
   fileExtension?: string | null;
   fileUrl: string;
   isPublic: boolean;
-  createdAt: any;
-  updatedAt: any;
-  deletedAt?: any | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
 };
 
 export type TaskQueryVariables = Types.Exact<{
@@ -300,14 +300,14 @@ export type TaskQuery = {
     unitNumber?: string | null;
     customerName?: string | null;
     customerPhone?: string | null;
-    checkInDate?: any | null;
-    insuranceDateDefault?: any | null;
-    insuranceDate?: any | null;
-    transferDate?: any | null;
-    customerRequestedRepairDate?: any | null;
-    createdAt: any;
-    updatedAt: any;
-    deletedAt?: any | null;
+    checkInDate?: Date | null;
+    insuranceDateDefault?: Date | null;
+    insuranceDate?: Date | null;
+    transferDate?: Date | null;
+    customerRequestedRepairDate?: Date | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
     details: Array<{
       __typename?: "TaskDetail";
       id: string;
@@ -321,25 +321,25 @@ export type TaskQuery = {
       causeId?: string | null;
       contractorId?: string | null;
       homecareId?: string | null;
-      homecareInDate?: any | null;
+      homecareInDate?: Date | null;
       homecareComment?: string | null;
-      assignInDate?: any | null;
-      appointmentDate?: any | null;
+      assignInDate?: Date | null;
+      appointmentDate?: Date | null;
       appointmentTime?: string | null;
-      appointmentRepairDate?: any | null;
+      appointmentRepairDate?: Date | null;
       appointmentRepairTime?: string | null;
       appointmentRepairComment?: string | null;
-      callingDate?: any | null;
-      assignDate?: any | null;
-      inProgressDate?: any | null;
-      reProcessDate?: any | null;
-      finishDate?: any | null;
-      closeDate?: any | null;
+      callingDate?: Date | null;
+      assignDate?: Date | null;
+      inProgressDate?: Date | null;
+      reProcessDate?: Date | null;
+      finishDate?: Date | null;
+      closeDate?: Date | null;
       isCSAT?: boolean | null;
       CSATComment?: string | null;
-      createdAt: any;
-      updatedAt: any;
-      deletedAt?: any | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
       images: Array<{
         __typename?: "UploadFile";
         id: string;
@@ -353,9 +353,9 @@ export type TaskQuery = {
         fileExtension?: string | null;
         fileUrl: string;
         isPublic: boolean;
-        createdAt: any;
-        updatedAt: any;
-        deletedAt?: any | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
       }>;
       category?: {
         __typename?: "Master";
@@ -375,9 +375,9 @@ export type TaskQuery = {
         SLA2D?: number | null;
         SLA3H?: number | null;
         SLA3D?: number | null;
-        createdAt: any;
-        updatedAt: any;
-        deletedAt?: any | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
       } | null;
       subCategory?: {
         __typename?: "Master";
@@ -397,9 +397,9 @@ export type TaskQuery = {
         SLA2D?: number | null;
         SLA3H?: number | null;
         SLA3D?: number | null;
-        createdAt: any;
-        updatedAt: any;
-        deletedAt?: any | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
       } | null;
       homecare?: {
         __typename?: "User";
@@ -409,11 +409,11 @@ export type TaskQuery = {
         firstName?: string | null;
         lastName?: string | null;
         email: string;
-        lastLoginAt: any;
+        lastLoginAt: Date;
         status: string;
-        createdAt: any;
-        updatedAt: any;
-        deletedAt?: any | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
       } | null;
       cause?: {
         __typename?: "Master";
@@ -433,9 +433,9 @@ export type TaskQuery = {
         SLA2D?: number | null;
         SLA3H?: number | null;
         SLA3D?: number | null;
-        createdAt: any;
-        updatedAt: any;
-        deletedAt?: any | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
       } | null;
       contractor?: {
         __typename?: "Master";
@@ -455,9 +455,9 @@ export type TaskQuery = {
         SLA2D?: number | null;
         SLA3H?: number | null;
         SLA3D?: number | null;
-        createdAt: any;
-        updatedAt: any;
-        deletedAt?: any | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
       } | null;
       sla?: {
         __typename?: "Master";
@@ -477,9 +477,9 @@ export type TaskQuery = {
         SLA2D?: number | null;
         SLA3H?: number | null;
         SLA3D?: number | null;
-        createdAt: any;
-        updatedAt: any;
-        deletedAt?: any | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
         parent?: {
           __typename?: "Master";
           id: string;
@@ -498,9 +498,9 @@ export type TaskQuery = {
           SLA2D?: number | null;
           SLA3H?: number | null;
           SLA3D?: number | null;
-          createdAt: any;
-          updatedAt: any;
-          deletedAt?: any | null;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
         } | null;
       } | null;
       status?: {
@@ -608,14 +608,14 @@ export type CreateTaskMutation = {
     unitNumber?: string | null;
     customerName?: string | null;
     customerPhone?: string | null;
-    checkInDate?: any | null;
-    insuranceDateDefault?: any | null;
-    insuranceDate?: any | null;
-    transferDate?: any | null;
-    customerRequestedRepairDate?: any | null;
-    createdAt: any;
-    updatedAt: any;
-    deletedAt?: any | null;
+    checkInDate?: Date | null;
+    insuranceDateDefault?: Date | null;
+    insuranceDate?: Date | null;
+    transferDate?: Date | null;
+    customerRequestedRepairDate?: Date | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
     status: {
       __typename?: "TaskStatusDto";
       id: Types.TaskStatus;

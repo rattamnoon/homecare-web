@@ -16,11 +16,11 @@ export type AuthFragment = {
     firstName?: string | null;
     lastName?: string | null;
     email: string;
-    lastLoginAt: any;
+    lastLoginAt: Date;
     status: string;
-    createdAt: any;
-    updatedAt: any;
-    deletedAt?: any | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
   };
 };
 
@@ -44,11 +44,11 @@ export type LoginMutation = {
       firstName?: string | null;
       lastName?: string | null;
       email: string;
-      lastLoginAt: any;
+      lastLoginAt: Date;
       status: string;
-      createdAt: any;
-      updatedAt: any;
-      deletedAt?: any | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
     };
   };
 };
@@ -72,11 +72,11 @@ export type RefreshTokenMutation = {
       firstName?: string | null;
       lastName?: string | null;
       email: string;
-      lastLoginAt: any;
+      lastLoginAt: Date;
       status: string;
-      createdAt: any;
-      updatedAt: any;
-      deletedAt?: any | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
     };
   } | null;
 };
