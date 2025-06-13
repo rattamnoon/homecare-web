@@ -100,11 +100,6 @@ export const RepairFilter = () => {
   });
   const { data: optionsData, loading: optionsLoading } = useTaskOptionsQuery();
 
-  console.log({
-    sources,
-    checkInDate,
-  });
-
   const statusesOptions = useMemo(
     () => statusesData?.taskStatuses || [],
     [statusesData]
