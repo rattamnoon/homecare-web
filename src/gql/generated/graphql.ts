@@ -363,10 +363,12 @@ export type Task = {
   checkInRangeTime?: Maybe<TaskRangeTimeDto>;
   code: Scalars["String"]["output"];
   createdAt: Scalars["Date"]["output"];
+  createdBy?: Maybe<User>;
   customerName?: Maybe<Scalars["String"]["output"]>;
   customerPhone?: Maybe<Scalars["String"]["output"]>;
   customerRequestedRepairDate?: Maybe<Scalars["Date"]["output"]>;
   deletedAt?: Maybe<Scalars["Date"]["output"]>;
+  deletedBy?: Maybe<User>;
   details: Array<TaskDetail>;
   floor?: Maybe<Master>;
   floorId?: Maybe<Scalars["String"]["output"]>;
@@ -383,6 +385,7 @@ export type Task = {
   unitId?: Maybe<Scalars["String"]["output"]>;
   unitNumber?: Maybe<Scalars["String"]["output"]>;
   updatedAt: Scalars["Date"]["output"];
+  updatedBy?: Maybe<User>;
 };
 
 export type TaskDetail = {
@@ -408,6 +411,7 @@ export type TaskDetail = {
   createdAt: Scalars["Date"]["output"];
   createdBy?: Maybe<User>;
   deletedAt?: Maybe<Scalars["Date"]["output"]>;
+  deletedBy?: Maybe<User>;
   description?: Maybe<Scalars["String"]["output"]>;
   finishDate?: Maybe<Scalars["Date"]["output"]>;
   homecare?: Maybe<User>;
@@ -593,7 +597,9 @@ export type UpdateUserInput = {
 export type UploadFile = {
   __typename?: "UploadFile";
   createdAt: Scalars["Date"]["output"];
+  createdBy?: Maybe<User>;
   deletedAt?: Maybe<Scalars["Date"]["output"]>;
+  deletedBy?: Maybe<User>;
   fileBucket?: Maybe<Scalars["String"]["output"]>;
   fileExtension?: Maybe<Scalars["String"]["output"]>;
   fileFolder?: Maybe<Scalars["String"]["output"]>;
@@ -606,6 +612,7 @@ export type UploadFile = {
   isPublic: Scalars["Boolean"]["output"];
   refId?: Maybe<Scalars["String"]["output"]>;
   updatedAt: Scalars["Date"]["output"];
+  updatedBy?: Maybe<User>;
 };
 
 export enum UploadFileType {
