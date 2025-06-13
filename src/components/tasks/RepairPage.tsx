@@ -19,6 +19,8 @@ export const RepairPage = () => {
     statuses,
     projectId,
     unitIds,
+    sources,
+    checkInDate,
     currentPage,
     pageSize,
     handleSearch,
@@ -35,6 +37,8 @@ export const RepairPage = () => {
       statuses: statuses as TaskStatus[],
       projectId,
       unitIds,
+      sources: sources as string[],
+      checkInDate: checkInDate as string[],
     },
   });
 

@@ -90,6 +90,8 @@ query Tasks(
   $statuses: [TaskStatus!]
   $projectId: String
   $unitIds: [String!]
+  $sources: [String!]
+  $checkInDate: [String!]
 ) {
   tasks(
     type: $type
@@ -99,6 +101,8 @@ query Tasks(
     statuses: $statuses
     projectId: $projectId
     unitIds: $unitIds
+    sources: $sources
+    checkInDate: $checkInDate
   ) {
     meta {
       ...IPaginateMeta

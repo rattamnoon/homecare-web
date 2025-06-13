@@ -1,4 +1,5 @@
 import { Routes } from "@/config/routes";
+import { useTaskOptionsQuery } from "@/gql/generated/option.generated";
 import { useUnitsQuery } from "@/gql/generated/project.generated";
 import { useTaskStatusesQuery } from "@/gql/generated/tasks.generated";
 import { useProjectsQuery } from "@/gql/src/gql/generated/project.generated";
@@ -8,20 +9,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Button,
   Col,
+  DatePicker,
   Flex,
   Form,
   Input,
   Row,
   Select,
   SelectProps,
-  Tag,
   Tooltip,
 } from "antd";
+import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { useMemo } from "react";
-
-type TagRender = SelectProps["tagRender"];
 
 export const useRepairFilter = () => {
   const searchParams = useSearchParams();
@@ -33,6 +33,12 @@ export const useRepairFilter = () => {
     .filter(Boolean);
   const projectId = searchParams.get("projectId") as string;
   const unitIds = ((searchParams.get("unitIds") as string) || "")
+    .split(",")
+    .filter(Boolean);
+  const sources = ((searchParams.get("sources") as string) || "")
+    .split(",")
+    .filter(Boolean);
+  const checkInDate = ((searchParams.get("checkInDate") as string) || "")
     .split(",")
     .filter(Boolean);
   const currentPage = Number(searchParams.get("currentPage")) || 1;
@@ -62,6 +68,8 @@ export const useRepairFilter = () => {
     statuses,
     projectId,
     unitIds,
+    sources,
+    checkInDate,
     currentPage,
     pageSize,
     handleSearch,
@@ -70,8 +78,15 @@ export const useRepairFilter = () => {
 
 export const RepairFilter = () => {
   const router = useRouter();
-  const { searchText, statuses, projectId, unitIds, handleSearch } =
-    useRepairFilter();
+  const {
+    searchText,
+    statuses,
+    projectId,
+    unitIds,
+    sources,
+    checkInDate,
+    handleSearch,
+  } = useRepairFilter();
   const { data: statusesData, loading: statusesLoading } =
     useTaskStatusesQuery();
   const { data: projectsData, loading: projectsLoading } = useProjectsQuery();
@@ -80,6 +95,12 @@ export const RepairFilter = () => {
       projectId,
     },
     skip: !projectId,
+  });
+  const { data: optionsData, loading: optionsLoading } = useTaskOptionsQuery();
+
+  console.log({
+    sources,
+    checkInDate,
   });
 
   const statusesOptions = useMemo(
@@ -91,28 +112,10 @@ export const RepairFilter = () => {
     [projectsData]
   );
   const unitsOptions = useMemo(() => unitsData?.units || [], [unitsData]);
-
-  const tagRender: TagRender = (props) => {
-    const { label, value, closable, onClose } = props;
-    const onPreventMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
-      event.preventDefault();
-      event.stopPropagation();
-    };
-
-    const status = statusesOptions?.find((status) => status.id === value);
-
-    return (
-      <Tag
-        color={status?.color}
-        onMouseDown={onPreventMouseDown}
-        closable={closable}
-        onClose={onClose}
-        style={{ marginInlineEnd: 4 }}
-      >
-        {label}
-      </Tag>
-    );
-  };
+  const sourcesOptions = useMemo(
+    () => optionsData?.sources || [],
+    [optionsData]
+  );
 
   const sharedSelectProps: SelectProps = {
     allowClear: true,
@@ -168,7 +171,6 @@ export const RepairFilter = () => {
                   placeholder="สถานะ"
                   loading={statusesLoading}
                   defaultValue={statuses}
-                  tagRender={tagRender}
                   onChange={(value) => {
                     handleSearch("statuses", value.join(","));
                   }}
@@ -230,6 +232,59 @@ export const RepairFilter = () => {
                     label: unit.unitNumber,
                     value: unit.id,
                   }))}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={6}>
+              <Form.Item
+                label="ช่องทาง"
+                name="sources"
+                colon={false}
+                style={{ marginBottom: 0 }}
+              >
+                <Select
+                  {...sharedSelectProps}
+                  mode="multiple"
+                  placeholder="ช่องทาง"
+                  loading={optionsLoading}
+                  defaultValue={sources}
+                  onChange={(value) => {
+                    handleSearch("sources", value.join(","));
+                  }}
+                  options={sourcesOptions?.map((source) => ({
+                    label: source.nameTh,
+                    value: source.id,
+                  }))}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={6}>
+              <Form.Item
+                label="วันที่นัดตรวจสอบ"
+                name="checkInDate"
+                colon={false}
+                style={{ marginBottom: 0 }}
+              >
+                <DatePicker.RangePicker
+                  placeholder={["เริ่มต้น", "สิ้นสุด"]}
+                  allowClear
+                  defaultValue={[
+                    checkInDate[0] ? dayjs(checkInDate[0], "YYYY-MM-DD") : null,
+                    checkInDate[1] ? dayjs(checkInDate[1], "YYYY-MM-DD") : null,
+                  ]}
+                  onChange={(value) => {
+                    if (value) {
+                      handleSearch(
+                        "checkInDate",
+                        value
+                          .map((date) => date?.format("YYYY-MM-DD"))
+                          .filter(Boolean)
+                          .join(",")
+                      );
+                    } else {
+                      handleSearch("checkInDate", "");
+                    }
+                  }}
                 />
               </Form.Item>
             </Col>

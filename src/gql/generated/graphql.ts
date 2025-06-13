@@ -324,10 +324,12 @@ export type QueryTaskArgs = {
 };
 
 export type QueryTasksArgs = {
+  checkInDate?: InputMaybe<Array<Scalars["String"]["input"]>>;
   limit?: Scalars["Int"]["input"];
   page?: Scalars["Int"]["input"];
   projectId?: InputMaybe<Scalars["String"]["input"]>;
   searchText?: InputMaybe<Scalars["String"]["input"]>;
+  sources?: InputMaybe<Array<Scalars["String"]["input"]>>;
   statuses?: InputMaybe<Array<TaskStatus>>;
   type?: TaskType;
   unitIds?: InputMaybe<Array<Scalars["String"]["input"]>>;
