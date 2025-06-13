@@ -6,7 +6,6 @@ import {
   CreateTaskDetailInput,
   CreateTaskInput,
   MasterType,
-  TaskDetailStatus,
   TaskStatus,
   TaskType,
   UploadFileType,
@@ -207,7 +206,7 @@ export const RepairCreatePage = () => {
 
     const createTaskDetailInput: CreateTaskDetailInput[] = taskDetails.map(
       (taskDetail) => ({
-        status: TaskDetailStatus.Pending,
+        status: TaskStatus.Pending,
         categoryId: taskDetail.categoryId,
         subCategoryId: taskDetail.subCategoryId,
         description: taskDetail.description,

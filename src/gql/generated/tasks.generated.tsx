@@ -89,6 +89,7 @@ export type TaskFragment = {
     nameEn?: string | null;
   } | null;
   floor?: { __typename?: "Master"; id: string; nameEn?: string | null } | null;
+  details: Array<{ __typename?: "TaskDetail"; id: string; code: string }>;
 };
 
 export type TaskStatusDtoFragment = {
@@ -195,6 +196,7 @@ export type TasksQuery = {
         id: string;
         nameEn?: string | null;
       } | null;
+      details: Array<{ __typename?: "TaskDetail"; id: string; code: string }>;
     }>;
   };
 };
@@ -303,8 +305,8 @@ export type TaskQuery = {
     details: Array<{
       __typename?: "TaskDetail";
       id: string;
-      taskId: string;
       code: string;
+      taskId: string;
       priority?: number | null;
       description?: string | null;
       categoryId?: string | null;
@@ -652,6 +654,7 @@ export type CreateTaskMutation = {
       id: string;
       nameEn?: string | null;
     } | null;
+    details: Array<{ __typename?: "TaskDetail"; id: string; code: string }>;
   };
 };
 
@@ -729,6 +732,10 @@ export const TaskFragmentDoc = gql`
       id
       nameEn
       nameEn
+    }
+    details {
+      id
+      code
     }
   }
   ${TaskStatusFragmentDoc}

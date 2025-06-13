@@ -69,6 +69,10 @@ fragment Task on Task {
     nameEn
     nameEn
   }
+  details {
+    id
+    code
+  }
 }
 
 fragment TaskStatusDto on TaskStatusDto {

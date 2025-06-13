@@ -234,6 +234,16 @@ export const RepairPage = () => {
                     : "-";
                 },
               },
+              {
+                title: "จำนวนงานแจ้งซ่อม",
+                dataIndex: "details",
+                key: "details",
+                align: "center",
+                width: 150,
+                render: (_, record) => {
+                  return record.details?.length ?? 0;
+                },
+              },
             ]}
           />
         </Col>

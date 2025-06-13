@@ -146,7 +146,25 @@ export const RepairDetailPage = () => {
               bordered={false}
               items={taskDetails.map((detail) => ({
                 key: detail.id,
-                label: <Text strong>{detail.code}</Text>,
+                label: (
+                  <Flex justify="space-between" gap={8}>
+                    <Text strong>{detail.code}</Text>
+                    <Space size={4}>
+                      <Space>
+                        <Text type="secondary">สถานะประเมิน : </Text>
+                        <Tag color={detail.status?.color}>
+                          {detail.status?.nameEn}
+                        </Tag>
+                      </Space>
+                      <Space>
+                        <Text type="secondary">สถานะผู้รับผิดชอบ : </Text>
+                        <Tag color={detail.homecareStatus?.color}>
+                          {detail.homecareStatus?.nameEn}
+                        </Tag>
+                      </Space>
+                    </Space>
+                  </Flex>
+                ),
                 children: (
                   <Flex vertical gap={8}>
                     <Descriptions size="small" bordered>
@@ -332,14 +350,18 @@ export const RepairDetailPage = () => {
                           {detail.homecareInRangeTime?.nameTh}
                         </Descriptions.Item>
                         <Descriptions.Item label="สถานะเคส">
-                          <Tag color={detail.status?.color}>
-                            {detail.status?.nameEn}
-                          </Tag>
+                          {detail.status && (
+                            <Tag color={detail.status?.color}>
+                              {detail.status?.nameEn}
+                            </Tag>
+                          )}
                         </Descriptions.Item>
                         <Descriptions.Item label="สถานะผู้รับผิดชอบ" span={3}>
-                          <Tag color={detail.homecareStatus?.color}>
-                            {detail.homecareStatus?.nameEn}
-                          </Tag>
+                          {detail.homecareStatus && (
+                            <Tag color={detail.homecareStatus?.color}>
+                              {detail.homecareStatus?.nameEn}
+                            </Tag>
+                          )}
                         </Descriptions.Item>
                         <Descriptions.Item label="รูปขั้นตอน SOP">
                           {""}
