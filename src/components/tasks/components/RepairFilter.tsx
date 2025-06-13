@@ -1,8 +1,10 @@
 import { Routes } from "@/config/routes";
 import { useTaskOptionsQuery } from "@/gql/generated/option.generated";
-import { useUnitsQuery } from "@/gql/generated/project.generated";
+import {
+  useProjectsQuery,
+  useUnitsQuery,
+} from "@/gql/generated/project.generated";
 import { useTaskStatusesQuery } from "@/gql/generated/tasks.generated";
-import { useProjectsQuery } from "@/gql/src/gql/generated/project.generated";
 import { useCreateSearchParams } from "@/hooks/useCreateSearchParams";
 import { faPlus } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
