@@ -199,14 +199,6 @@ export type TasksQuery = {
   };
 };
 
-export type TaskDetailStatusFragment = {
-  __typename?: "TaskDetailStatusDto";
-  id: Types.TaskDetailStatus;
-  nameTh: string;
-  nameEn: string;
-  color: string;
-};
-
 export type TaskDetailFragment = {
   __typename?: "TaskDetail";
   id: string;
@@ -239,20 +231,20 @@ export type TaskDetailFragment = {
   createdAt: any;
   updatedAt: any;
   deletedAt?: any | null;
-  status: {
-    __typename?: "TaskDetailStatusDto";
-    id: Types.TaskDetailStatus;
+  status?: {
+    __typename?: "TaskStatusDto";
+    id: Types.TaskStatus;
     nameTh: string;
     nameEn: string;
     color: string;
-  };
-  homecareStatus: {
-    __typename?: "TaskDetailStatusDto";
-    id: Types.TaskDetailStatus;
+  } | null;
+  homecareStatus?: {
+    __typename?: "TaskStatusDto";
+    id: Types.TaskStatus;
     nameTh: string;
     nameEn: string;
     color: string;
-  };
+  } | null;
   homecareInRangeTime?: {
     __typename?: "TaskRangeTimeDto";
     id: string;
@@ -503,20 +495,20 @@ export type TaskQuery = {
           deletedAt?: any | null;
         } | null;
       } | null;
-      status: {
-        __typename?: "TaskDetailStatusDto";
-        id: Types.TaskDetailStatus;
+      status?: {
+        __typename?: "TaskStatusDto";
+        id: Types.TaskStatus;
         nameTh: string;
         nameEn: string;
         color: string;
-      };
-      homecareStatus: {
-        __typename?: "TaskDetailStatusDto";
-        id: Types.TaskDetailStatus;
+      } | null;
+      homecareStatus?: {
+        __typename?: "TaskStatusDto";
+        id: Types.TaskStatus;
         nameTh: string;
         nameEn: string;
         color: string;
-      };
+      } | null;
       homecareInRangeTime?: {
         __typename?: "TaskRangeTimeDto";
         id: string;
@@ -751,24 +743,16 @@ export const TaskStatusDtoFragmentDoc = gql`
     color
   }
 `;
-export const TaskDetailStatusFragmentDoc = gql`
-  fragment TaskDetailStatus on TaskDetailStatusDto {
-    id
-    nameTh
-    nameEn
-    color
-  }
-`;
 export const TaskDetailFragmentDoc = gql`
   fragment TaskDetail on TaskDetail {
     id
     taskId
     code
     status {
-      ...TaskDetailStatus
+      ...TaskStatus
     }
     homecareStatus {
-      ...TaskDetailStatus
+      ...TaskStatus
     }
     priority
     description
@@ -804,7 +788,7 @@ export const TaskDetailFragmentDoc = gql`
       ...TaskRangeTime
     }
   }
-  ${TaskDetailStatusFragmentDoc}
+  ${TaskStatusFragmentDoc}
   ${TaskRangeTimeFragmentDoc}
 `;
 export const UploadFileFragmentDoc = gql`

@@ -81,12 +81,13 @@ export type CreateTaskDetailInput = {
   homecareId?: InputMaybe<Scalars["String"]["input"]>;
   homecareInDate?: InputMaybe<Scalars["Date"]["input"]>;
   homecareRangeTime?: InputMaybe<Scalars["String"]["input"]>;
+  homecareStatus?: InputMaybe<TaskStatus>;
   inProgressDate?: InputMaybe<Scalars["Date"]["input"]>;
   isCSAT?: InputMaybe<Scalars["Boolean"]["input"]>;
   priority?: InputMaybe<Scalars["Int"]["input"]>;
   reProcessDate?: InputMaybe<Scalars["Date"]["input"]>;
   slaId?: InputMaybe<Scalars["String"]["input"]>;
-  status?: TaskDetailStatus;
+  status?: InputMaybe<TaskStatus>;
   subCategoryId?: InputMaybe<Scalars["String"]["input"]>;
 };
 
@@ -412,7 +413,7 @@ export type TaskDetail = {
   homecareId?: Maybe<Scalars["String"]["output"]>;
   homecareInDate?: Maybe<Scalars["Date"]["output"]>;
   homecareInRangeTime?: Maybe<TaskRangeTimeDto>;
-  homecareStatus: TaskDetailStatusDto;
+  homecareStatus?: Maybe<TaskStatusDto>;
   id: Scalars["ID"]["output"];
   images: Array<UploadFile>;
   inProgressDate?: Maybe<Scalars["Date"]["output"]>;
@@ -421,39 +422,13 @@ export type TaskDetail = {
   reProcessDate?: Maybe<Scalars["Date"]["output"]>;
   sla?: Maybe<Master>;
   slaId?: Maybe<Scalars["String"]["output"]>;
-  status: TaskDetailStatusDto;
+  status?: Maybe<TaskStatusDto>;
   subCategory?: Maybe<Master>;
   subCategoryId?: Maybe<Scalars["String"]["output"]>;
   task: Task;
   taskId: Scalars["String"]["output"];
   updatedAt: Scalars["Date"]["output"];
   updatedBy?: Maybe<User>;
-};
-
-export enum TaskDetailStatus {
-  Assigned = "ASSIGNED",
-  BeforeChecking = "BEFORE_CHECKING",
-  Checking = "CHECKING",
-  Closed = "CLOSED",
-  CustomerFinished = "CUSTOMER_FINISHED",
-  Finished = "FINISHED",
-  Hold = "HOLD",
-  HoldApproved = "HOLD_APPROVED",
-  HomecareFinished = "HOMECARE_FINISHED",
-  InProgress = "IN_PROGRESS",
-  Open = "OPEN",
-  OverServiceLevelAgreement = "OVER_SERVICE_LEVEL_AGREEMENT",
-  Pending = "PENDING",
-  ReInProgress = "RE_IN_PROGRESS",
-  WaitingConstructionMaterial = "WAITING_CONSTRUCTION_MATERIAL",
-}
-
-export type TaskDetailStatusDto = {
-  __typename?: "TaskDetailStatusDto";
-  color: Scalars["String"]["output"];
-  id: TaskDetailStatus;
-  nameEn: Scalars["String"]["output"];
-  nameTh: Scalars["String"]["output"];
 };
 
 export type TaskPaginate = {
@@ -479,14 +454,43 @@ export type TaskSourceDto = {
 };
 
 export enum TaskStatus {
+  AnswerThePhone = "ANSWER_THE_PHONE",
+  ApproveFinishHomecare = "APPROVE_FINISH_HOMECARE",
+  ApproveHoldHomecare = "APPROVE_HOLD_HOMECARE",
   Assigned = "ASSIGNED",
+  Before = "BEFORE",
+  BeforeChecking = "BEFORE_CHECKING",
+  Callback = "CALLBACK",
+  ChangeDate = "CHANGE_DATE",
   Checking = "CHECKING",
   Closed = "CLOSED",
+  ConfirmReAssigned = "CONFIRM_RE_ASSIGNED",
+  CustomerChangeDate = "CUSTOMER_CHANGE_DATE",
+  CustomerFinished = "CUSTOMER_FINISHED",
+  Doing = "DOING",
   Finished = "FINISHED",
   Hold = "HOLD",
+  HoldApproved = "HOLD_APPROVED",
+  HomecareFinished = "HOMECARE_FINISHED",
   InProgress = "IN_PROGRESS",
+  MissedCall = "MISSED_CALL",
+  MissedCallWork = "MISSED_CALL_WORK",
   Open = "OPEN",
+  OverServiceLevelAgreement = "OVER_SERVICE_LEVEL_AGREEMENT",
   Pending = "PENDING",
+  Protection = "PROTECTION",
+  RejectFinishedHomecare = "REJECT_FINISHED_HOMECARE",
+  RejectHoldHomecare = "REJECT_HOLD_HOMECARE",
+  ReAssigned = "RE_ASSIGNED",
+  ReInProgress = "RE_IN_PROGRESS",
+  WaitingConclude = "WAITING_CONCLUDE",
+  WaitingConstruction = "WAITING_CONSTRUCTION",
+  WaitingConstructionMaterial = "WAITING_CONSTRUCTION_MATERIAL",
+  WaitingConstructionWork = "WAITING_CONSTRUCTION_WORK",
+  WaitingCustomerAppointment = "WAITING_CUSTOMER_APPOINTMENT",
+  WaitingHomecare = "WAITING_HOMECARE",
+  WorkNotReceived = "WORK_NOT_RECEIVED",
+  WorkReceived = "WORK_RECEIVED",
 }
 
 export type TaskStatusDto = {
