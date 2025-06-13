@@ -8,14 +8,21 @@ import { getTablePaginationProps } from "@/utils/utils";
 import { Col, Row, Table, Tag, theme } from "antd";
 import dayjs from "dayjs";
 import { useRouter } from "nextjs-toploader/app";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { RepairFilter, useRepairFilter } from "./components/RepairFilter";
 
 export const RepairPage = () => {
   const router = useRouter();
-  const [pageSize, setPageSize] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
-  const { searchText, statuses, projectId, unitIds } = useRepairFilter();
+
+  const {
+    searchText,
+    statuses,
+    projectId,
+    unitIds,
+    currentPage,
+    pageSize,
+    handleSearch,
+  } = useRepairFilter();
   const {
     token: { colorPrimary },
   } = theme.useToken();
@@ -51,13 +58,13 @@ export const RepairPage = () => {
               position: ["bottomCenter"],
               ...getTablePaginationProps(meta),
               onChange: (page) => {
-                setCurrentPage(page);
+                handleSearch("currentPage", page);
               },
               showQuickJumper: true,
               showSizeChanger: true,
               pageSizeOptions: ["10", "20", "30", "40", "50"],
               onShowSizeChange: (page, size) => {
-                setPageSize(size);
+                handleSearch("pageSize", size);
               },
             }}
             onRow={(record) => ({

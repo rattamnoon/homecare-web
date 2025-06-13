@@ -25,6 +25,8 @@ type TagRender = SelectProps["tagRender"];
 
 export const useRepairFilter = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const { createQueryString } = useCreateSearchParams();
   const searchText = searchParams.get("searchText") as string;
   const statuses = ((searchParams.get("statuses") as string) || "")
     .split(",")
@@ -33,14 +35,43 @@ export const useRepairFilter = () => {
   const unitIds = ((searchParams.get("unitIds") as string) || "")
     .split(",")
     .filter(Boolean);
+  const currentPage = Number(searchParams.get("currentPage")) || 1;
+  const pageSize = Number(searchParams.get("pageSize")) || 10;
 
-  return { searchText, statuses, projectId, unitIds };
+  const handleSearch = (key: string, value: string | string[] | number) => {
+    const stringValue = Array.isArray(value)
+      ? value.join(",")
+      : typeof value === "number"
+      ? value.toString()
+      : value;
+
+    const queryParams = {
+      [key]: stringValue,
+      ...(key !== "currentPage" && { currentPage: "1" }),
+      ...(key !== "pageSize" && { pageSize: "10" }),
+    };
+
+    const queryString = createQueryString(queryParams);
+    router.push(`${Routes.TasksRepair}?${queryString}`, {
+      scroll: false,
+    });
+  };
+
+  return {
+    searchText,
+    statuses,
+    projectId,
+    unitIds,
+    currentPage,
+    pageSize,
+    handleSearch,
+  };
 };
 
 export const RepairFilter = () => {
   const router = useRouter();
-  const { createQueryString } = useCreateSearchParams();
-  const { searchText, statuses, projectId, unitIds } = useRepairFilter();
+  const { searchText, statuses, projectId, unitIds, handleSearch } =
+    useRepairFilter();
   const { data: statusesData, loading: statusesLoading } =
     useTaskStatusesQuery();
   const { data: projectsData, loading: projectsLoading } = useProjectsQuery();
@@ -49,10 +80,6 @@ export const RepairFilter = () => {
       projectId,
     },
     skip: !projectId,
-  });
-
-  console.log({
-    statuses,
   });
 
   const statusesOptions = useMemo(
@@ -85,15 +112,6 @@ export const RepairFilter = () => {
         {label}
       </Tag>
     );
-  };
-
-  const handleSearch = (key: string, value: string | string[]) => {
-    const queryString = createQueryString({
-      [key]: Array.isArray(value) ? value.join(",") : value,
-    });
-    router.push(`${Routes.TasksRepair}?${queryString}`, {
-      scroll: false,
-    });
   };
 
   const sharedSelectProps: SelectProps = {
