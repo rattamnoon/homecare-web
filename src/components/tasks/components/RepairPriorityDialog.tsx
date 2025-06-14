@@ -7,8 +7,8 @@ import {
 } from "@/gql/generated/tasks.generated";
 import { faSave } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Form, Select } from "antd";
-import { useMemo, useState } from "react";
+import { Form, message, Radio, Space } from "antd";
+import { useMemo } from "react";
 
 interface RepairPriorityDialogProps {
   open: boolean;
@@ -22,17 +22,25 @@ export const RepairPriorityDialog = ({
   taskDetail,
 }: RepairPriorityDialogProps) => {
   const [form] = Form.useForm();
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  const [updateTaskDetail] = useUpdateTaskDetailMutation({
-    refetchQueries: [
-      {
-        query: TaskDocument,
-        variables: {
-          id: taskDetail?.taskId,
-        },
+  const [updateTaskDetail, { loading: updateTaskDetailLoading }] =
+    useUpdateTaskDetailMutation({
+      onCompleted: () => {
+        message.success("บันทึกสำเร็จ");
+        onCancel();
+        form.resetFields();
       },
-    ],
-  });
+      onError: (error) => {
+        message.error(error.message);
+      },
+      refetchQueries: [
+        {
+          query: TaskDocument,
+          variables: {
+            id: taskDetail?.taskId,
+          },
+        },
+      ],
+    });
   const { data: optionsData, loading: optionsLoading } = useTaskOptionsQuery({
     skip: !open,
   });
@@ -42,7 +50,6 @@ export const RepairPriorityDialog = ({
   );
 
   const onOk = async (priority: number) => {
-    setConfirmLoading(true);
     await updateTaskDetail({
       variables: {
         updateTaskDetailInput: {
@@ -51,8 +58,6 @@ export const RepairPriorityDialog = ({
         },
       },
     });
-    setConfirmLoading(false);
-    onCancel();
   };
 
   return (
@@ -65,7 +70,7 @@ export const RepairPriorityDialog = ({
       }}
       okText="บันทึก"
       cancelText="ยกเลิก"
-      confirmLoading={confirmLoading}
+      confirmLoading={updateTaskDetailLoading}
       okButtonProps={{
         icon: <FontAwesomeIcon icon={faSave} />,
       }}
@@ -76,6 +81,9 @@ export const RepairPriorityDialog = ({
         onFinish={(values) => {
           onOk(values.priority);
         }}
+        initialValues={{
+          priority: taskDetail?.priority?.id || 1,
+        }}
       >
         <Form.Item
           label="Priority"
@@ -83,14 +91,15 @@ export const RepairPriorityDialog = ({
           required
           rules={[{ required: true, message: "กรุณาเลือกความสำคัญ" }]}
         >
-          <Select
-            placeholder="เลือกความสำคัญ"
-            options={priorities.map((priority) => ({
-              label: priority.nameTh,
-              value: priority.id,
-            }))}
-            loading={optionsLoading}
-          />
+          <Radio.Group>
+            <Space direction="vertical">
+              {priorities.map((priority) => (
+                <Radio key={priority.id} value={priority.id}>
+                  {priority.nameTh}
+                </Radio>
+              ))}
+            </Space>
+          </Radio.Group>
         </Form.Item>
       </Form>
     </CustomModal>

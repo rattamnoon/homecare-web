@@ -382,16 +382,20 @@ export const RepairDetailPage = () => {
           </Skeleton>
         </>
       )}
-      <RepairPriorityDialog
-        open={priorityDialogOpen}
-        onCancel={() => setPriorityDialogOpen(false)}
-        taskDetail={priorityDialogTaskDetail}
-      />
-      <RepairAssignedDialog
-        open={assignedDialogOpen}
-        onCancel={() => setAssignedDialogOpen(false)}
-        taskDetail={assignedDialogTaskDetail}
-      />
+      {priorityDialogOpen && (
+        <RepairPriorityDialog
+          open={priorityDialogOpen}
+          onCancel={() => setPriorityDialogOpen(false)}
+          taskDetail={priorityDialogTaskDetail}
+        />
+      )}
+      {assignedDialogOpen && (
+        <RepairAssignedDialog
+          open={assignedDialogOpen}
+          onCancel={() => setAssignedDialogOpen(false)}
+          taskDetail={assignedDialogTaskDetail}
+        />
+      )}
     </LayoutWithBreadcrumb>
   );
 };
