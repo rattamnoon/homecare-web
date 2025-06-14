@@ -32,6 +32,7 @@ import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { RepairAssignedDialog } from "./components/RepairAssignedDialog";
 import { RepairImagePreview } from "./components/RepairImagePreview";
+import { RepairLogsDialog } from "./components/RepairLogsDialog";
 import { RepairMisscallDialog } from "./components/RepairMisscallDialog";
 import { RepairPriorityDialog } from "./components/RepairPriorityDialog";
 import { RepairSOPImagePreview } from "./components/RepairSOPImagePreview";
@@ -309,7 +310,8 @@ export const RepairDetailPage = () => {
                             variant="outlined"
                             color="primary"
                             onClick={() => {
-                              console.log("logs");
+                              setLogsDialogTaskDetail(detail);
+                              setLogsDialogOpen(true);
                             }}
                           >
                             Logs
@@ -457,6 +459,13 @@ export const RepairDetailPage = () => {
           open={waitingConstructionDialogOpen}
           onCancel={() => setWaitingConstructionDialogOpen(false)}
           taskDetail={waitingConstructionDialogTaskDetail}
+        />
+      )}
+      {logsDialogOpen && (
+        <RepairLogsDialog
+          open={logsDialogOpen}
+          onCancel={() => setLogsDialogOpen(false)}
+          taskDetail={logsDialogTaskDetail}
         />
       )}
     </LayoutWithBreadcrumb>

@@ -492,11 +492,13 @@ export type TaskDetailReportLog = {
   createdAt: Scalars["Date"]["output"];
   createdBy?: Maybe<User>;
   deletedAt?: Maybe<Scalars["Date"]["output"]>;
+  deletedBy?: Maybe<User>;
   id: Scalars["ID"]["output"];
+  images: Array<UploadFile>;
   task?: Maybe<Task>;
-  taskDetailAssignId: Scalars["String"]["output"];
+  taskDetailAssignId?: Maybe<Scalars["String"]["output"]>;
   taskDetailId?: Maybe<Scalars["String"]["output"]>;
-  type: TaskStatus;
+  type?: Maybe<TaskStatusDto>;
   updatedAt: Scalars["Date"]["output"];
   updatedBy?: Maybe<User>;
 };

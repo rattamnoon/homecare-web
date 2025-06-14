@@ -201,12 +201,15 @@ fragment TaskDetailReportLog on TaskDetailReportLog {
   id
   taskDetailAssignId
   taskDetailId
-  type
+  type {
+    ...TaskStatus
+  }
   updatedAt
   checkInRangeTime {
-    id
-    nameEn
-    nameTh
+    ...TaskRangeTime
+  }
+  images {
+    ...UploadFile
   }
 }
 

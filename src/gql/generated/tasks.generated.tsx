@@ -444,16 +444,39 @@ export type TaskDetailReportLogFragment = {
   createdAt: Date;
   deletedAt?: Date | null;
   id: string;
-  taskDetailAssignId: string;
+  taskDetailAssignId?: string | null;
   taskDetailId?: string | null;
-  type: Types.TaskStatus;
   updatedAt: Date;
+  type?: {
+    __typename?: "TaskStatusDto";
+    id: Types.TaskStatus;
+    nameTh: string;
+    nameEn: string;
+    color: string;
+  } | null;
   checkInRangeTime?: {
     __typename?: "TaskRangeTimeDto";
     id: string;
-    nameEn: string;
     nameTh: string;
+    nameEn: string;
   } | null;
+  images: Array<{
+    __typename?: "UploadFile";
+    id: string;
+    refId?: string | null;
+    fileId?: string | null;
+    fileType: Types.UploadFileType;
+    fileName?: string | null;
+    fileFolder?: string | null;
+    filePath?: string | null;
+    fileBucket?: string | null;
+    fileExtension?: string | null;
+    fileUrl: string;
+    isPublic: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+  }>;
 };
 
 export type TaskDetailFragment = {
@@ -797,16 +820,39 @@ export type TaskDetailFragment = {
       createdAt: Date;
       deletedAt?: Date | null;
       id: string;
-      taskDetailAssignId: string;
+      taskDetailAssignId?: string | null;
       taskDetailId?: string | null;
-      type: Types.TaskStatus;
       updatedAt: Date;
+      type?: {
+        __typename?: "TaskStatusDto";
+        id: Types.TaskStatus;
+        nameTh: string;
+        nameEn: string;
+        color: string;
+      } | null;
       checkInRangeTime?: {
         __typename?: "TaskRangeTimeDto";
         id: string;
-        nameEn: string;
         nameTh: string;
+        nameEn: string;
       } | null;
+      images: Array<{
+        __typename?: "UploadFile";
+        id: string;
+        refId?: string | null;
+        fileId?: string | null;
+        fileType: Types.UploadFileType;
+        fileName?: string | null;
+        fileFolder?: string | null;
+        filePath?: string | null;
+        fileBucket?: string | null;
+        fileExtension?: string | null;
+        fileUrl: string;
+        isPublic: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      }>;
     }>;
     status?: {
       __typename?: "TaskStatusDto";
@@ -888,16 +934,39 @@ export type TaskDetailFragment = {
     createdAt: Date;
     deletedAt?: Date | null;
     id: string;
-    taskDetailAssignId: string;
+    taskDetailAssignId?: string | null;
     taskDetailId?: string | null;
-    type: Types.TaskStatus;
     updatedAt: Date;
+    type?: {
+      __typename?: "TaskStatusDto";
+      id: Types.TaskStatus;
+      nameTh: string;
+      nameEn: string;
+      color: string;
+    } | null;
     checkInRangeTime?: {
       __typename?: "TaskRangeTimeDto";
       id: string;
-      nameEn: string;
       nameTh: string;
+      nameEn: string;
     } | null;
+    images: Array<{
+      __typename?: "UploadFile";
+      id: string;
+      refId?: string | null;
+      fileId?: string | null;
+      fileType: Types.UploadFileType;
+      fileName?: string | null;
+      fileFolder?: string | null;
+      filePath?: string | null;
+      fileBucket?: string | null;
+      fileExtension?: string | null;
+      fileUrl: string;
+      isPublic: boolean;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    }>;
   }>;
 };
 
@@ -1265,16 +1334,39 @@ export type TaskQuery = {
           createdAt: Date;
           deletedAt?: Date | null;
           id: string;
-          taskDetailAssignId: string;
+          taskDetailAssignId?: string | null;
           taskDetailId?: string | null;
-          type: Types.TaskStatus;
           updatedAt: Date;
+          type?: {
+            __typename?: "TaskStatusDto";
+            id: Types.TaskStatus;
+            nameTh: string;
+            nameEn: string;
+            color: string;
+          } | null;
           checkInRangeTime?: {
             __typename?: "TaskRangeTimeDto";
             id: string;
-            nameEn: string;
             nameTh: string;
+            nameEn: string;
           } | null;
+          images: Array<{
+            __typename?: "UploadFile";
+            id: string;
+            refId?: string | null;
+            fileId?: string | null;
+            fileType: Types.UploadFileType;
+            fileName?: string | null;
+            fileFolder?: string | null;
+            filePath?: string | null;
+            fileBucket?: string | null;
+            fileExtension?: string | null;
+            fileUrl: string;
+            isPublic: boolean;
+            createdAt: Date;
+            updatedAt: Date;
+            deletedAt?: Date | null;
+          }>;
         }>;
         status?: {
           __typename?: "TaskStatusDto";
@@ -1356,16 +1448,39 @@ export type TaskQuery = {
         createdAt: Date;
         deletedAt?: Date | null;
         id: string;
-        taskDetailAssignId: string;
+        taskDetailAssignId?: string | null;
         taskDetailId?: string | null;
-        type: Types.TaskStatus;
         updatedAt: Date;
+        type?: {
+          __typename?: "TaskStatusDto";
+          id: Types.TaskStatus;
+          nameTh: string;
+          nameEn: string;
+          color: string;
+        } | null;
         checkInRangeTime?: {
           __typename?: "TaskRangeTimeDto";
           id: string;
-          nameEn: string;
           nameTh: string;
+          nameEn: string;
         } | null;
+        images: Array<{
+          __typename?: "UploadFile";
+          id: string;
+          refId?: string | null;
+          fileId?: string | null;
+          fileType: Types.UploadFileType;
+          fileName?: string | null;
+          fileFolder?: string | null;
+          filePath?: string | null;
+          fileBucket?: string | null;
+          fileExtension?: string | null;
+          fileUrl: string;
+          isPublic: boolean;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        }>;
       }>;
     }>;
     status: {
@@ -1959,16 +2074,39 @@ export type UpdateTaskDetailMutation = {
         createdAt: Date;
         deletedAt?: Date | null;
         id: string;
-        taskDetailAssignId: string;
+        taskDetailAssignId?: string | null;
         taskDetailId?: string | null;
-        type: Types.TaskStatus;
         updatedAt: Date;
+        type?: {
+          __typename?: "TaskStatusDto";
+          id: Types.TaskStatus;
+          nameTh: string;
+          nameEn: string;
+          color: string;
+        } | null;
         checkInRangeTime?: {
           __typename?: "TaskRangeTimeDto";
           id: string;
-          nameEn: string;
           nameTh: string;
+          nameEn: string;
         } | null;
+        images: Array<{
+          __typename?: "UploadFile";
+          id: string;
+          refId?: string | null;
+          fileId?: string | null;
+          fileType: Types.UploadFileType;
+          fileName?: string | null;
+          fileFolder?: string | null;
+          filePath?: string | null;
+          fileBucket?: string | null;
+          fileExtension?: string | null;
+          fileUrl: string;
+          isPublic: boolean;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        }>;
       }>;
       status?: {
         __typename?: "TaskStatusDto";
@@ -2050,16 +2188,39 @@ export type UpdateTaskDetailMutation = {
       createdAt: Date;
       deletedAt?: Date | null;
       id: string;
-      taskDetailAssignId: string;
+      taskDetailAssignId?: string | null;
       taskDetailId?: string | null;
-      type: Types.TaskStatus;
       updatedAt: Date;
+      type?: {
+        __typename?: "TaskStatusDto";
+        id: Types.TaskStatus;
+        nameTh: string;
+        nameEn: string;
+        color: string;
+      } | null;
       checkInRangeTime?: {
         __typename?: "TaskRangeTimeDto";
         id: string;
-        nameEn: string;
         nameTh: string;
+        nameEn: string;
       } | null;
+      images: Array<{
+        __typename?: "UploadFile";
+        id: string;
+        refId?: string | null;
+        fileId?: string | null;
+        fileType: Types.UploadFileType;
+        fileName?: string | null;
+        fileFolder?: string | null;
+        filePath?: string | null;
+        fileBucket?: string | null;
+        fileExtension?: string | null;
+        fileUrl: string;
+        isPublic: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      }>;
     }>;
   };
 };
@@ -2246,14 +2407,20 @@ export const TaskDetailReportLogFragmentDoc = gql`
     id
     taskDetailAssignId
     taskDetailId
-    type
+    type {
+      ...TaskStatus
+    }
     updatedAt
     checkInRangeTime {
-      id
-      nameEn
-      nameTh
+      ...TaskRangeTime
+    }
+    images {
+      ...UploadFile
     }
   }
+  ${TaskStatusFragmentDoc}
+  ${TaskRangeTimeFragmentDoc}
+  ${UploadFileFragmentDoc}
 `;
 export const TaskDetailFragmentDoc = gql`
   fragment TaskDetail on TaskDetail {
