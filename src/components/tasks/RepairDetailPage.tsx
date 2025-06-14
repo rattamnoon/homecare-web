@@ -1,13 +1,12 @@
 "use client";
 
 import { LayoutWithBreadcrumb } from "@/components/layout/LayoutWithBreadcrumb";
+import { UploadFileType } from "@/gql/generated/graphql";
 import { useTaskQuery } from "@/gql/generated/tasks.generated";
 import {
-  faChevronDown,
   faEdit,
   faFaceSmile,
   faHouseCircleCheck,
-  faImageLandscape,
   faPlus,
 } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,12 +20,13 @@ import {
   Skeleton,
   Space,
   Tag,
-  Tooltip,
   Typography,
 } from "antd";
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
+import { RepairImagePreview } from "./components/RepairImagePreview";
+import { RepairSOPImagePreview } from "./components/RepairSOPImagePreview";
 
 const { Title, Text } = Typography;
 
@@ -130,20 +130,8 @@ export const RepairDetailPage = () => {
           <Title level={5}>รายการงานแจ้งซ่อม</Title>
           <Skeleton loading={loading} active paragraph={{ rows: 6 }}>
             <Collapse
-              //   accordion
+              accordion
               ghost
-              expandIconPosition="start"
-              expandIcon={(panelProps) => (
-                <FontAwesomeIcon
-                  icon={faChevronDown}
-                  style={{
-                    transform: panelProps.isActive
-                      ? "rotate(180deg)"
-                      : "rotate(0deg)",
-                  }}
-                />
-              )}
-              bordered={false}
               items={taskDetails.map((detail) => ({
                 key: detail.id,
                 label: (
@@ -180,19 +168,12 @@ export const RepairDetailPage = () => {
                         </Tag>
                       </Descriptions.Item>
                       <Descriptions.Item label="รูปภาพ" span={3}>
-                        <Tooltip
-                          title={
-                            detail.images?.length > 0
-                              ? "มีรูปภาพ"
-                              : "ไม่มีรูปภาพ"
-                          }
-                        >
-                          <FontAwesomeIcon
-                            icon={faImageLandscape}
-                            size="lg"
-                            color={detail.images?.length > 0 ? "green" : "gray"}
-                          />
-                        </Tooltip>
+                        <RepairImagePreview
+                          images={detail.images.filter(
+                            (image) =>
+                              image.fileType === UploadFileType.Customer
+                          )}
+                        />
                       </Descriptions.Item>
                       <Descriptions.Item label="รายละเอียด">
                         {detail.description}
@@ -232,19 +213,11 @@ export const RepairDetailPage = () => {
                         )}
                       </Descriptions.Item>
                       <Descriptions.Item label="รูปภาพ" span={3}>
-                        <Tooltip
-                          title={
-                            detail.images?.length > 0
-                              ? "มีรูปภาพ"
-                              : "ไม่มีรูปภาพ"
-                          }
-                        >
-                          <FontAwesomeIcon
-                            icon={faImageLandscape}
-                            size="lg"
-                            color={detail.images?.length > 0 ? "green" : "gray"}
-                          />
-                        </Tooltip>
+                        <RepairImagePreview
+                          images={detail.images.filter(
+                            (image) => image.fileType === UploadFileType.Task
+                          )}
+                        />
                       </Descriptions.Item>
                       <Descriptions.Item label="หมายเหตุ" span={3}>
                         {detail.homecareComment}
@@ -364,7 +337,7 @@ export const RepairDetailPage = () => {
                           )}
                         </Descriptions.Item>
                         <Descriptions.Item label="รูปขั้นตอน SOP">
-                          {""}
+                          <RepairSOPImagePreview images={detail.images} />
                         </Descriptions.Item>
                       </Descriptions>
                     </Flex>
