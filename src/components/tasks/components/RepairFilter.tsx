@@ -43,6 +43,9 @@ export const useRepairFilter = () => {
   const checkInDate = ((searchParams.get("checkInDate") as string) || "")
     .split(",")
     .filter(Boolean);
+  const createdAt = ((searchParams.get("createdAt") as string) || "")
+    .split(",")
+    .filter(Boolean);
   const currentPage = Number(searchParams.get("currentPage")) || 1;
   const pageSize = Number(searchParams.get("pageSize")) || 10;
 
@@ -72,6 +75,7 @@ export const useRepairFilter = () => {
     unitIds,
     sources,
     checkInDate,
+    createdAt,
     currentPage,
     pageSize,
     handleSearch,
@@ -87,6 +91,7 @@ export const RepairFilter = () => {
     unitIds,
     sources,
     checkInDate,
+    createdAt,
     handleSearch,
   } = useRepairFilter();
   const { data: statusesData, loading: statusesLoading } =
@@ -133,12 +138,13 @@ export const RepairFilter = () => {
               style={{ marginBottom: 0 }}
             >
               <Input
-                placeholder="ค้นหา"
+                placeholder="ค้นหาโดยรหัสงาน, ชื่อลูกค้า, เบอร์โทรลูกค้า"
                 allowClear
                 value={searchText}
                 onChange={(e) => {
                   handleSearch("searchText", e.target.value);
                 }}
+                style={{ width: 325 }}
               />
             </Form.Item>
             <Button
@@ -265,6 +271,7 @@ export const RepairFilter = () => {
                 <DatePicker.RangePicker
                   placeholder={["เริ่มต้น", "สิ้นสุด"]}
                   allowClear
+                  format="YYYY-MM-DD"
                   defaultValue={[
                     checkInDate[0] ? dayjs(checkInDate[0], "YYYY-MM-DD") : null,
                     checkInDate[1] ? dayjs(checkInDate[1], "YYYY-MM-DD") : null,
@@ -282,6 +289,38 @@ export const RepairFilter = () => {
                       handleSearch("checkInDate", "");
                     }
                   }}
+                  style={{ width: "100%" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={6}>
+              <Form.Item
+                label="วันที่สร้าง"
+                name="createdAt"
+                colon={false}
+                style={{ marginBottom: 0 }}
+              >
+                <DatePicker.RangePicker
+                  placeholder={["เริ่มต้น", "สิ้นสุด"]}
+                  allowClear
+                  format="YYYY-MM-DD"
+                  defaultValue={[
+                    createdAt[0] ? dayjs(createdAt[0], "YYYY-MM-DD") : null,
+                    createdAt[1] ? dayjs(createdAt[1], "YYYY-MM-DD") : null,
+                  ]}
+                  onChange={(value) => {
+                    if (value) {
+                      handleSearch(
+                        "createdAt",
+                        value
+                          .map((date) => date?.format("YYYY-MM-DD"))
+                          .join(",")
+                      );
+                    } else {
+                      handleSearch("createdAt", "");
+                    }
+                  }}
+                  style={{ width: "100%" }}
                 />
               </Form.Item>
             </Col>

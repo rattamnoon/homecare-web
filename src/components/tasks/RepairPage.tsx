@@ -26,6 +26,7 @@ export const RepairPage = () => {
     unitIds,
     sources,
     checkInDate,
+    createdAt,
     currentPage,
     pageSize,
     handleSearch,
@@ -44,6 +45,7 @@ export const RepairPage = () => {
       unitIds,
       sources: sources as string[],
       checkInDate: checkInDate as string[],
+      createdAt: createdAt as string[],
     },
   });
 

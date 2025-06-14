@@ -116,6 +116,9 @@ export type TasksQueryVariables = Types.Exact<{
   checkInDate?: Types.InputMaybe<
     Array<Types.Scalars["String"]["input"]> | Types.Scalars["String"]["input"]
   >;
+  createdAt?: Types.InputMaybe<
+    Array<Types.Scalars["String"]["input"]> | Types.Scalars["String"]["input"]
+  >;
 }>;
 
 export type TasksQuery = {
@@ -833,6 +836,7 @@ export const TasksDocument = gql`
     $unitIds: [String!]
     $sources: [String!]
     $checkInDate: [String!]
+    $createdAt: [String!]
   ) {
     tasks(
       type: $type
@@ -844,6 +848,7 @@ export const TasksDocument = gql`
       unitIds: $unitIds
       sources: $sources
       checkInDate: $checkInDate
+      createdAt: $createdAt
     ) {
       meta {
         ...IPaginateMeta
@@ -882,6 +887,7 @@ export const TasksDocument = gql`
  *      unitIds: // value for 'unitIds'
  *      sources: // value for 'sources'
  *      checkInDate: // value for 'checkInDate'
+ *      createdAt: // value for 'createdAt'
  *   },
  * });
  */

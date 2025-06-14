@@ -325,6 +325,7 @@ export type QueryTaskArgs = {
 
 export type QueryTasksArgs = {
   checkInDate?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  createdAt?: InputMaybe<Array<Scalars["String"]["input"]>>;
   limit?: Scalars["Int"]["input"];
   page?: Scalars["Int"]["input"];
   projectId?: InputMaybe<Scalars["String"]["input"]>;
