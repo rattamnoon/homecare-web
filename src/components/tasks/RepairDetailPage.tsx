@@ -2,7 +2,10 @@
 
 import { LayoutWithBreadcrumb } from "@/components/layout/LayoutWithBreadcrumb";
 import { UploadFileType } from "@/gql/generated/graphql";
-import { useTaskQuery } from "@/gql/generated/tasks.generated";
+import {
+  TaskDetailFragment,
+  useTaskQuery,
+} from "@/gql/generated/tasks.generated";
 import {
   faEdit,
   faFaceSmile,
@@ -24,8 +27,10 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { RepairAssignedDialog } from "./components/RepairAssignedDialog";
 import { RepairImagePreview } from "./components/RepairImagePreview";
+import { RepairPriorityDialog } from "./components/RepairPriorityDialog";
 import { RepairSOPImagePreview } from "./components/RepairSOPImagePreview";
 
 const { Title, Text } = Typography;
@@ -33,6 +38,12 @@ const { Title, Text } = Typography;
 export const RepairDetailPage = () => {
   const params = useParams();
   const taskId = params.id as string;
+  const [priorityDialogOpen, setPriorityDialogOpen] = useState(false);
+  const [priorityDialogTaskDetail, setPriorityDialogTaskDetail] =
+    useState<TaskDetailFragment | null>(null);
+  const [assignedDialogOpen, setAssignedDialogOpen] = useState(false);
+  const [assignedDialogTaskDetail, setAssignedDialogTaskDetail] =
+    useState<TaskDetailFragment | null>(null);
 
   const { data, loading, error } = useTaskQuery({
     variables: { id: taskId },
@@ -273,6 +284,10 @@ export const RepairDetailPage = () => {
                             variant="solid"
                             color="blue"
                             icon={<FontAwesomeIcon icon={faPlus} />}
+                            onClick={() => {
+                              setAssignedDialogTaskDetail(detail);
+                              setAssignedDialogOpen(true);
+                            }}
                           >
                             จ่ายงาน
                           </Button>
@@ -287,6 +302,10 @@ export const RepairDetailPage = () => {
                             variant="solid"
                             color="cyan"
                             icon={<FontAwesomeIcon icon={faFaceSmile} />}
+                            onClick={() => {
+                              setPriorityDialogTaskDetail(detail);
+                              setPriorityDialogOpen(true);
+                            }}
                           >
                             Piority
                           </Button>
@@ -363,6 +382,16 @@ export const RepairDetailPage = () => {
           </Skeleton>
         </>
       )}
+      <RepairPriorityDialog
+        open={priorityDialogOpen}
+        onCancel={() => setPriorityDialogOpen(false)}
+        taskDetail={priorityDialogTaskDetail}
+      />
+      <RepairAssignedDialog
+        open={assignedDialogOpen}
+        onCancel={() => setAssignedDialogOpen(false)}
+        taskDetail={assignedDialogTaskDetail}
+      />
     </LayoutWithBreadcrumb>
   );
 };

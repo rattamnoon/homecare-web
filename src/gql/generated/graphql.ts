@@ -209,6 +209,7 @@ export type Mutation = {
   updateMaster: Master;
   updateProject: Project;
   updateTask: Task;
+  updateTaskDetail: TaskDetail;
   updateUploadFile: UploadFile;
   updateUser: User;
 };
@@ -269,6 +270,10 @@ export type MutationUpdateProjectArgs = {
 
 export type MutationUpdateTaskArgs = {
   updateTaskInput: UpdateTaskInput;
+};
+
+export type MutationUpdateTaskDetailArgs = {
+  updateTaskDetailInput: UpdateTaskDetailInput;
 };
 
 export type MutationUpdateUploadFileArgs = {
@@ -594,6 +599,40 @@ export type UpdateProjectInput = {
   id: Scalars["ID"]["input"];
   nameEn?: InputMaybe<Scalars["String"]["input"]>;
   nameTh?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type UpdateTaskDetailInput = {
+  CSATComment?: InputMaybe<Scalars["String"]["input"]>;
+  appointmentDate?: InputMaybe<Scalars["Date"]["input"]>;
+  appointmentRepairComment?: InputMaybe<Scalars["String"]["input"]>;
+  appointmentRepairDate?: InputMaybe<Scalars["Date"]["input"]>;
+  appointmentRepairTime?: InputMaybe<Scalars["String"]["input"]>;
+  appointmentTime?: InputMaybe<Scalars["String"]["input"]>;
+  assignDate?: InputMaybe<Scalars["Date"]["input"]>;
+  assignInDate?: InputMaybe<Scalars["Date"]["input"]>;
+  assignRangeTime?: InputMaybe<Scalars["String"]["input"]>;
+  callingDate?: InputMaybe<Scalars["Date"]["input"]>;
+  categoryId?: InputMaybe<Scalars["String"]["input"]>;
+  causeId?: InputMaybe<Scalars["String"]["input"]>;
+  closeDate?: InputMaybe<Scalars["Date"]["input"]>;
+  code?: InputMaybe<Scalars["String"]["input"]>;
+  contractorId?: InputMaybe<Scalars["String"]["input"]>;
+  description?: InputMaybe<Scalars["String"]["input"]>;
+  files?: InputMaybe<Array<CreateUploadFileInput>>;
+  finishDate?: InputMaybe<Scalars["Date"]["input"]>;
+  homecareComment?: InputMaybe<Scalars["String"]["input"]>;
+  homecareId?: InputMaybe<Scalars["String"]["input"]>;
+  homecareInDate?: InputMaybe<Scalars["Date"]["input"]>;
+  homecareRangeTime?: InputMaybe<Scalars["String"]["input"]>;
+  homecareStatus?: InputMaybe<TaskStatus>;
+  id: Scalars["ID"]["input"];
+  inProgressDate?: InputMaybe<Scalars["Date"]["input"]>;
+  isCSAT?: InputMaybe<Scalars["Boolean"]["input"]>;
+  priority?: InputMaybe<Scalars["Int"]["input"]>;
+  reProcessDate?: InputMaybe<Scalars["Date"]["input"]>;
+  slaId?: InputMaybe<Scalars["String"]["input"]>;
+  status?: InputMaybe<TaskStatus>;
+  subCategoryId?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type UpdateTaskInput = {

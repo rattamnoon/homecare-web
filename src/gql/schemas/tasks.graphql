@@ -295,3 +295,9 @@ mutation CreateTask(
     ...Task
   }
 }
+
+mutation UpdateTaskDetail($updateTaskDetailInput: UpdateTaskDetailInput!) {
+  updateTaskDetail(updateTaskDetailInput: $updateTaskDetailInput) {
+    ...TaskDetail
+  }
+}

@@ -1516,6 +1516,420 @@ export type CreateTaskMutation = {
   };
 };
 
+export type UpdateTaskDetailMutationVariables = Types.Exact<{
+  updateTaskDetailInput: Types.UpdateTaskDetailInput;
+}>;
+
+export type UpdateTaskDetailMutation = {
+  __typename?: "Mutation";
+  updateTaskDetail: {
+    __typename?: "TaskDetail";
+    id: string;
+    taskId: string;
+    code: string;
+    description?: string | null;
+    categoryId?: string | null;
+    subCategoryId?: string | null;
+    slaId?: string | null;
+    causeId?: string | null;
+    contractorId?: string | null;
+    homecareId?: string | null;
+    homecareInDate?: Date | null;
+    homecareComment?: string | null;
+    assignInDate?: Date | null;
+    appointmentDate?: Date | null;
+    appointmentTime?: string | null;
+    appointmentRepairDate?: Date | null;
+    appointmentRepairTime?: string | null;
+    appointmentRepairComment?: string | null;
+    callingDate?: Date | null;
+    assignDate?: Date | null;
+    inProgressDate?: Date | null;
+    reProcessDate?: Date | null;
+    finishDate?: Date | null;
+    closeDate?: Date | null;
+    isCSAT?: boolean | null;
+    CSATComment?: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+    status?: {
+      __typename?: "TaskStatusDto";
+      id: Types.TaskStatus;
+      nameTh: string;
+      nameEn: string;
+      color: string;
+    } | null;
+    homecareStatus?: {
+      __typename?: "TaskStatusDto";
+      id: Types.TaskStatus;
+      nameTh: string;
+      nameEn: string;
+      color: string;
+    } | null;
+    homecareInRangeTime?: {
+      __typename?: "TaskRangeTimeDto";
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    } | null;
+    assignRangeTime?: {
+      __typename?: "TaskRangeTimeDto";
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    } | null;
+    priority?: {
+      __typename?: "TaskPriorityDto";
+      color: string;
+      id: number;
+      nameEn: string;
+      nameTh: string;
+    } | null;
+    images: Array<{
+      __typename?: "UploadFile";
+      id: string;
+      refId?: string | null;
+      fileId?: string | null;
+      fileType: Types.UploadFileType;
+      fileName?: string | null;
+      fileFolder?: string | null;
+      filePath?: string | null;
+      fileBucket?: string | null;
+      fileExtension?: string | null;
+      fileUrl: string;
+      isPublic: boolean;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    }>;
+    category?: {
+      __typename?: "Master";
+      id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
+      nameEn?: string | null;
+      maxScore?: string | null;
+      defaultScore?: string | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    subCategory?: {
+      __typename?: "Master";
+      id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
+      nameEn?: string | null;
+      maxScore?: string | null;
+      defaultScore?: string | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    homecare?: {
+      __typename?: "User";
+      id: string;
+      employeeId: string;
+      username: string;
+      firstName?: string | null;
+      lastName?: string | null;
+      email: string;
+      lastLoginAt: Date;
+      status: string;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    cause?: {
+      __typename?: "Master";
+      id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
+      nameEn?: string | null;
+      maxScore?: string | null;
+      defaultScore?: string | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    contractor?: {
+      __typename?: "Master";
+      id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
+      nameEn?: string | null;
+      maxScore?: string | null;
+      defaultScore?: string | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    sla?: {
+      __typename?: "Master";
+      id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
+      nameEn?: string | null;
+      maxScore?: string | null;
+      defaultScore?: string | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+      parent?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: string | null;
+        defaultScore?: string | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+    } | null;
+    assigns: Array<{
+      __typename?: "TaskDetailAssign";
+      id: string;
+      code: string;
+      SLA?: number | null;
+      SLAEndDate?: Date | null;
+      SLAStartDate?: Date | null;
+      SLAWorkHour?: number | null;
+      assetComment?: string | null;
+      comment?: string | null;
+      createdAt: Date;
+      customerNameFinish?: string | null;
+      finishDate?: Date | null;
+      isAssetCustomer?: boolean | null;
+      requestDate?: Date | null;
+      reAssignInDate?: Date | null;
+      reAssignRemark?: string | null;
+      logs: Array<{
+        __typename?: "TaskDetailAssign";
+        id: string;
+        code: string;
+        SLA?: number | null;
+        SLAEndDate?: Date | null;
+        SLAStartDate?: Date | null;
+        SLAWorkHour?: number | null;
+        assetComment?: string | null;
+        comment?: string | null;
+        createdAt: Date;
+        customerNameFinish?: string | null;
+        finishDate?: Date | null;
+        isAssetCustomer?: boolean | null;
+        requestDate?: Date | null;
+        reAssignInDate?: Date | null;
+        reAssignRemark?: string | null;
+        status?: {
+          __typename?: "TaskStatusDto";
+          id: Types.TaskStatus;
+          nameTh: string;
+          nameEn: string;
+          color: string;
+        } | null;
+        staffStatus?: {
+          __typename?: "TaskStatusDto";
+          id: Types.TaskStatus;
+          nameTh: string;
+          nameEn: string;
+          color: string;
+        } | null;
+        staff?: {
+          __typename?: "User";
+          id: string;
+          employeeId: string;
+          firstName?: string | null;
+          lastName?: string | null;
+        } | null;
+        requestRangeTime?: {
+          __typename?: "TaskRangeTimeDto";
+          id: string;
+          nameTh: string;
+          nameEn: string;
+        } | null;
+        reAssignRangeTime?: {
+          __typename?: "TaskRangeTimeDto";
+          id: string;
+          nameTh: string;
+          nameEn: string;
+        } | null;
+        finishType?: {
+          __typename?: "TaskStatusDto";
+          id: Types.TaskStatus;
+          nameTh: string;
+          nameEn: string;
+          color: string;
+        } | null;
+        images: Array<{
+          __typename?: "UploadFile";
+          id: string;
+          refId?: string | null;
+          fileId?: string | null;
+          fileType: Types.UploadFileType;
+          fileName?: string | null;
+          fileFolder?: string | null;
+          filePath?: string | null;
+          fileBucket?: string | null;
+          fileExtension?: string | null;
+          fileUrl: string;
+          isPublic: boolean;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        }>;
+        createdBy?: {
+          __typename?: "User";
+          id: string;
+          employeeId: string;
+          firstName?: string | null;
+          lastName?: string | null;
+        } | null;
+        updatedBy?: {
+          __typename?: "User";
+          id: string;
+          employeeId: string;
+          firstName?: string | null;
+          lastName?: string | null;
+        } | null;
+      }>;
+      status?: {
+        __typename?: "TaskStatusDto";
+        id: Types.TaskStatus;
+        nameTh: string;
+        nameEn: string;
+        color: string;
+      } | null;
+      staffStatus?: {
+        __typename?: "TaskStatusDto";
+        id: Types.TaskStatus;
+        nameTh: string;
+        nameEn: string;
+        color: string;
+      } | null;
+      staff?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        firstName?: string | null;
+        lastName?: string | null;
+      } | null;
+      requestRangeTime?: {
+        __typename?: "TaskRangeTimeDto";
+        id: string;
+        nameTh: string;
+        nameEn: string;
+      } | null;
+      reAssignRangeTime?: {
+        __typename?: "TaskRangeTimeDto";
+        id: string;
+        nameTh: string;
+        nameEn: string;
+      } | null;
+      finishType?: {
+        __typename?: "TaskStatusDto";
+        id: Types.TaskStatus;
+        nameTh: string;
+        nameEn: string;
+        color: string;
+      } | null;
+      images: Array<{
+        __typename?: "UploadFile";
+        id: string;
+        refId?: string | null;
+        fileId?: string | null;
+        fileType: Types.UploadFileType;
+        fileName?: string | null;
+        fileFolder?: string | null;
+        filePath?: string | null;
+        fileBucket?: string | null;
+        fileExtension?: string | null;
+        fileUrl: string;
+        isPublic: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      }>;
+      createdBy?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        firstName?: string | null;
+        lastName?: string | null;
+      } | null;
+      updatedBy?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        firstName?: string | null;
+        lastName?: string | null;
+      } | null;
+    }>;
+  };
+};
+
 export const TaskStatusFragmentDoc = gql`
   fragment TaskStatus on TaskStatusDto {
     id
@@ -2081,4 +2495,55 @@ export type CreateTaskMutationResult =
 export type CreateTaskMutationOptions = Apollo.BaseMutationOptions<
   CreateTaskMutation,
   CreateTaskMutationVariables
+>;
+export const UpdateTaskDetailDocument = gql`
+  mutation UpdateTaskDetail($updateTaskDetailInput: UpdateTaskDetailInput!) {
+    updateTaskDetail(updateTaskDetailInput: $updateTaskDetailInput) {
+      ...TaskDetail
+    }
+  }
+  ${TaskDetailFragmentDoc}
+`;
+export type UpdateTaskDetailMutationFn = Apollo.MutationFunction<
+  UpdateTaskDetailMutation,
+  UpdateTaskDetailMutationVariables
+>;
+
+/**
+ * __useUpdateTaskDetailMutation__
+ *
+ * To run a mutation, you first call `useUpdateTaskDetailMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTaskDetailMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTaskDetailMutation, { data, loading, error }] = useUpdateTaskDetailMutation({
+ *   variables: {
+ *      updateTaskDetailInput: // value for 'updateTaskDetailInput'
+ *   },
+ * });
+ */
+export function useUpdateTaskDetailMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateTaskDetailMutation,
+    UpdateTaskDetailMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateTaskDetailMutation,
+    UpdateTaskDetailMutationVariables
+  >(UpdateTaskDetailDocument, options);
+}
+export type UpdateTaskDetailMutationHookResult = ReturnType<
+  typeof useUpdateTaskDetailMutation
+>;
+export type UpdateTaskDetailMutationResult =
+  Apollo.MutationResult<UpdateTaskDetailMutation>;
+export type UpdateTaskDetailMutationOptions = Apollo.BaseMutationOptions<
+  UpdateTaskDetailMutation,
+  UpdateTaskDetailMutationVariables
 >;
