@@ -1,7 +1,7 @@
 "use client";
 
 import { LayoutWithBreadcrumb } from "@/components/layout/LayoutWithBreadcrumb";
-import { UploadFileType } from "@/gql/generated/graphql";
+import { TaskStatus, UploadFileType } from "@/gql/generated/graphql";
 import {
   TaskDetailFragment,
   useTaskQuery,
@@ -31,6 +31,7 @@ import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { RepairAssignedDialog } from "./components/RepairAssignedDialog";
+import { RepairEvaluationDialog } from "./components/RepairEvaluationDialog";
 import { RepairImagePreview } from "./components/RepairImagePreview";
 import { RepairLogsDialog } from "./components/RepairLogsDialog";
 import { RepairMisscallDialog } from "./components/RepairMisscallDialog";
@@ -64,6 +65,9 @@ export const RepairDetailPage = () => {
   ] = useState<TaskDetailFragment | null>(null);
   const [logsDialogOpen, setLogsDialogOpen] = useState(false);
   const [logsDialogTaskDetail, setLogsDialogTaskDetail] =
+    useState<TaskDetailFragment | null>(null);
+  const [evaluationDialogOpen, setEvaluationDialogOpen] = useState(false);
+  const [evaluationDialogTaskDetail, setEvaluationDialogTaskDetail] =
     useState<TaskDetailFragment | null>(null);
 
   const { data, loading, error } = useTaskQuery({
@@ -222,9 +226,17 @@ export const RepairDetailPage = () => {
                         {detail.subCategory?.nameTh}
                       </Descriptions.Item>
                       <Descriptions.Item label="สถานะประเมิน">
-                        <Tag color="default" bordered={false}>
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          size="small"
+                          onClick={() => {
+                            setEvaluationDialogTaskDetail(detail);
+                            setEvaluationDialogOpen(true);
+                          }}
+                        >
                           ยังไม่ได้ประเมิน
-                        </Tag>
+                        </Button>
                       </Descriptions.Item>
                       <Descriptions.Item label="รูปภาพ" span={3}>
                         <RepairImagePreview
@@ -291,6 +303,10 @@ export const RepairDetailPage = () => {
                               setMisscallDialogTaskDetail(detail);
                               setMisscallDialogOpen(true);
                             }}
+                            disabled={
+                              detail.status?.id === TaskStatus.Finished ||
+                              detail.status?.id === TaskStatus.Closed
+                            }
                           >
                             ติดต่อลูกค้าไม่ได้
                           </Button>
@@ -302,6 +318,10 @@ export const RepairDetailPage = () => {
                               setWaitingConstructionDialogTaskDetail(detail);
                               setWaitingConstructionDialogOpen(true);
                             }}
+                            disabled={
+                              detail.status?.id === TaskStatus.Finished ||
+                              detail.status?.id === TaskStatus.Closed
+                            }
                           >
                             ของไม่ครบ
                           </Button>
@@ -333,6 +353,10 @@ export const RepairDetailPage = () => {
                               setAssignedDialogTaskDetail(detail);
                               setAssignedDialogOpen(true);
                             }}
+                            disabled={
+                              detail.status?.id === TaskStatus.Finished ||
+                              detail.status?.id === TaskStatus.Closed
+                            }
                           >
                             จ่ายงาน
                           </Button>
@@ -341,6 +365,10 @@ export const RepairDetailPage = () => {
                             color="green"
                             icon={<FontAwesomeIcon icon={faHouseCircleCheck} />}
                             onClick={() => handleFinishTaskDetail(detail)}
+                            disabled={
+                              detail.status?.id === TaskStatus.Finished ||
+                              detail.status?.id === TaskStatus.Closed
+                            }
                           >
                             Finish
                           </Button>
@@ -352,6 +380,10 @@ export const RepairDetailPage = () => {
                               setPriorityDialogTaskDetail(detail);
                               setPriorityDialogOpen(true);
                             }}
+                            disabled={
+                              detail.status?.id === TaskStatus.Finished ||
+                              detail.status?.id === TaskStatus.Closed
+                            }
                           >
                             Piority
                           </Button>
@@ -359,7 +391,11 @@ export const RepairDetailPage = () => {
                             variant="solid"
                             color="orange"
                             icon={<FontAwesomeIcon icon={faEdit} />}
-                            disabled={detail.assigns?.length === 0}
+                            disabled={
+                              detail.assigns?.length === 0 ||
+                              detail.status?.id === TaskStatus.Finished ||
+                              detail.status?.id === TaskStatus.Closed
+                            }
                             onClick={() => {
                               setEditAssignDialogTaskDetail(detail);
                               setEditAssignDialogOpen(true);
@@ -466,6 +502,13 @@ export const RepairDetailPage = () => {
           open={logsDialogOpen}
           onCancel={() => setLogsDialogOpen(false)}
           taskDetail={logsDialogTaskDetail}
+        />
+      )}
+      {evaluationDialogOpen && (
+        <RepairEvaluationDialog
+          open={evaluationDialogOpen}
+          onCancel={() => setEvaluationDialogOpen(false)}
+          taskDetail={evaluationDialogTaskDetail}
         />
       )}
     </LayoutWithBreadcrumb>
