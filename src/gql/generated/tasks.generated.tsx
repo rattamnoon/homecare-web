@@ -506,6 +506,28 @@ export type TaskQuery = {
           deletedAt?: Date | null;
         } | null;
       } | null;
+      assigns: Array<{
+        __typename?: "TaskDetailAssign";
+        id: string;
+        code: string;
+        images: Array<{
+          __typename?: "UploadFile";
+          id: string;
+          refId?: string | null;
+          fileId?: string | null;
+          fileType: Types.UploadFileType;
+          fileName?: string | null;
+          fileFolder?: string | null;
+          filePath?: string | null;
+          fileBucket?: string | null;
+          fileExtension?: string | null;
+          fileUrl: string;
+          isPublic: boolean;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        }>;
+      }>;
       status?: {
         __typename?: "TaskStatusDto";
         id: Types.TaskStatus;
@@ -961,6 +983,13 @@ export const TaskDocument = gql`
           ...Master
           parent {
             ...Master
+          }
+        }
+        assigns {
+          id
+          code
+          images {
+            ...UploadFile
           }
         }
       }

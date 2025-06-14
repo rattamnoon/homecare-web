@@ -209,6 +209,13 @@ query Task($id: ID!) {
           ...Master
         }
       }
+      assigns {
+        id
+        code
+        images {
+          ...UploadFile
+        }
+      }
     }
   }
 }
