@@ -28,9 +28,9 @@ export const RepairLogsDialog = ({
           key={item.id}
           style={{
             borderLeft: `4px solid ${item.type?.color}`,
-            padding: "10px",
+            padding: "8px",
             marginBottom: "10px",
-            borderRadius: "8px",
+            borderRadius: "4px",
             backgroundColor: "#f0f0f0",
             display: "flex",
             flexDirection: "column",
