@@ -8,7 +8,7 @@ import {
 import { faSave } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Form, message, Radio, Space } from "antd";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 interface RepairPriorityDialogProps {
   open: boolean;
@@ -49,6 +49,12 @@ export const RepairPriorityDialog = ({
     [optionsData]
   );
 
+  useEffect(() => {
+    form.setFieldsValue({
+      priority: taskDetail?.priority?.id || 0,
+    });
+  }, [form, taskDetail]);
+
   const onOk = async (priority: number) => {
     await updateTaskDetail({
       variables: {
@@ -82,13 +88,13 @@ export const RepairPriorityDialog = ({
           onOk(values.priority);
         }}
         initialValues={{
-          priority: taskDetail?.priority?.id || 1,
+          priority: taskDetail?.priority?.id || 0,
         }}
       >
         <Form.Item
           label="Priority"
           name="priority"
-          required
+          required={false}
           rules={[{ required: true, message: "กรุณาเลือกความสำคัญ" }]}
         >
           <Radio.Group>

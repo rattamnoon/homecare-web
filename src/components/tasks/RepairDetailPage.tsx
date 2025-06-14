@@ -30,8 +30,10 @@ import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { RepairAssignedDialog } from "./components/RepairAssignedDialog";
 import { RepairImagePreview } from "./components/RepairImagePreview";
+import { RepairMisscallDialog } from "./components/RepairMisscallDialog";
 import { RepairPriorityDialog } from "./components/RepairPriorityDialog";
 import { RepairSOPImagePreview } from "./components/RepairSOPImagePreview";
+import { RepairWaitingConstructionDialog } from "./components/RepairWaitingConstructionDialog";
 
 const { Title, Text } = Typography;
 
@@ -43,6 +45,18 @@ export const RepairDetailPage = () => {
     useState<TaskDetailFragment | null>(null);
   const [assignedDialogOpen, setAssignedDialogOpen] = useState(false);
   const [assignedDialogTaskDetail, setAssignedDialogTaskDetail] =
+    useState<TaskDetailFragment | null>(null);
+  const [misscallDialogOpen, setMisscallDialogOpen] = useState(false);
+  const [misscallDialogTaskDetail, setMisscallDialogTaskDetail] =
+    useState<TaskDetailFragment | null>(null);
+  const [waitingConstructionDialogOpen, setWaitingConstructionDialogOpen] =
+    useState(false);
+  const [
+    waitingConstructionDialogTaskDetail,
+    setWaitingConstructionDialogTaskDetail,
+  ] = useState<TaskDetailFragment | null>(null);
+  const [logsDialogOpen, setLogsDialogOpen] = useState(false);
+  const [logsDialogTaskDetail, setLogsDialogTaskDetail] =
     useState<TaskDetailFragment | null>(null);
 
   const { data, loading, error } = useTaskQuery({
@@ -250,7 +264,8 @@ export const RepairDetailPage = () => {
                             variant="outlined"
                             color="primary"
                             onClick={() => {
-                              console.log("misscall");
+                              setMisscallDialogTaskDetail(detail);
+                              setMisscallDialogOpen(true);
                             }}
                           >
                             ติดต่อลูกค้าไม่ได้
@@ -260,7 +275,8 @@ export const RepairDetailPage = () => {
                             variant="outlined"
                             color="primary"
                             onClick={() => {
-                              console.log("waiting-construction");
+                              setWaitingConstructionDialogTaskDetail(detail);
+                              setWaitingConstructionDialogOpen(true);
                             }}
                           >
                             ของไม่ครบ
@@ -268,7 +284,7 @@ export const RepairDetailPage = () => {
                           <Button
                             size="small"
                             variant="outlined"
-                            color="yellow"
+                            color="primary"
                             onClick={() => {
                               console.log("logs");
                             }}
@@ -398,6 +414,20 @@ export const RepairDetailPage = () => {
           open={assignedDialogOpen}
           onCancel={() => setAssignedDialogOpen(false)}
           taskDetail={assignedDialogTaskDetail}
+        />
+      )}
+      {misscallDialogOpen && (
+        <RepairMisscallDialog
+          open={misscallDialogOpen}
+          onCancel={() => setMisscallDialogOpen(false)}
+          taskDetail={misscallDialogTaskDetail}
+        />
+      )}
+      {waitingConstructionDialogOpen && (
+        <RepairWaitingConstructionDialog
+          open={waitingConstructionDialogOpen}
+          onCancel={() => setWaitingConstructionDialogOpen(false)}
+          taskDetail={waitingConstructionDialogTaskDetail}
         />
       )}
     </LayoutWithBreadcrumb>

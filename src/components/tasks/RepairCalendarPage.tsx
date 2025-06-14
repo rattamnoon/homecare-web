@@ -4,7 +4,6 @@ import { LayoutWithBreadcrumb } from "@/components/layout/LayoutWithBreadcrumb";
 import { TaskType } from "@/gql/generated/graphql";
 import { useTasksQuery } from "@/gql/generated/tasks.generated";
 import { Calendar, CalendarProps, Flex, Skeleton, Tag } from "antd";
-import th from "antd/es/calendar/locale/th_TH";
 import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/th";
 import weekday from "dayjs/plugin/weekday";
@@ -62,7 +61,6 @@ export const RepairCalendarPage = () => {
         <Calendar
           value={currentDate}
           onChange={(value) => setCurrentDate(value)}
-          locale={th}
           cellRender={cellRender}
           style={{
             backgroundColor: "white",
