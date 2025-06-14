@@ -436,6 +436,26 @@ export type TaskPriorityFragment = {
   nameTh: string;
 };
 
+export type TaskDetailReportLogFragment = {
+  __typename?: "TaskDetailReportLog";
+  callbackDate?: Date | null;
+  checkInDate?: Date | null;
+  comment?: string | null;
+  createdAt: Date;
+  deletedAt?: Date | null;
+  id: string;
+  taskDetailAssignId: string;
+  taskDetailId?: string | null;
+  type: Types.TaskStatus;
+  updatedAt: Date;
+  checkInRangeTime?: {
+    __typename?: "TaskRangeTimeDto";
+    id: string;
+    nameEn: string;
+    nameTh: string;
+  } | null;
+};
+
 export type TaskDetailFragment = {
   __typename?: "TaskDetail";
   id: string;
@@ -769,6 +789,25 @@ export type TaskDetailFragment = {
         lastName?: string | null;
       } | null;
     }>;
+    reportLogs: Array<{
+      __typename?: "TaskDetailReportLog";
+      callbackDate?: Date | null;
+      checkInDate?: Date | null;
+      comment?: string | null;
+      createdAt: Date;
+      deletedAt?: Date | null;
+      id: string;
+      taskDetailAssignId: string;
+      taskDetailId?: string | null;
+      type: Types.TaskStatus;
+      updatedAt: Date;
+      checkInRangeTime?: {
+        __typename?: "TaskRangeTimeDto";
+        id: string;
+        nameEn: string;
+        nameTh: string;
+      } | null;
+    }>;
     status?: {
       __typename?: "TaskStatusDto";
       id: Types.TaskStatus;
@@ -839,6 +878,25 @@ export type TaskDetailFragment = {
       employeeId: string;
       firstName?: string | null;
       lastName?: string | null;
+    } | null;
+  }>;
+  reportLogs: Array<{
+    __typename?: "TaskDetailReportLog";
+    callbackDate?: Date | null;
+    checkInDate?: Date | null;
+    comment?: string | null;
+    createdAt: Date;
+    deletedAt?: Date | null;
+    id: string;
+    taskDetailAssignId: string;
+    taskDetailId?: string | null;
+    type: Types.TaskStatus;
+    updatedAt: Date;
+    checkInRangeTime?: {
+      __typename?: "TaskRangeTimeDto";
+      id: string;
+      nameEn: string;
+      nameTh: string;
     } | null;
   }>;
 };
@@ -1199,6 +1257,25 @@ export type TaskQuery = {
             lastName?: string | null;
           } | null;
         }>;
+        reportLogs: Array<{
+          __typename?: "TaskDetailReportLog";
+          callbackDate?: Date | null;
+          checkInDate?: Date | null;
+          comment?: string | null;
+          createdAt: Date;
+          deletedAt?: Date | null;
+          id: string;
+          taskDetailAssignId: string;
+          taskDetailId?: string | null;
+          type: Types.TaskStatus;
+          updatedAt: Date;
+          checkInRangeTime?: {
+            __typename?: "TaskRangeTimeDto";
+            id: string;
+            nameEn: string;
+            nameTh: string;
+          } | null;
+        }>;
         status?: {
           __typename?: "TaskStatusDto";
           id: Types.TaskStatus;
@@ -1269,6 +1346,25 @@ export type TaskQuery = {
           employeeId: string;
           firstName?: string | null;
           lastName?: string | null;
+        } | null;
+      }>;
+      reportLogs: Array<{
+        __typename?: "TaskDetailReportLog";
+        callbackDate?: Date | null;
+        checkInDate?: Date | null;
+        comment?: string | null;
+        createdAt: Date;
+        deletedAt?: Date | null;
+        id: string;
+        taskDetailAssignId: string;
+        taskDetailId?: string | null;
+        type: Types.TaskStatus;
+        updatedAt: Date;
+        checkInRangeTime?: {
+          __typename?: "TaskRangeTimeDto";
+          id: string;
+          nameEn: string;
+          nameTh: string;
         } | null;
       }>;
     }>;
@@ -1855,6 +1951,25 @@ export type UpdateTaskDetailMutation = {
           lastName?: string | null;
         } | null;
       }>;
+      reportLogs: Array<{
+        __typename?: "TaskDetailReportLog";
+        callbackDate?: Date | null;
+        checkInDate?: Date | null;
+        comment?: string | null;
+        createdAt: Date;
+        deletedAt?: Date | null;
+        id: string;
+        taskDetailAssignId: string;
+        taskDetailId?: string | null;
+        type: Types.TaskStatus;
+        updatedAt: Date;
+        checkInRangeTime?: {
+          __typename?: "TaskRangeTimeDto";
+          id: string;
+          nameEn: string;
+          nameTh: string;
+        } | null;
+      }>;
       status?: {
         __typename?: "TaskStatusDto";
         id: Types.TaskStatus;
@@ -1925,6 +2040,25 @@ export type UpdateTaskDetailMutation = {
         employeeId: string;
         firstName?: string | null;
         lastName?: string | null;
+      } | null;
+    }>;
+    reportLogs: Array<{
+      __typename?: "TaskDetailReportLog";
+      callbackDate?: Date | null;
+      checkInDate?: Date | null;
+      comment?: string | null;
+      createdAt: Date;
+      deletedAt?: Date | null;
+      id: string;
+      taskDetailAssignId: string;
+      taskDetailId?: string | null;
+      type: Types.TaskStatus;
+      updatedAt: Date;
+      checkInRangeTime?: {
+        __typename?: "TaskRangeTimeDto";
+        id: string;
+        nameEn: string;
+        nameTh: string;
       } | null;
     }>;
   };
@@ -2102,6 +2236,25 @@ export const TaskDetailAssignFragmentDoc = gql`
   ${TaskRangeTimeFragmentDoc}
   ${UploadFileFragmentDoc}
 `;
+export const TaskDetailReportLogFragmentDoc = gql`
+  fragment TaskDetailReportLog on TaskDetailReportLog {
+    callbackDate
+    checkInDate
+    comment
+    createdAt
+    deletedAt
+    id
+    taskDetailAssignId
+    taskDetailId
+    type
+    updatedAt
+    checkInRangeTime {
+      id
+      nameEn
+      nameTh
+    }
+  }
+`;
 export const TaskDetailFragmentDoc = gql`
   fragment TaskDetail on TaskDetail {
     id
@@ -2177,6 +2330,12 @@ export const TaskDetailFragmentDoc = gql`
       logs {
         ...TaskDetailAssign
       }
+      reportLogs {
+        ...TaskDetailReportLog
+      }
+    }
+    reportLogs {
+      ...TaskDetailReportLog
     }
   }
   ${TaskStatusFragmentDoc}
@@ -2186,6 +2345,7 @@ export const TaskDetailFragmentDoc = gql`
   ${MasterFragmentDoc}
   ${UserFragmentDoc}
   ${TaskDetailAssignFragmentDoc}
+  ${TaskDetailReportLogFragmentDoc}
 `;
 export const TasksDocument = gql`
   query Tasks(

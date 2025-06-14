@@ -192,6 +192,24 @@ fragment TaskPriority on TaskPriorityDto {
   nameTh
 }
 
+fragment TaskDetailReportLog on TaskDetailReportLog {
+  callbackDate
+  checkInDate
+  comment
+  createdAt
+  deletedAt
+  id
+  taskDetailAssignId
+  taskDetailId
+  type
+  updatedAt
+  checkInRangeTime {
+    id
+    nameEn
+    nameTh
+  }
+}
+
 fragment TaskDetail on TaskDetail {
   id
   taskId
@@ -266,6 +284,12 @@ fragment TaskDetail on TaskDetail {
     logs {
       ...TaskDetailAssign
     }
+    reportLogs {
+      ...TaskDetailReportLog
+    }
+  }
+  reportLogs {
+    ...TaskDetailReportLog
   }
 }
 

@@ -435,6 +435,7 @@ export type TaskDetail = {
   logs: Array<TaskDetail>;
   priority?: Maybe<TaskPriorityDto>;
   reProcessDate?: Maybe<Scalars["Date"]["output"]>;
+  reportLogs: Array<TaskDetailReportLog>;
   sla?: Maybe<Master>;
   slaId?: Maybe<Scalars["String"]["output"]>;
   status?: Maybe<TaskStatusDto>;
@@ -469,6 +470,7 @@ export type TaskDetailAssign = {
   reAssignInDate?: Maybe<Scalars["Date"]["output"]>;
   reAssignRangeTime?: Maybe<TaskRangeTimeDto>;
   reAssignRemark?: Maybe<Scalars["String"]["output"]>;
+  reportLogs: Array<TaskDetailReportLog>;
   requestDate?: Maybe<Scalars["Date"]["output"]>;
   requestRangeTime?: Maybe<TaskRangeTimeDto>;
   staff?: Maybe<User>;
@@ -476,6 +478,25 @@ export type TaskDetailAssign = {
   staffStatus?: Maybe<TaskStatusDto>;
   status?: Maybe<TaskStatusDto>;
   taskDetailId: Scalars["String"]["output"];
+  updatedAt: Scalars["Date"]["output"];
+  updatedBy?: Maybe<User>;
+};
+
+export type TaskDetailReportLog = {
+  __typename?: "TaskDetailReportLog";
+  assign?: Maybe<TaskDetailAssign>;
+  callbackDate?: Maybe<Scalars["Date"]["output"]>;
+  checkInDate?: Maybe<Scalars["Date"]["output"]>;
+  checkInRangeTime?: Maybe<TaskRangeTimeDto>;
+  comment?: Maybe<Scalars["String"]["output"]>;
+  createdAt: Scalars["Date"]["output"];
+  createdBy?: Maybe<User>;
+  deletedAt?: Maybe<Scalars["Date"]["output"]>;
+  id: Scalars["ID"]["output"];
+  task?: Maybe<Task>;
+  taskDetailAssignId: Scalars["String"]["output"];
+  taskDetailId?: Maybe<Scalars["String"]["output"]>;
+  type: TaskStatus;
   updatedAt: Scalars["Date"]["output"];
   updatedBy?: Maybe<User>;
 };
