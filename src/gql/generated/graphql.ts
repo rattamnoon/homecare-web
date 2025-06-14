@@ -399,6 +399,7 @@ export type TaskDetail = {
   assignDate?: Maybe<Scalars["Date"]["output"]>;
   assignInDate?: Maybe<Scalars["Date"]["output"]>;
   assignRangeTime?: Maybe<TaskRangeTimeDto>;
+  assigns: Array<TaskDetailAssign>;
   callingDate?: Maybe<Scalars["Date"]["output"]>;
   category?: Maybe<Master>;
   categoryId?: Maybe<Scalars["String"]["output"]>;
@@ -424,6 +425,7 @@ export type TaskDetail = {
   images: Array<UploadFile>;
   inProgressDate?: Maybe<Scalars["Date"]["output"]>;
   isCSAT?: Maybe<Scalars["Boolean"]["output"]>;
+  logs: Array<TaskDetail>;
   priority?: Maybe<Scalars["Int"]["output"]>;
   reProcessDate?: Maybe<Scalars["Date"]["output"]>;
   sla?: Maybe<Master>;
@@ -433,6 +435,36 @@ export type TaskDetail = {
   subCategoryId?: Maybe<Scalars["String"]["output"]>;
   task: Task;
   taskId: Scalars["String"]["output"];
+  updatedAt: Scalars["Date"]["output"];
+  updatedBy?: Maybe<User>;
+};
+
+export type TaskDetailAssign = {
+  __typename?: "TaskDetailAssign";
+  SLA?: Maybe<Scalars["Int"]["output"]>;
+  SLAEndDate?: Maybe<Scalars["Date"]["output"]>;
+  SLAStartDate?: Maybe<Scalars["Date"]["output"]>;
+  SLAWorkHour?: Maybe<Scalars["Int"]["output"]>;
+  assetComment?: Maybe<Scalars["String"]["output"]>;
+  code: Scalars["String"]["output"];
+  comment?: Maybe<Scalars["String"]["output"]>;
+  createdAt: Scalars["Date"]["output"];
+  createdBy?: Maybe<User>;
+  customerNameFinish?: Maybe<Scalars["String"]["output"]>;
+  deletedAt?: Maybe<Scalars["Date"]["output"]>;
+  deletedBy?: Maybe<User>;
+  finishDate?: Maybe<Scalars["Date"]["output"]>;
+  finishType?: Maybe<TaskStatus>;
+  id: Scalars["ID"]["output"];
+  isAssetCustomer?: Maybe<Scalars["Boolean"]["output"]>;
+  logs: Array<TaskDetailAssign>;
+  reAssignInDate?: Maybe<Scalars["Date"]["output"]>;
+  reAssignRemark?: Maybe<Scalars["String"]["output"]>;
+  requestDate?: Maybe<Scalars["Date"]["output"]>;
+  staffId?: Maybe<Scalars["String"]["output"]>;
+  staffStatus?: Maybe<TaskStatus>;
+  status: TaskStatus;
+  taskDetailId: Scalars["String"]["output"];
   updatedAt: Scalars["Date"]["output"];
   updatedBy?: Maybe<User>;
 };
