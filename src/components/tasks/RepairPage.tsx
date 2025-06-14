@@ -223,7 +223,7 @@ export const RepairPage = () => {
                 width: 150,
                 render: (_, record) => {
                   const isBefore = dayjs(record.insuranceDate).isBefore(
-                    dayjs()
+                    dayjs(record.createdAt)
                   );
                   return (
                     <Space>
@@ -240,12 +240,14 @@ export const RepairPage = () => {
                 },
                 onCell: (record) => ({
                   style: {
-                    color: dayjs(record.insuranceDate).isBefore(dayjs())
+                    color: dayjs(record.insuranceDate).isBefore(
+                      dayjs(record.createdAt)
+                    )
                       ? "red"
                       : "green",
                     fontWeight: "bold",
                     textDecoration: dayjs(record.insuranceDate).isBefore(
-                      dayjs()
+                      dayjs(record.createdAt)
                     )
                       ? "line-through"
                       : "none",

@@ -114,11 +114,15 @@ export const RepairDetailPage = () => {
                 label="วันหมดประกัน"
                 styles={{
                   content: {
-                    color: dayjs(task?.insuranceDate).isBefore(dayjs())
+                    color: dayjs(task?.insuranceDate).isBefore(
+                      dayjs(task?.createdAt)
+                    )
                       ? "red"
                       : "green",
                     fontWeight: "bold",
-                    textDecoration: dayjs(task?.insuranceDate).isBefore(dayjs())
+                    textDecoration: dayjs(task?.insuranceDate).isBefore(
+                      dayjs(task?.createdAt)
+                    )
                       ? "line-through"
                       : "none",
                   },

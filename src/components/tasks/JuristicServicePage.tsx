@@ -147,11 +147,15 @@ export const JuristicServicePage = () => {
             },
             onCell: (record) => ({
               style: {
-                color: dayjs(record.insuranceDate).isBefore(dayjs())
+                color: dayjs(record.insuranceDate).isBefore(
+                  dayjs(record.createdAt)
+                )
                   ? "red"
                   : "green",
                 fontWeight: "bold",
-                textDecoration: dayjs(record.insuranceDate).isBefore(dayjs())
+                textDecoration: dayjs(record.insuranceDate).isBefore(
+                  dayjs(record.createdAt)
+                )
                   ? "line-through"
                   : "none",
               },
