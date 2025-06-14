@@ -88,18 +88,22 @@ export const RepairSOPImagePreview = ({
             />
           ),
         },
-        {
-          title: "Signature",
-          status:
-            getImages(UploadFileType.CustomerSign).length > 0
-              ? "finish"
-              : "process",
-          description: (
-            <RepairImagePreview
-              images={getImages(UploadFileType.CustomerSign)}
-            />
-          ),
-        },
+        ...(getImages(UploadFileType.CustomerSign).length > 0
+          ? ([
+              {
+                title: "ลายเซ็นต์ลูกบ้าน",
+                status:
+                  getImages(UploadFileType.CustomerSign).length > 0
+                    ? "finish"
+                    : "process",
+                description: (
+                  <RepairImagePreview
+                    images={getImages(UploadFileType.CustomerSign)}
+                  />
+                ),
+              },
+            ] as StepProps[])
+          : []),
         ...(getImages(UploadFileType.AssignUploadFinish).length > 0
           ? ([
               {
