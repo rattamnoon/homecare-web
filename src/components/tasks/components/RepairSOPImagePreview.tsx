@@ -37,15 +37,17 @@ export const RepairSOPImagePreview = ({
     return images.filter((image) => image.fileType === fileType);
   };
 
+  const getStatus = (fileType: UploadFileType) => {
+    return getImages(fileType).length > 0 ? "finish" : "process";
+  };
+
   return (
     <Steps
       items={[
         {
           title: "Before",
-          status:
-            getImages(UploadFileType.AssignBefore).length > 0
-              ? "finish"
-              : "process",
+          status: getStatus(UploadFileType.AssignBefore),
+          subTitle: "รูปภาพก่อนรับงาน",
           description: (
             <RepairImagePreview
               images={getImages(UploadFileType.AssignBefore)}
@@ -54,10 +56,8 @@ export const RepairSOPImagePreview = ({
         },
         {
           title: "Protection",
-          status:
-            getImages(UploadFileType.AssignProtection).length > 0
-              ? "finish"
-              : "process",
+          status: getStatus(UploadFileType.AssignProtection),
+          subTitle: "รูปภาพการปกป้องงาน",
           description: (
             <RepairImagePreview
               images={getImages(UploadFileType.AssignProtection)}
@@ -66,10 +66,8 @@ export const RepairSOPImagePreview = ({
         },
         {
           title: "Doing",
-          status:
-            getImages(UploadFileType.AssignDoing).length > 0
-              ? "finish"
-              : "process",
+          status: getStatus(UploadFileType.AssignDoing),
+          subTitle: "รูปภาพการดำเนินงาน",
           description: (
             <RepairImagePreview
               images={getImages(UploadFileType.AssignDoing)}
@@ -78,10 +76,8 @@ export const RepairSOPImagePreview = ({
         },
         {
           title: "Finished",
-          status:
-            getImages(UploadFileType.AssignFinish).length > 0
-              ? "finish"
-              : "process",
+          status: getStatus(UploadFileType.AssignFinish),
+          subTitle: "รูปภาพงานเสร็จสิ้น",
           description: (
             <RepairImagePreview
               images={getImages(UploadFileType.AssignFinish)}
@@ -92,10 +88,8 @@ export const RepairSOPImagePreview = ({
           ? ([
               {
                 title: "ลายเซ็นต์ลูกบ้าน",
-                status:
-                  getImages(UploadFileType.CustomerSign).length > 0
-                    ? "finish"
-                    : "process",
+                status: getStatus(UploadFileType.CustomerSign),
+                subTitle: "รูปภาพลายเซ็นต์ลูกบ้าน",
                 description: (
                   <RepairImagePreview
                     images={getImages(UploadFileType.CustomerSign)}
@@ -108,7 +102,8 @@ export const RepairSOPImagePreview = ({
           ? ([
               {
                 title: "ไม่มีผู้รับงาน",
-                status: "finish",
+                status: getStatus(UploadFileType.AssignUploadFinish),
+                subTitle: "รูปภาพการยืนยันงาน",
                 description: (
                   <RepairImagePreview
                     images={getImages(UploadFileType.AssignUploadFinish)}
