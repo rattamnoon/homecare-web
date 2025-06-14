@@ -12,7 +12,7 @@ const statuses = [
   UploadFileType.AssignDoing,
   UploadFileType.AssignFinish,
   UploadFileType.CustomerSign,
-  UploadFileType.Other,
+  UploadFileType.AssignUploadFinish,
 ];
 
 const { Text } = Typography;
@@ -100,14 +100,14 @@ export const RepairSOPImagePreview = ({
             />
           ),
         },
-        ...(getImages(UploadFileType.Other).length > 0
+        ...(getImages(UploadFileType.AssignUploadFinish).length > 0
           ? ([
               {
                 title: "ไม่มีผู้รับงาน",
                 status: "finish",
                 description: (
                   <RepairImagePreview
-                    images={getImages(UploadFileType.Other)}
+                    images={getImages(UploadFileType.AssignUploadFinish)}
                   />
                 ),
               },
