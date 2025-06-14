@@ -1,9 +1,21 @@
 import { CustomModal } from "@/components/common/CustomModal";
 import { UploadFileType } from "@/gql/generated/graphql";
 import { TaskDetailFragment } from "@/gql/generated/tasks.generated";
+import styled from "@emotion/styled";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 import { RepairImagePreview } from "./RepairImagePreview";
+
+const Card = styled.div`
+  border-left: 4px solid ${({ color }) => color};
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
 
 interface RepairLogsDialogProps {
   open: boolean;
@@ -24,19 +36,7 @@ export const RepairLogsDialog = ({
   return (
     <CustomModal open={open} onCancel={onCancel} title="Logs" footer={null}>
       {items.map((item) => (
-        <div
-          key={item.id}
-          style={{
-            borderLeft: `4px solid ${item.type?.color}`,
-            padding: "8px",
-            marginBottom: "10px",
-            borderRadius: "4px",
-            backgroundColor: "#f0f0f0",
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-          }}
-        >
+        <Card key={item.id} color={item.type?.color}>
           <div>
             <div>สถานะ : {item.type?.nameTh}</div>
             <div>วันที่ : {dayjs(item.checkInDate).format("DD/MM/YYYY")}</div>
@@ -53,7 +53,7 @@ export const RepairLogsDialog = ({
               </div>
             )}
           </div>
-        </div>
+        </Card>
       ))}
     </CustomModal>
   );
