@@ -7,6 +7,7 @@ import {
   useTaskQuery,
 } from "@/gql/generated/tasks.generated";
 import {
+  faCheck,
   faEdit,
   faFaceSmile,
   faHouseCircleCheck,
@@ -19,6 +20,7 @@ import {
   Descriptions,
   Divider,
   Flex,
+  Modal,
   Result,
   Skeleton,
   Space,
@@ -40,11 +42,15 @@ const { Title, Text } = Typography;
 export const RepairDetailPage = () => {
   const params = useParams();
   const taskId = params.id as string;
+  const [modalApi, modalContextHolder] = Modal.useModal();
   const [priorityDialogOpen, setPriorityDialogOpen] = useState(false);
   const [priorityDialogTaskDetail, setPriorityDialogTaskDetail] =
     useState<TaskDetailFragment | null>(null);
   const [assignedDialogOpen, setAssignedDialogOpen] = useState(false);
   const [assignedDialogTaskDetail, setAssignedDialogTaskDetail] =
+    useState<TaskDetailFragment | null>(null);
+  const [editAssignDialogOpen, setEditAssignDialogOpen] = useState(false);
+  const [editAssignDialogTaskDetail, setEditAssignDialogTaskDetail] =
     useState<TaskDetailFragment | null>(null);
   const [misscallDialogOpen, setMisscallDialogOpen] = useState(false);
   const [misscallDialogTaskDetail, setMisscallDialogTaskDetail] =
@@ -67,6 +73,22 @@ export const RepairDetailPage = () => {
   const task = useMemo(() => data?.task, [data]);
   const taskDetails = useMemo(() => task?.details || [], [task]);
 
+  const handleFinishTaskDetail = async (detail: TaskDetailFragment) => {
+    await modalApi.confirm({
+      title: "คุณต้องการจบงานหรือไม่",
+      content:
+        "งานจะถูกจบงานอัตโนมัติ หากต้องการจบงานเอง กรุณากดปุ่มจบงานด้านล่าง",
+      okText: "ตกลง",
+      cancelText: "ยกเลิก",
+      okButtonProps: {
+        icon: <FontAwesomeIcon icon={faCheck} />,
+      },
+      onOk: () => {
+        console.log("finish");
+      },
+    });
+  };
+
   return (
     <LayoutWithBreadcrumb
       showBackButton
@@ -88,6 +110,7 @@ export const RepairDetailPage = () => {
         />
       ) : (
         <>
+          {modalContextHolder}
           <Skeleton loading={loading} active paragraph={{ rows: 6 }}>
             <Title level={5}>รายละเอียดงานแจ้งซ่อม</Title>
             <Descriptions size="small">
@@ -315,6 +338,7 @@ export const RepairDetailPage = () => {
                             variant="solid"
                             color="green"
                             icon={<FontAwesomeIcon icon={faHouseCircleCheck} />}
+                            onClick={() => handleFinishTaskDetail(detail)}
                           >
                             Finish
                           </Button>
@@ -333,6 +357,11 @@ export const RepairDetailPage = () => {
                             variant="solid"
                             color="orange"
                             icon={<FontAwesomeIcon icon={faEdit} />}
+                            disabled={detail.assigns?.length === 0}
+                            onClick={() => {
+                              setEditAssignDialogTaskDetail(detail);
+                              setEditAssignDialogOpen(true);
+                            }}
                           >
                             แก้ไขข้อมูล
                           </Button>
