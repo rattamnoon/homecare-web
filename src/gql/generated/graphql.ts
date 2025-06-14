@@ -467,7 +467,7 @@ export type TaskDetailAssign = {
   requestRangeTime?: Maybe<TaskRangeTimeDto>;
   staff?: Maybe<User>;
   staffId?: Maybe<Scalars["String"]["output"]>;
-  staffStatus?: Maybe<TaskStatus>;
+  staffStatus?: Maybe<TaskStatusDto>;
   status?: Maybe<TaskStatusDto>;
   taskDetailId: Scalars["String"]["output"];
   updatedAt: Scalars["Date"]["output"];

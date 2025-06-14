@@ -1,11 +1,11 @@
 import * as Types from "./graphql";
 
 import { gql } from "@apollo/client";
+import { MasterFragmentDoc } from "./master.generated";
 import {
   IPaginateMetaFragmentDoc,
   IPaginateLinksFragmentDoc,
 } from "./paginate.generated";
-import { MasterFragmentDoc } from "./master.generated";
 import { UserFragmentDoc } from "./user.generated";
 import * as Apollo from "@apollo/client";
 const defaultOptions = {} as const;
@@ -82,13 +82,72 @@ export type TaskFragment = {
     unitNumber?: string | null;
     houseNumber?: string | null;
   } | null;
-  area?: { __typename?: "Master"; id: string; nameEn?: string | null } | null;
+  area?: {
+    __typename?: "Master";
+    id: string;
+    parentId?: string | null;
+    type: Types.MasterType;
+    sequence?: number | null;
+    nameTh?: string | null;
+    nameEn?: string | null;
+    maxScore?: string | null;
+    defaultScore?: string | null;
+    areaTypeTh?: string | null;
+    areaTypeEn?: string | null;
+    SLA1H?: number | null;
+    SLA1D?: number | null;
+    SLA2H?: number | null;
+    SLA2D?: number | null;
+    SLA3H?: number | null;
+    SLA3D?: number | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+  } | null;
   building?: {
     __typename?: "Master";
     id: string;
+    parentId?: string | null;
+    type: Types.MasterType;
+    sequence?: number | null;
+    nameTh?: string | null;
     nameEn?: string | null;
+    maxScore?: string | null;
+    defaultScore?: string | null;
+    areaTypeTh?: string | null;
+    areaTypeEn?: string | null;
+    SLA1H?: number | null;
+    SLA1D?: number | null;
+    SLA2H?: number | null;
+    SLA2D?: number | null;
+    SLA3H?: number | null;
+    SLA3D?: number | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
   } | null;
-  floor?: { __typename?: "Master"; id: string; nameEn?: string | null } | null;
+  floor?: {
+    __typename?: "Master";
+    id: string;
+    parentId?: string | null;
+    type: Types.MasterType;
+    sequence?: number | null;
+    nameTh?: string | null;
+    nameEn?: string | null;
+    maxScore?: string | null;
+    defaultScore?: string | null;
+    areaTypeTh?: string | null;
+    areaTypeEn?: string | null;
+    SLA1H?: number | null;
+    SLA1D?: number | null;
+    SLA2H?: number | null;
+    SLA2D?: number | null;
+    SLA3H?: number | null;
+    SLA3D?: number | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+  } | null;
   details: Array<{ __typename?: "TaskDetail"; id: string; code: string }>;
 };
 
@@ -193,21 +252,153 @@ export type TasksQuery = {
       area?: {
         __typename?: "Master";
         id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
         nameEn?: string | null;
+        maxScore?: string | null;
+        defaultScore?: string | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
       } | null;
       building?: {
         __typename?: "Master";
         id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
         nameEn?: string | null;
+        maxScore?: string | null;
+        defaultScore?: string | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
       } | null;
       floor?: {
         __typename?: "Master";
         id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
         nameEn?: string | null;
+        maxScore?: string | null;
+        defaultScore?: string | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
       } | null;
       details: Array<{ __typename?: "TaskDetail"; id: string; code: string }>;
     }>;
   };
+};
+
+export type UploadFileFragment = {
+  __typename?: "UploadFile";
+  id: string;
+  refId?: string | null;
+  fileId?: string | null;
+  fileType: Types.UploadFileType;
+  fileName?: string | null;
+  fileFolder?: string | null;
+  filePath?: string | null;
+  fileBucket?: string | null;
+  fileExtension?: string | null;
+  fileUrl: string;
+  isPublic: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
+};
+
+export type TaskDetailAssignFragment = {
+  __typename?: "TaskDetailAssign";
+  id: string;
+  code: string;
+  status?: {
+    __typename?: "TaskStatusDto";
+    id: Types.TaskStatus;
+    nameTh: string;
+    nameEn: string;
+    color: string;
+  } | null;
+  staffStatus?: {
+    __typename?: "TaskStatusDto";
+    id: Types.TaskStatus;
+    nameTh: string;
+    nameEn: string;
+    color: string;
+  } | null;
+  staff?: {
+    __typename?: "User";
+    id: string;
+    employeeId: string;
+    firstName?: string | null;
+    lastName?: string | null;
+  } | null;
+  requestRangeTime?: {
+    __typename?: "TaskRangeTimeDto";
+    id: string;
+    nameTh: string;
+    nameEn: string;
+  } | null;
+  reAssignRangeTime?: {
+    __typename?: "TaskRangeTimeDto";
+    id: string;
+    nameTh: string;
+    nameEn: string;
+  } | null;
+  finishType?: {
+    __typename?: "TaskStatusDto";
+    id: Types.TaskStatus;
+    nameTh: string;
+    nameEn: string;
+    color: string;
+  } | null;
+  images: Array<{
+    __typename?: "UploadFile";
+    id: string;
+    refId?: string | null;
+    fileId?: string | null;
+    fileType: Types.UploadFileType;
+    fileName?: string | null;
+    fileFolder?: string | null;
+    filePath?: string | null;
+    fileBucket?: string | null;
+    fileExtension?: string | null;
+    fileUrl: string;
+    isPublic: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+  }>;
 };
 
 export type TaskDetailFragment = {
@@ -268,24 +459,231 @@ export type TaskDetailFragment = {
     nameTh: string;
     nameEn: string;
   } | null;
-};
-
-export type UploadFileFragment = {
-  __typename?: "UploadFile";
-  id: string;
-  refId?: string | null;
-  fileId?: string | null;
-  fileType: Types.UploadFileType;
-  fileName?: string | null;
-  fileFolder?: string | null;
-  filePath?: string | null;
-  fileBucket?: string | null;
-  fileExtension?: string | null;
-  fileUrl: string;
-  isPublic: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date | null;
+  images: Array<{
+    __typename?: "UploadFile";
+    id: string;
+    refId?: string | null;
+    fileId?: string | null;
+    fileType: Types.UploadFileType;
+    fileName?: string | null;
+    fileFolder?: string | null;
+    filePath?: string | null;
+    fileBucket?: string | null;
+    fileExtension?: string | null;
+    fileUrl: string;
+    isPublic: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+  }>;
+  category?: {
+    __typename?: "Master";
+    id: string;
+    parentId?: string | null;
+    type: Types.MasterType;
+    sequence?: number | null;
+    nameTh?: string | null;
+    nameEn?: string | null;
+    maxScore?: string | null;
+    defaultScore?: string | null;
+    areaTypeTh?: string | null;
+    areaTypeEn?: string | null;
+    SLA1H?: number | null;
+    SLA1D?: number | null;
+    SLA2H?: number | null;
+    SLA2D?: number | null;
+    SLA3H?: number | null;
+    SLA3D?: number | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+  } | null;
+  subCategory?: {
+    __typename?: "Master";
+    id: string;
+    parentId?: string | null;
+    type: Types.MasterType;
+    sequence?: number | null;
+    nameTh?: string | null;
+    nameEn?: string | null;
+    maxScore?: string | null;
+    defaultScore?: string | null;
+    areaTypeTh?: string | null;
+    areaTypeEn?: string | null;
+    SLA1H?: number | null;
+    SLA1D?: number | null;
+    SLA2H?: number | null;
+    SLA2D?: number | null;
+    SLA3H?: number | null;
+    SLA3D?: number | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+  } | null;
+  homecare?: {
+    __typename?: "User";
+    id: string;
+    employeeId: string;
+    username: string;
+    firstName?: string | null;
+    lastName?: string | null;
+    email: string;
+    lastLoginAt: Date;
+    status: string;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+  } | null;
+  cause?: {
+    __typename?: "Master";
+    id: string;
+    parentId?: string | null;
+    type: Types.MasterType;
+    sequence?: number | null;
+    nameTh?: string | null;
+    nameEn?: string | null;
+    maxScore?: string | null;
+    defaultScore?: string | null;
+    areaTypeTh?: string | null;
+    areaTypeEn?: string | null;
+    SLA1H?: number | null;
+    SLA1D?: number | null;
+    SLA2H?: number | null;
+    SLA2D?: number | null;
+    SLA3H?: number | null;
+    SLA3D?: number | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+  } | null;
+  contractor?: {
+    __typename?: "Master";
+    id: string;
+    parentId?: string | null;
+    type: Types.MasterType;
+    sequence?: number | null;
+    nameTh?: string | null;
+    nameEn?: string | null;
+    maxScore?: string | null;
+    defaultScore?: string | null;
+    areaTypeTh?: string | null;
+    areaTypeEn?: string | null;
+    SLA1H?: number | null;
+    SLA1D?: number | null;
+    SLA2H?: number | null;
+    SLA2D?: number | null;
+    SLA3H?: number | null;
+    SLA3D?: number | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+  } | null;
+  sla?: {
+    __typename?: "Master";
+    id: string;
+    parentId?: string | null;
+    type: Types.MasterType;
+    sequence?: number | null;
+    nameTh?: string | null;
+    nameEn?: string | null;
+    maxScore?: string | null;
+    defaultScore?: string | null;
+    areaTypeTh?: string | null;
+    areaTypeEn?: string | null;
+    SLA1H?: number | null;
+    SLA1D?: number | null;
+    SLA2H?: number | null;
+    SLA2D?: number | null;
+    SLA3H?: number | null;
+    SLA3D?: number | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+    parent?: {
+      __typename?: "Master";
+      id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
+      nameEn?: string | null;
+      maxScore?: string | null;
+      defaultScore?: string | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+  } | null;
+  assigns: Array<{
+    __typename?: "TaskDetailAssign";
+    id: string;
+    code: string;
+    status?: {
+      __typename?: "TaskStatusDto";
+      id: Types.TaskStatus;
+      nameTh: string;
+      nameEn: string;
+      color: string;
+    } | null;
+    staffStatus?: {
+      __typename?: "TaskStatusDto";
+      id: Types.TaskStatus;
+      nameTh: string;
+      nameEn: string;
+      color: string;
+    } | null;
+    staff?: {
+      __typename?: "User";
+      id: string;
+      employeeId: string;
+      firstName?: string | null;
+      lastName?: string | null;
+    } | null;
+    requestRangeTime?: {
+      __typename?: "TaskRangeTimeDto";
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    } | null;
+    reAssignRangeTime?: {
+      __typename?: "TaskRangeTimeDto";
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    } | null;
+    finishType?: {
+      __typename?: "TaskStatusDto";
+      id: Types.TaskStatus;
+      nameTh: string;
+      nameEn: string;
+      color: string;
+    } | null;
+    images: Array<{
+      __typename?: "UploadFile";
+      id: string;
+      refId?: string | null;
+      fileId?: string | null;
+      fileType: Types.UploadFileType;
+      fileName?: string | null;
+      fileFolder?: string | null;
+      filePath?: string | null;
+      fileBucket?: string | null;
+      fileExtension?: string | null;
+      fileUrl: string;
+      isPublic: boolean;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    }>;
+  }>;
 };
 
 export type TaskQueryVariables = Types.Exact<{
@@ -343,6 +741,32 @@ export type TaskQuery = {
       createdAt: Date;
       updatedAt: Date;
       deletedAt?: Date | null;
+      status?: {
+        __typename?: "TaskStatusDto";
+        id: Types.TaskStatus;
+        nameTh: string;
+        nameEn: string;
+        color: string;
+      } | null;
+      homecareStatus?: {
+        __typename?: "TaskStatusDto";
+        id: Types.TaskStatus;
+        nameTh: string;
+        nameEn: string;
+        color: string;
+      } | null;
+      homecareInRangeTime?: {
+        __typename?: "TaskRangeTimeDto";
+        id: string;
+        nameTh: string;
+        nameEn: string;
+      } | null;
+      assignRangeTime?: {
+        __typename?: "TaskRangeTimeDto";
+        id: string;
+        nameTh: string;
+        nameEn: string;
+      } | null;
       images: Array<{
         __typename?: "UploadFile";
         id: string;
@@ -510,6 +934,46 @@ export type TaskQuery = {
         __typename?: "TaskDetailAssign";
         id: string;
         code: string;
+        status?: {
+          __typename?: "TaskStatusDto";
+          id: Types.TaskStatus;
+          nameTh: string;
+          nameEn: string;
+          color: string;
+        } | null;
+        staffStatus?: {
+          __typename?: "TaskStatusDto";
+          id: Types.TaskStatus;
+          nameTh: string;
+          nameEn: string;
+          color: string;
+        } | null;
+        staff?: {
+          __typename?: "User";
+          id: string;
+          employeeId: string;
+          firstName?: string | null;
+          lastName?: string | null;
+        } | null;
+        requestRangeTime?: {
+          __typename?: "TaskRangeTimeDto";
+          id: string;
+          nameTh: string;
+          nameEn: string;
+        } | null;
+        reAssignRangeTime?: {
+          __typename?: "TaskRangeTimeDto";
+          id: string;
+          nameTh: string;
+          nameEn: string;
+        } | null;
+        finishType?: {
+          __typename?: "TaskStatusDto";
+          id: Types.TaskStatus;
+          nameTh: string;
+          nameEn: string;
+          color: string;
+        } | null;
         images: Array<{
           __typename?: "UploadFile";
           id: string;
@@ -528,32 +992,6 @@ export type TaskQuery = {
           deletedAt?: Date | null;
         }>;
       }>;
-      status?: {
-        __typename?: "TaskStatusDto";
-        id: Types.TaskStatus;
-        nameTh: string;
-        nameEn: string;
-        color: string;
-      } | null;
-      homecareStatus?: {
-        __typename?: "TaskStatusDto";
-        id: Types.TaskStatus;
-        nameTh: string;
-        nameEn: string;
-        color: string;
-      } | null;
-      homecareInRangeTime?: {
-        __typename?: "TaskRangeTimeDto";
-        id: string;
-        nameTh: string;
-        nameEn: string;
-      } | null;
-      assignRangeTime?: {
-        __typename?: "TaskRangeTimeDto";
-        id: string;
-        nameTh: string;
-        nameEn: string;
-      } | null;
     }>;
     status: {
       __typename?: "TaskStatusDto";
@@ -588,16 +1026,71 @@ export type TaskQuery = {
       unitNumber?: string | null;
       houseNumber?: string | null;
     } | null;
-    area?: { __typename?: "Master"; id: string; nameEn?: string | null } | null;
+    area?: {
+      __typename?: "Master";
+      id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
+      nameEn?: string | null;
+      maxScore?: string | null;
+      defaultScore?: string | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
     building?: {
       __typename?: "Master";
       id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
       nameEn?: string | null;
+      maxScore?: string | null;
+      defaultScore?: string | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
     } | null;
     floor?: {
       __typename?: "Master";
       id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
       nameEn?: string | null;
+      maxScore?: string | null;
+      defaultScore?: string | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
     } | null;
   };
 };
@@ -674,16 +1167,71 @@ export type CreateTaskMutation = {
       unitNumber?: string | null;
       houseNumber?: string | null;
     } | null;
-    area?: { __typename?: "Master"; id: string; nameEn?: string | null } | null;
+    area?: {
+      __typename?: "Master";
+      id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
+      nameEn?: string | null;
+      maxScore?: string | null;
+      defaultScore?: string | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
     building?: {
       __typename?: "Master";
       id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
       nameEn?: string | null;
+      maxScore?: string | null;
+      defaultScore?: string | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
     } | null;
     floor?: {
       __typename?: "Master";
       id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
       nameEn?: string | null;
+      maxScore?: string | null;
+      defaultScore?: string | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
     } | null;
     details: Array<{ __typename?: "TaskDetail"; id: string; code: string }>;
   };
@@ -750,19 +1298,13 @@ export const TaskFragmentDoc = gql`
       houseNumber
     }
     area {
-      id
-      nameEn
-      nameEn
+      ...Master
     }
     building {
-      id
-      nameEn
-      nameEn
+      ...Master
     }
     floor {
-      id
-      nameEn
-      nameEn
+      ...Master
     }
     details {
       id
@@ -772,6 +1314,7 @@ export const TaskFragmentDoc = gql`
   ${TaskStatusFragmentDoc}
   ${TaskSourceFragmentDoc}
   ${TaskRangeTimeFragmentDoc}
+  ${MasterFragmentDoc}
 `;
 export const TaskStatusDtoFragmentDoc = gql`
   fragment TaskStatusDto on TaskStatusDto {
@@ -780,6 +1323,57 @@ export const TaskStatusDtoFragmentDoc = gql`
     nameTh
     color
   }
+`;
+export const UploadFileFragmentDoc = gql`
+  fragment UploadFile on UploadFile {
+    id
+    refId
+    fileId
+    fileType
+    fileName
+    fileFolder
+    filePath
+    fileBucket
+    fileExtension
+    fileUrl
+    isPublic
+    createdAt
+    updatedAt
+    deletedAt
+  }
+`;
+export const TaskDetailAssignFragmentDoc = gql`
+  fragment TaskDetailAssign on TaskDetailAssign {
+    id
+    code
+    status {
+      ...TaskStatus
+    }
+    staffStatus {
+      ...TaskStatus
+    }
+    staff {
+      id
+      employeeId
+      firstName
+      lastName
+    }
+    requestRangeTime {
+      ...TaskRangeTime
+    }
+    reAssignRangeTime {
+      ...TaskRangeTime
+    }
+    finishType {
+      ...TaskStatus
+    }
+    images {
+      ...UploadFile
+    }
+  }
+  ${TaskStatusFragmentDoc}
+  ${TaskRangeTimeFragmentDoc}
+  ${UploadFileFragmentDoc}
 `;
 export const TaskDetailFragmentDoc = gql`
   fragment TaskDetail on TaskDetail {
@@ -825,27 +1419,40 @@ export const TaskDetailFragmentDoc = gql`
     assignRangeTime {
       ...TaskRangeTime
     }
+    images {
+      ...UploadFile
+    }
+    category {
+      ...Master
+    }
+    subCategory {
+      ...Master
+    }
+    homecare {
+      ...User
+    }
+    cause {
+      ...Master
+    }
+    contractor {
+      ...Master
+    }
+    sla {
+      ...Master
+      parent {
+        ...Master
+      }
+    }
+    assigns {
+      ...TaskDetailAssign
+    }
   }
   ${TaskStatusFragmentDoc}
   ${TaskRangeTimeFragmentDoc}
-`;
-export const UploadFileFragmentDoc = gql`
-  fragment UploadFile on UploadFile {
-    id
-    refId
-    fileId
-    fileType
-    fileName
-    fileFolder
-    filePath
-    fileBucket
-    fileExtension
-    fileUrl
-    isPublic
-    createdAt
-    updatedAt
-    deletedAt
-  }
+  ${UploadFileFragmentDoc}
+  ${MasterFragmentDoc}
+  ${UserFragmentDoc}
+  ${TaskDetailAssignFragmentDoc}
 `;
 export const TasksDocument = gql`
   query Tasks(
@@ -961,45 +1568,11 @@ export const TaskDocument = gql`
       ...Task
       details {
         ...TaskDetail
-        images {
-          ...UploadFile
-        }
-        category {
-          ...Master
-        }
-        subCategory {
-          ...Master
-        }
-        homecare {
-          ...User
-        }
-        cause {
-          ...Master
-        }
-        contractor {
-          ...Master
-        }
-        sla {
-          ...Master
-          parent {
-            ...Master
-          }
-        }
-        assigns {
-          id
-          code
-          images {
-            ...UploadFile
-          }
-        }
       }
     }
   }
   ${TaskFragmentDoc}
   ${TaskDetailFragmentDoc}
-  ${UploadFileFragmentDoc}
-  ${MasterFragmentDoc}
-  ${UserFragmentDoc}
 `;
 
 /**

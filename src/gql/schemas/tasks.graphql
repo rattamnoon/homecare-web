@@ -55,19 +55,13 @@ fragment Task on Task {
     houseNumber
   }
   area {
-    id
-    nameEn
-    nameEn
+    ...Master
   }
   building {
-    id
-    nameEn
-    nameEn
+    ...Master
   }
   floor {
-    id
-    nameEn
-    nameEn
+    ...Master
   }
   details {
     id
@@ -118,6 +112,52 @@ query Tasks(
   }
 }
 
+fragment UploadFile on UploadFile {
+  id
+  refId
+  fileId
+  fileType
+  fileName
+  fileFolder
+  filePath
+  fileBucket
+  fileExtension
+  fileUrl
+  isPublic
+  createdAt
+  updatedAt
+  deletedAt
+}
+
+fragment TaskDetailAssign on TaskDetailAssign {
+  id
+  code
+  status {
+    ...TaskStatus
+  }
+  staffStatus {
+    ...TaskStatus
+  }
+  staff {
+    id
+    employeeId
+    firstName
+    lastName
+  }
+  requestRangeTime {
+    ...TaskRangeTime
+  }
+  reAssignRangeTime {
+    ...TaskRangeTime
+  }
+  finishType {
+    ...TaskStatus
+  }
+  images {
+    ...UploadFile
+  }
+}
+
 fragment TaskDetail on TaskDetail {
   id
   taskId
@@ -161,23 +201,33 @@ fragment TaskDetail on TaskDetail {
   assignRangeTime {
     ...TaskRangeTime
   }
-}
-
-fragment UploadFile on UploadFile {
-  id
-  refId
-  fileId
-  fileType
-  fileName
-  fileFolder
-  filePath
-  fileBucket
-  fileExtension
-  fileUrl
-  isPublic
-  createdAt
-  updatedAt
-  deletedAt
+  images {
+    ...UploadFile
+  }
+  category {
+    ...Master
+  }
+  subCategory {
+    ...Master
+  }
+  homecare {
+    ...User
+  }
+  cause {
+    ...Master
+  }
+  contractor {
+    ...Master
+  }
+  sla {
+    ...Master
+    parent {
+      ...Master
+    }
+  }
+  assigns {
+    ...TaskDetailAssign
+  }
 }
 
 query Task($id: ID!) {
@@ -185,37 +235,6 @@ query Task($id: ID!) {
     ...Task
     details {
       ...TaskDetail
-      images {
-        ...UploadFile
-      }
-      category {
-        ...Master
-      }
-      subCategory {
-        ...Master
-      }
-      homecare {
-        ...User
-      }
-      cause {
-        ...Master
-      }
-      contractor {
-        ...Master
-      }
-      sla {
-        ...Master
-        parent {
-          ...Master
-        }
-      }
-      assigns {
-        id
-        code
-        images {
-          ...UploadFile
-        }
-      }
     }
   }
 }
