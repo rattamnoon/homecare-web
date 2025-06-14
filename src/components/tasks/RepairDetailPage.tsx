@@ -139,7 +139,13 @@ export const RepairDetailPage = () => {
                     <Text strong>{detail.code}</Text>
                     <Space size={4}>
                       <Space>
-                        <Text type="secondary">สถานะประเมิน : </Text>
+                        <Text type="secondary">Priority : </Text>
+                        <Tag color={detail.priority?.color}>
+                          {detail.priority?.nameTh}
+                        </Tag>
+                      </Space>
+                      <Space>
+                        <Text type="secondary">สถานะเคส : </Text>
                         <Tag color={detail.status?.color}>
                           {detail.status?.nameEn}
                         </Tag>

@@ -295,6 +295,7 @@ export type Query = {
   project: Project;
   projects: Array<Project>;
   task: Task;
+  taskPriorities: Array<TaskPriorityDto>;
   taskRangeTimes: Array<TaskRangeTimeDto>;
   taskSources: Array<TaskSourceDto>;
   taskStatuses: Array<TaskStatusDto>;

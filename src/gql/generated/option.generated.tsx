@@ -27,6 +27,13 @@ export type TaskOptionsQuery = {
     nameEn: string;
     color?: string | null;
   }>;
+  priorities: Array<{
+    __typename?: "TaskPriorityDto";
+    id: number;
+    nameTh: string;
+    nameEn: string;
+    color: string;
+  }>;
 };
 
 export const TaskOptionsDocument = gql`
@@ -43,6 +50,12 @@ export const TaskOptionsDocument = gql`
       color
     }
     sources: taskSources {
+      id
+      nameTh
+      nameEn
+      color
+    }
+    priorities: taskPriorities {
       id
       nameTh
       nameEn

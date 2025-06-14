@@ -16,4 +16,10 @@ query TaskOptions {
     nameEn
     color
   }
+  priorities: taskPriorities {
+    id
+    nameTh
+    nameEn
+    color
+  }
 }
