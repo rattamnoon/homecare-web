@@ -262,10 +262,12 @@ export const RepairDetailPage = () => {
                         {detail.homecareInRangeTime?.nameTh}
                       </Descriptions.Item>
                       <Descriptions.Item label="วันที่และเวลาเข้าแก้ไขงาน">
-                        {detail.inProgressDate ? (
-                          `${dayjs(detail.inProgressDate).format(
+                        {detail.assigns?.[0]?.createdAt ? (
+                          `${dayjs(detail.assigns?.[0]?.createdAt).format(
                             "DD/MM/YYYY"
-                          )} ${dayjs(detail.inProgressDate).format("HH:mm")} น.`
+                          )} ${dayjs(detail.assigns?.[0]?.createdAt).format(
+                            "HH:mm"
+                          )} น.`
                         ) : (
                           <Tag color="default" bordered={false}>
                             ยังไม่ได้เข้าแก้ไขงาน
@@ -424,7 +426,7 @@ export const RepairDetailPage = () => {
                           {detail.contractor?.nameTh}
                         </Descriptions.Item>
                         <Descriptions.Item label="วันที่และเวลาเข้าตรวจสอบ">
-                          {dayjs(detail.homecareInDate).format("DD/MM/YYYY")}
+                          {dayjs(detail.homecareInDate).format("DD/MM/YYYY")}{" "}
                           {detail.homecareInRangeTime?.nameTh}
                         </Descriptions.Item>
                         <Descriptions.Item
