@@ -84,7 +84,7 @@ export type CreateTaskDetailInput = {
   homecareStatus?: InputMaybe<TaskStatus>;
   inProgressDate?: InputMaybe<Scalars["Date"]["input"]>;
   isCSAT?: InputMaybe<Scalars["Boolean"]["input"]>;
-  priority?: InputMaybe<Scalars["Int"]["input"]>;
+  priority?: Scalars["Int"]["input"];
   reProcessDate?: InputMaybe<Scalars["Date"]["input"]>;
   slaId?: InputMaybe<Scalars["String"]["input"]>;
   status?: InputMaybe<TaskStatus>;
@@ -427,7 +427,7 @@ export type TaskDetail = {
   inProgressDate?: Maybe<Scalars["Date"]["output"]>;
   isCSAT?: Maybe<Scalars["Boolean"]["output"]>;
   logs: Array<TaskDetail>;
-  priority?: Maybe<Scalars["Int"]["output"]>;
+  priority?: Maybe<TaskPriorityDto>;
   reProcessDate?: Maybe<Scalars["Date"]["output"]>;
   sla?: Maybe<Master>;
   slaId?: Maybe<Scalars["String"]["output"]>;
@@ -479,6 +479,14 @@ export type TaskPaginate = {
   items: Array<Task>;
   links?: Maybe<IPaginateLinks>;
   meta?: Maybe<IPaginateMeta>;
+};
+
+export type TaskPriorityDto = {
+  __typename?: "TaskPriorityDto";
+  color: Scalars["String"]["output"];
+  id: Scalars["Int"]["output"];
+  nameEn: Scalars["String"]["output"];
+  nameTh: Scalars["String"]["output"];
 };
 
 export type TaskRangeTimeDto = {

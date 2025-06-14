@@ -1,6 +1,9 @@
 import { UploadFileType } from "@/gql/generated/graphql";
-import { UploadFileFragment } from "@/gql/generated/tasks.generated";
-import { Steps, Typography } from "antd";
+import {
+  TaskStatusFragment,
+  UploadFileFragment,
+} from "@/gql/generated/tasks.generated";
+import { StepProps, Steps, Typography } from "antd";
 import { RepairImagePreview } from "./RepairImagePreview";
 
 const statuses = [
@@ -14,11 +17,14 @@ const statuses = [
 
 const { Text } = Typography;
 
+type RepairSOPImagePreviewProps = {
+  images: UploadFileFragment[];
+  status?: TaskStatusFragment | null;
+};
+
 export const RepairSOPImagePreview = ({
   images = [],
-}: {
-  images: UploadFileFragment[];
-}) => {
+}: RepairSOPImagePreviewProps) => {
   const imageFilters = images.filter((image) => {
     return statuses.some((status) => status === image.fileType);
   });
@@ -27,69 +33,86 @@ export const RepairSOPImagePreview = ({
     return <Text type="secondary">ยังไม่มีรูปภาพขั้นตอน SOP</Text>;
   }
 
+  const getImages = (fileType: UploadFileType) => {
+    return images.filter((image) => image.fileType === fileType);
+  };
+
   return (
     <Steps
       items={[
         {
           title: "Before",
+          status:
+            getImages(UploadFileType.AssignBefore).length > 0
+              ? "finish"
+              : "process",
           description: (
             <RepairImagePreview
-              images={images.filter(
-                (image) => image.fileType === UploadFileType.AssignBefore
-              )}
+              images={getImages(UploadFileType.AssignBefore)}
             />
           ),
         },
         {
           title: "Protection",
+          status:
+            getImages(UploadFileType.AssignProtection).length > 0
+              ? "finish"
+              : "process",
           description: (
             <RepairImagePreview
-              images={images.filter(
-                (image) => image.fileType === UploadFileType.AssignProtection
-              )}
+              images={getImages(UploadFileType.AssignProtection)}
             />
           ),
         },
         {
           title: "Doing",
+          status:
+            getImages(UploadFileType.AssignDoing).length > 0
+              ? "finish"
+              : "process",
           description: (
             <RepairImagePreview
-              images={images.filter(
-                (image) => image.fileType === UploadFileType.AssignDoing
-              )}
+              images={getImages(UploadFileType.AssignDoing)}
             />
           ),
         },
         {
           title: "Finished",
+          status:
+            getImages(UploadFileType.AssignFinish).length > 0
+              ? "finish"
+              : "process",
           description: (
             <RepairImagePreview
-              images={images.filter(
-                (image) => image.fileType === UploadFileType.AssignFinish
-              )}
+              images={getImages(UploadFileType.AssignFinish)}
             />
           ),
         },
         {
           title: "Signature",
+          status:
+            getImages(UploadFileType.CustomerSign).length > 0
+              ? "finish"
+              : "process",
           description: (
             <RepairImagePreview
-              images={images.filter(
-                (image) => image.fileType === UploadFileType.CustomerSign
-              )}
+              images={getImages(UploadFileType.CustomerSign)}
             />
           ),
         },
-        {
-          title: "ไม่มีผู้รับงาน",
-          description: (
-            <RepairImagePreview
-              images={images.filter(
-                (image) => image.fileType === UploadFileType.Other
-              )}
-            />
-          ),
-        },
+        ...(getImages(UploadFileType.Other).length > 0
+          ? ([
+              {
+                title: "ไม่มีผู้รับงาน",
+                status: "finish",
+                description: (
+                  <RepairImagePreview
+                    images={getImages(UploadFileType.Other)}
+                  />
+                ),
+              },
+            ] as StepProps[])
+          : []),
       ]}
       direction="vertical"
       progressDot

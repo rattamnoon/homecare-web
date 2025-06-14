@@ -132,6 +132,17 @@ fragment UploadFile on UploadFile {
 fragment TaskDetailAssign on TaskDetailAssign {
   id
   code
+  SLA
+  SLAEndDate
+  SLAStartDate
+  SLAWorkHour
+  assetComment
+  code
+  comment
+  createdAt
+  customerNameFinish
+  finishDate
+  isAssetCustomer
   status {
     ...TaskStatus
   }
@@ -144,9 +155,13 @@ fragment TaskDetailAssign on TaskDetailAssign {
     firstName
     lastName
   }
+  requestDate
   requestRangeTime {
     ...TaskRangeTime
   }
+  reAssignInDate
+
+  reAssignRemark
   reAssignRangeTime {
     ...TaskRangeTime
   }
@@ -156,6 +171,25 @@ fragment TaskDetailAssign on TaskDetailAssign {
   images {
     ...UploadFile
   }
+  createdBy {
+    id
+    employeeId
+    firstName
+    lastName
+  }
+  updatedBy {
+    id
+    employeeId
+    firstName
+    lastName
+  }
+}
+
+fragment TaskPriority on TaskPriorityDto {
+  color
+  id
+  nameEn
+  nameTh
 }
 
 fragment TaskDetail on TaskDetail {
@@ -168,7 +202,6 @@ fragment TaskDetail on TaskDetail {
   homecareStatus {
     ...TaskStatus
   }
-  priority
   description
   categoryId
   subCategoryId
@@ -201,6 +234,9 @@ fragment TaskDetail on TaskDetail {
   assignRangeTime {
     ...TaskRangeTime
   }
+  priority {
+    ...TaskPriority
+  }
   images {
     ...UploadFile
   }
@@ -227,6 +263,9 @@ fragment TaskDetail on TaskDetail {
   }
   assigns {
     ...TaskDetailAssign
+    logs {
+      ...TaskDetailAssign
+    }
   }
 }
 

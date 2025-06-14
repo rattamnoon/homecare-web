@@ -319,8 +319,14 @@ export const RepairDetailPage = () => {
                           label="วันที่และเวลาเข้าซ่อม"
                           span={3}
                         >
-                          {dayjs(detail.homecareInDate).format("DD/MM/YYYY")}
-                          {detail.homecareInRangeTime?.nameTh}
+                          {detail.assigns?.[0]?.requestDate && (
+                            <>
+                              {dayjs(detail.assigns?.[0]?.requestDate).format(
+                                "DD/MM/YYYY"
+                              )}{" "}
+                              {detail.assigns?.[0]?.requestRangeTime?.nameTh}
+                            </>
+                          )}
                         </Descriptions.Item>
                         <Descriptions.Item label="สถานะเคส">
                           {detail.status && (
@@ -337,7 +343,10 @@ export const RepairDetailPage = () => {
                           )}
                         </Descriptions.Item>
                         <Descriptions.Item label="รูปขั้นตอน SOP">
-                          <RepairSOPImagePreview images={detail.images} />
+                          <RepairSOPImagePreview
+                            status={detail.status}
+                            images={detail.assigns?.[0]?.images}
+                          />
                         </Descriptions.Item>
                       </Descriptions>
                     </Flex>

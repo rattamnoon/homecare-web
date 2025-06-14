@@ -4,13 +4,22 @@ import { UploadFileFragment } from "@/gql/generated/tasks.generated";
 import { faImageSlash } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Image, Space, Tooltip } from "antd";
+import { useState } from "react";
 
 export const RepairImagePreview = ({
   images = [],
 }: {
   images: UploadFileFragment[];
 }) => {
-  if (images.length === 0) {
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
+
+  const handleImageError = (imageId: string) => {
+    setFailedImages((prev) => new Set(prev).add(imageId));
+  };
+
+  const validImages = images.filter((image) => !failedImages.has(image.id));
+
+  if (validImages.length === 0) {
     return (
       <Tooltip title="ไม่มีรูปภาพ">
         <FontAwesomeIcon icon={faImageSlash} size="lg" color="gray" />
@@ -21,16 +30,19 @@ export const RepairImagePreview = ({
   return (
     <Image.PreviewGroup>
       <Space>
-        {images.map((image) => (
+        {validImages.map((image) => (
           <Image
             key={image.id}
             src={image.fileUrl}
             alt={image.fileName ?? ""}
             width={64}
             height={64}
+            onError={() => handleImageError(image.id)}
             style={{
               objectFit: "cover",
               borderRadius: 4,
+              boxShadow:
+                "rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px",
             }}
           />
         ))}

@@ -342,6 +342,19 @@ export type TaskDetailAssignFragment = {
   __typename?: "TaskDetailAssign";
   id: string;
   code: string;
+  SLA?: number | null;
+  SLAEndDate?: Date | null;
+  SLAStartDate?: Date | null;
+  SLAWorkHour?: number | null;
+  assetComment?: string | null;
+  comment?: string | null;
+  createdAt: Date;
+  customerNameFinish?: string | null;
+  finishDate?: Date | null;
+  isAssetCustomer?: boolean | null;
+  requestDate?: Date | null;
+  reAssignInDate?: Date | null;
+  reAssignRemark?: string | null;
   status?: {
     __typename?: "TaskStatusDto";
     id: Types.TaskStatus;
@@ -399,6 +412,28 @@ export type TaskDetailAssignFragment = {
     updatedAt: Date;
     deletedAt?: Date | null;
   }>;
+  createdBy?: {
+    __typename?: "User";
+    id: string;
+    employeeId: string;
+    firstName?: string | null;
+    lastName?: string | null;
+  } | null;
+  updatedBy?: {
+    __typename?: "User";
+    id: string;
+    employeeId: string;
+    firstName?: string | null;
+    lastName?: string | null;
+  } | null;
+};
+
+export type TaskPriorityFragment = {
+  __typename?: "TaskPriorityDto";
+  color: string;
+  id: number;
+  nameEn: string;
+  nameTh: string;
 };
 
 export type TaskDetailFragment = {
@@ -406,7 +441,6 @@ export type TaskDetailFragment = {
   id: string;
   taskId: string;
   code: string;
-  priority?: number | null;
   description?: string | null;
   categoryId?: string | null;
   subCategoryId?: string | null;
@@ -458,6 +492,13 @@ export type TaskDetailFragment = {
     id: string;
     nameTh: string;
     nameEn: string;
+  } | null;
+  priority?: {
+    __typename?: "TaskPriorityDto";
+    color: string;
+    id: number;
+    nameEn: string;
+    nameTh: string;
   } | null;
   images: Array<{
     __typename?: "UploadFile";
@@ -626,6 +667,108 @@ export type TaskDetailFragment = {
     __typename?: "TaskDetailAssign";
     id: string;
     code: string;
+    SLA?: number | null;
+    SLAEndDate?: Date | null;
+    SLAStartDate?: Date | null;
+    SLAWorkHour?: number | null;
+    assetComment?: string | null;
+    comment?: string | null;
+    createdAt: Date;
+    customerNameFinish?: string | null;
+    finishDate?: Date | null;
+    isAssetCustomer?: boolean | null;
+    requestDate?: Date | null;
+    reAssignInDate?: Date | null;
+    reAssignRemark?: string | null;
+    logs: Array<{
+      __typename?: "TaskDetailAssign";
+      id: string;
+      code: string;
+      SLA?: number | null;
+      SLAEndDate?: Date | null;
+      SLAStartDate?: Date | null;
+      SLAWorkHour?: number | null;
+      assetComment?: string | null;
+      comment?: string | null;
+      createdAt: Date;
+      customerNameFinish?: string | null;
+      finishDate?: Date | null;
+      isAssetCustomer?: boolean | null;
+      requestDate?: Date | null;
+      reAssignInDate?: Date | null;
+      reAssignRemark?: string | null;
+      status?: {
+        __typename?: "TaskStatusDto";
+        id: Types.TaskStatus;
+        nameTh: string;
+        nameEn: string;
+        color: string;
+      } | null;
+      staffStatus?: {
+        __typename?: "TaskStatusDto";
+        id: Types.TaskStatus;
+        nameTh: string;
+        nameEn: string;
+        color: string;
+      } | null;
+      staff?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        firstName?: string | null;
+        lastName?: string | null;
+      } | null;
+      requestRangeTime?: {
+        __typename?: "TaskRangeTimeDto";
+        id: string;
+        nameTh: string;
+        nameEn: string;
+      } | null;
+      reAssignRangeTime?: {
+        __typename?: "TaskRangeTimeDto";
+        id: string;
+        nameTh: string;
+        nameEn: string;
+      } | null;
+      finishType?: {
+        __typename?: "TaskStatusDto";
+        id: Types.TaskStatus;
+        nameTh: string;
+        nameEn: string;
+        color: string;
+      } | null;
+      images: Array<{
+        __typename?: "UploadFile";
+        id: string;
+        refId?: string | null;
+        fileId?: string | null;
+        fileType: Types.UploadFileType;
+        fileName?: string | null;
+        fileFolder?: string | null;
+        filePath?: string | null;
+        fileBucket?: string | null;
+        fileExtension?: string | null;
+        fileUrl: string;
+        isPublic: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      }>;
+      createdBy?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        firstName?: string | null;
+        lastName?: string | null;
+      } | null;
+      updatedBy?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        firstName?: string | null;
+        lastName?: string | null;
+      } | null;
+    }>;
     status?: {
       __typename?: "TaskStatusDto";
       id: Types.TaskStatus;
@@ -683,6 +826,20 @@ export type TaskDetailFragment = {
       updatedAt: Date;
       deletedAt?: Date | null;
     }>;
+    createdBy?: {
+      __typename?: "User";
+      id: string;
+      employeeId: string;
+      firstName?: string | null;
+      lastName?: string | null;
+    } | null;
+    updatedBy?: {
+      __typename?: "User";
+      id: string;
+      employeeId: string;
+      firstName?: string | null;
+      lastName?: string | null;
+    } | null;
   }>;
 };
 
@@ -714,7 +871,6 @@ export type TaskQuery = {
       id: string;
       code: string;
       taskId: string;
-      priority?: number | null;
       description?: string | null;
       categoryId?: string | null;
       subCategoryId?: string | null;
@@ -766,6 +922,13 @@ export type TaskQuery = {
         id: string;
         nameTh: string;
         nameEn: string;
+      } | null;
+      priority?: {
+        __typename?: "TaskPriorityDto";
+        color: string;
+        id: number;
+        nameEn: string;
+        nameTh: string;
       } | null;
       images: Array<{
         __typename?: "UploadFile";
@@ -934,6 +1097,108 @@ export type TaskQuery = {
         __typename?: "TaskDetailAssign";
         id: string;
         code: string;
+        SLA?: number | null;
+        SLAEndDate?: Date | null;
+        SLAStartDate?: Date | null;
+        SLAWorkHour?: number | null;
+        assetComment?: string | null;
+        comment?: string | null;
+        createdAt: Date;
+        customerNameFinish?: string | null;
+        finishDate?: Date | null;
+        isAssetCustomer?: boolean | null;
+        requestDate?: Date | null;
+        reAssignInDate?: Date | null;
+        reAssignRemark?: string | null;
+        logs: Array<{
+          __typename?: "TaskDetailAssign";
+          id: string;
+          code: string;
+          SLA?: number | null;
+          SLAEndDate?: Date | null;
+          SLAStartDate?: Date | null;
+          SLAWorkHour?: number | null;
+          assetComment?: string | null;
+          comment?: string | null;
+          createdAt: Date;
+          customerNameFinish?: string | null;
+          finishDate?: Date | null;
+          isAssetCustomer?: boolean | null;
+          requestDate?: Date | null;
+          reAssignInDate?: Date | null;
+          reAssignRemark?: string | null;
+          status?: {
+            __typename?: "TaskStatusDto";
+            id: Types.TaskStatus;
+            nameTh: string;
+            nameEn: string;
+            color: string;
+          } | null;
+          staffStatus?: {
+            __typename?: "TaskStatusDto";
+            id: Types.TaskStatus;
+            nameTh: string;
+            nameEn: string;
+            color: string;
+          } | null;
+          staff?: {
+            __typename?: "User";
+            id: string;
+            employeeId: string;
+            firstName?: string | null;
+            lastName?: string | null;
+          } | null;
+          requestRangeTime?: {
+            __typename?: "TaskRangeTimeDto";
+            id: string;
+            nameTh: string;
+            nameEn: string;
+          } | null;
+          reAssignRangeTime?: {
+            __typename?: "TaskRangeTimeDto";
+            id: string;
+            nameTh: string;
+            nameEn: string;
+          } | null;
+          finishType?: {
+            __typename?: "TaskStatusDto";
+            id: Types.TaskStatus;
+            nameTh: string;
+            nameEn: string;
+            color: string;
+          } | null;
+          images: Array<{
+            __typename?: "UploadFile";
+            id: string;
+            refId?: string | null;
+            fileId?: string | null;
+            fileType: Types.UploadFileType;
+            fileName?: string | null;
+            fileFolder?: string | null;
+            filePath?: string | null;
+            fileBucket?: string | null;
+            fileExtension?: string | null;
+            fileUrl: string;
+            isPublic: boolean;
+            createdAt: Date;
+            updatedAt: Date;
+            deletedAt?: Date | null;
+          }>;
+          createdBy?: {
+            __typename?: "User";
+            id: string;
+            employeeId: string;
+            firstName?: string | null;
+            lastName?: string | null;
+          } | null;
+          updatedBy?: {
+            __typename?: "User";
+            id: string;
+            employeeId: string;
+            firstName?: string | null;
+            lastName?: string | null;
+          } | null;
+        }>;
         status?: {
           __typename?: "TaskStatusDto";
           id: Types.TaskStatus;
@@ -991,6 +1256,20 @@ export type TaskQuery = {
           updatedAt: Date;
           deletedAt?: Date | null;
         }>;
+        createdBy?: {
+          __typename?: "User";
+          id: string;
+          employeeId: string;
+          firstName?: string | null;
+          lastName?: string | null;
+        } | null;
+        updatedBy?: {
+          __typename?: "User";
+          id: string;
+          employeeId: string;
+          firstName?: string | null;
+          lastName?: string | null;
+        } | null;
       }>;
     }>;
     status: {
@@ -1324,6 +1603,14 @@ export const TaskStatusDtoFragmentDoc = gql`
     color
   }
 `;
+export const TaskPriorityFragmentDoc = gql`
+  fragment TaskPriority on TaskPriorityDto {
+    color
+    id
+    nameEn
+    nameTh
+  }
+`;
 export const UploadFileFragmentDoc = gql`
   fragment UploadFile on UploadFile {
     id
@@ -1346,6 +1633,17 @@ export const TaskDetailAssignFragmentDoc = gql`
   fragment TaskDetailAssign on TaskDetailAssign {
     id
     code
+    SLA
+    SLAEndDate
+    SLAStartDate
+    SLAWorkHour
+    assetComment
+    code
+    comment
+    createdAt
+    customerNameFinish
+    finishDate
+    isAssetCustomer
     status {
       ...TaskStatus
     }
@@ -1358,9 +1656,12 @@ export const TaskDetailAssignFragmentDoc = gql`
       firstName
       lastName
     }
+    requestDate
     requestRangeTime {
       ...TaskRangeTime
     }
+    reAssignInDate
+    reAssignRemark
     reAssignRangeTime {
       ...TaskRangeTime
     }
@@ -1369,6 +1670,18 @@ export const TaskDetailAssignFragmentDoc = gql`
     }
     images {
       ...UploadFile
+    }
+    createdBy {
+      id
+      employeeId
+      firstName
+      lastName
+    }
+    updatedBy {
+      id
+      employeeId
+      firstName
+      lastName
     }
   }
   ${TaskStatusFragmentDoc}
@@ -1386,7 +1699,6 @@ export const TaskDetailFragmentDoc = gql`
     homecareStatus {
       ...TaskStatus
     }
-    priority
     description
     categoryId
     subCategoryId
@@ -1419,6 +1731,9 @@ export const TaskDetailFragmentDoc = gql`
     assignRangeTime {
       ...TaskRangeTime
     }
+    priority {
+      ...TaskPriority
+    }
     images {
       ...UploadFile
     }
@@ -1445,10 +1760,14 @@ export const TaskDetailFragmentDoc = gql`
     }
     assigns {
       ...TaskDetailAssign
+      logs {
+        ...TaskDetailAssign
+      }
     }
   }
   ${TaskStatusFragmentDoc}
   ${TaskRangeTimeFragmentDoc}
+  ${TaskPriorityFragmentDoc}
   ${UploadFileFragmentDoc}
   ${MasterFragmentDoc}
   ${UserFragmentDoc}
