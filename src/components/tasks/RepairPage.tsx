@@ -34,7 +34,7 @@ export const RepairPage = () => {
   const {
     token: { colorPrimary },
   } = theme.useToken();
-  const { data, loading } = useTasksQuery({
+  const { data, loading, error } = useTasksQuery({
     variables: {
       type: TaskType.Repair,
       page: currentPage,

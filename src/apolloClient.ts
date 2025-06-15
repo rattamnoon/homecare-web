@@ -18,8 +18,7 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import dayjs from "dayjs";
 import { createClient } from "graphql-ws";
 import { JWT } from "next-auth/jwt";
-import { signOut } from "next-auth/react";
-import { auth } from "./auth";
+import { getSession, signOut } from "next-auth/react";
 import { RefreshTokenDocument } from "./gql/generated/auth.generated";
 
 const isServer = typeof window === "undefined";
@@ -60,29 +59,42 @@ const refreshMiddleware = onError(
           (observer) => {
             (async () => {
               try {
-                const session = await auth();
+                const session = await getSession();
                 if (!session || session.error === "RefreshAccessTokenError") {
-                  await signOut();
-                }
-
-                const newToken = await refreshToken({
-                  token: session!.token,
-                  expiresAt: session!.expiresAt,
-                  refreshToken: session!.refreshToken,
-                });
-
-                if (!newToken || newToken.error === "RefreshAccessTokenError") {
-                  await signOut();
                   observer.error(new Error("Unauthorized"));
-                  return;
+                  await signOut();
                 }
 
-                operation.setContext(({ headers = {} }) => ({
-                  headers: {
-                    ...headers,
-                    Authorization: `Bearer ${newToken.accessToken}`,
-                  },
-                }));
+                if (dayjs().isAfter(dayjs.unix(session!.expiresAt))) {
+                  operation.setContext(({ headers = {} }) => ({
+                    headers: {
+                      ...headers,
+                      Authorization: `Bearer ${session!.token}`,
+                    },
+                  }));
+                } else {
+                  const newToken = await refreshToken({
+                    token: session!.token,
+                    expiresAt: session!.expiresAt,
+                    refreshToken: session!.refreshToken,
+                  });
+
+                  if (
+                    !newToken ||
+                    newToken.error === "RefreshAccessTokenError"
+                  ) {
+                    await signOut();
+                    observer.error(new Error("Unauthorized"));
+                    return;
+                  }
+
+                  operation.setContext(({ headers = {} }) => ({
+                    headers: {
+                      ...headers,
+                      Authorization: `Bearer ${newToken.accessToken}`,
+                    },
+                  }));
+                }
 
                 const subscriber = {
                   next: observer.next.bind(observer),
@@ -119,7 +131,7 @@ const refreshMiddleware = onError(
 
 const authMiddleware = setContext(async (request, previousContext) => {
   const { headers } = previousContext;
-  const session = await auth();
+  const session = await getSession();
   const token = session?.token;
 
   return {
