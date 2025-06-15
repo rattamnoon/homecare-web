@@ -1,13 +1,13 @@
 "use client";
 
 import { LayoutWithBreadcrumb } from "@/components/layout/LayoutWithBreadcrumb";
-import { TaskStatus, UploadFileType } from "@/gql/generated/graphql";
+import { UploadFileType } from "@/gql/generated/graphql";
 import {
   TaskDetailFragment,
+  TaskStatusFragment,
   useTaskQuery,
 } from "@/gql/generated/tasks.generated";
 import {
-  faCheck,
   faEdit,
   faFaceSmile,
   faHouseCircleCheck,
@@ -85,13 +85,22 @@ export const RepairDetailPage = () => {
         "งานจะถูกจบงานอัตโนมัติ หากต้องการจบงานเอง กรุณากดปุ่มจบงานด้านล่าง",
       okText: "ตกลง",
       cancelText: "ยกเลิก",
-      okButtonProps: {
-        icon: <FontAwesomeIcon icon={faCheck} />,
-      },
       onOk: () => {
         console.log("finish");
       },
     });
+  };
+
+  const handleDisabled = (status?: TaskStatusFragment | null) => {
+    // if (!status) return true;
+    // return (
+    //   status?.id === TaskStatus.Finished || status?.id === TaskStatus.Closed
+    // );
+    return false;
+  };
+
+  const handleHide = (detail: TaskDetailFragment) => {
+    return false;
   };
 
   return (
@@ -226,17 +235,21 @@ export const RepairDetailPage = () => {
                         {detail.subCategory?.nameTh}
                       </Descriptions.Item>
                       <Descriptions.Item label="สถานะประเมิน">
-                        <Button
-                          variant="outlined"
-                          color="primary"
-                          size="small"
-                          onClick={() => {
-                            setEvaluationDialogTaskDetail(detail);
-                            setEvaluationDialogOpen(true);
-                          }}
-                        >
-                          ยังไม่ได้ประเมิน
-                        </Button>
+                        {detail.isCSAT ? (
+                          <Tag color="green">ประเมินแล้ว</Tag>
+                        ) : (
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            size="small"
+                            onClick={() => {
+                              setEvaluationDialogTaskDetail(detail);
+                              setEvaluationDialogOpen(true);
+                            }}
+                          >
+                            ยังไม่ได้ประเมิน
+                          </Button>
+                        )}
                       </Descriptions.Item>
                       <Descriptions.Item label="รูปภาพ" span={3}>
                         <RepairImagePreview
@@ -305,10 +318,7 @@ export const RepairDetailPage = () => {
                               setMisscallDialogTaskDetail(detail);
                               setMisscallDialogOpen(true);
                             }}
-                            disabled={
-                              detail.status?.id === TaskStatus.Finished ||
-                              detail.status?.id === TaskStatus.Closed
-                            }
+                            disabled={handleDisabled(detail.status)}
                           >
                             ติดต่อลูกค้าไม่ได้
                           </Button>
@@ -320,10 +330,7 @@ export const RepairDetailPage = () => {
                               setWaitingConstructionDialogTaskDetail(detail);
                               setWaitingConstructionDialogOpen(true);
                             }}
-                            disabled={
-                              detail.status?.id === TaskStatus.Finished ||
-                              detail.status?.id === TaskStatus.Closed
-                            }
+                            disabled={handleDisabled(detail.status)}
                           >
                             ของไม่ครบ
                           </Button>
@@ -355,10 +362,7 @@ export const RepairDetailPage = () => {
                               setAssignedDialogTaskDetail(detail);
                               setAssignedDialogOpen(true);
                             }}
-                            disabled={
-                              detail.status?.id === TaskStatus.Finished ||
-                              detail.status?.id === TaskStatus.Closed
-                            }
+                            disabled={handleDisabled(detail.status)}
                           >
                             จ่ายงาน
                           </Button>
@@ -367,10 +371,7 @@ export const RepairDetailPage = () => {
                             color="green"
                             icon={<FontAwesomeIcon icon={faHouseCircleCheck} />}
                             onClick={() => handleFinishTaskDetail(detail)}
-                            disabled={
-                              detail.status?.id === TaskStatus.Finished ||
-                              detail.status?.id === TaskStatus.Closed
-                            }
+                            disabled={handleDisabled(detail.status)}
                           >
                             Finish
                           </Button>
@@ -382,10 +383,7 @@ export const RepairDetailPage = () => {
                               setPriorityDialogTaskDetail(detail);
                               setPriorityDialogOpen(true);
                             }}
-                            disabled={
-                              detail.status?.id === TaskStatus.Finished ||
-                              detail.status?.id === TaskStatus.Closed
-                            }
+                            disabled={handleDisabled(detail.status)}
                           >
                             Piority
                           </Button>
@@ -395,8 +393,7 @@ export const RepairDetailPage = () => {
                             icon={<FontAwesomeIcon icon={faEdit} />}
                             disabled={
                               detail.assigns?.length === 0 ||
-                              detail.status?.id === TaskStatus.Finished ||
-                              detail.status?.id === TaskStatus.Closed
+                              handleDisabled(detail.status)
                             }
                             onClick={() => {
                               setEditAssignDialogTaskDetail(detail);
