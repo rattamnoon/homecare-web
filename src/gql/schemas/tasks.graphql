@@ -223,6 +223,13 @@ fragment TaskDetail on TaskDetail {
   homecareStatus {
     ...TaskStatus
   }
+  task {
+    id
+    checkInDate
+    checkInRangeTime {
+      ...TaskRangeTime
+    }
+  }
   description
   categoryId
   subCategoryId

@@ -1,5 +1,5 @@
 import { CustomModal } from "@/components/common/CustomModal";
-import { MasterType } from "@/gql/generated/graphql";
+import { MasterType, TaskStatus } from "@/gql/generated/graphql";
 import { useMastersQuery } from "@/gql/generated/master.generated";
 import { useTaskOptionsQuery } from "@/gql/generated/option.generated";
 import { TaskDetailFragment } from "@/gql/generated/tasks.generated";
@@ -73,7 +73,21 @@ export const RepairAssignedDialog = ({
         });
       }
     }
-  }, [childId, form, mastersData, masterId]);
+
+    if (taskDetail?.task?.checkInDate && taskDetail?.task?.checkInRangeTime) {
+      form.setFieldsValue({
+        homecareInDate: dayjs(taskDetail?.task?.checkInDate),
+        homecareRangeTime: taskDetail?.task?.checkInRangeTime.id,
+      });
+    }
+
+    if (taskDetail?.slaId && taskDetail?.sla?.parent) {
+      form.setFieldsValue({
+        masterId: taskDetail?.sla?.parent?.id,
+        childId: taskDetail?.slaId,
+      });
+    }
+  }, [childId, form, mastersData, masterId, taskDetail]);
 
   return (
     <CustomModal
@@ -82,36 +96,77 @@ export const RepairAssignedDialog = ({
       onCancel={onCancel}
       okText="บันทึก"
       cancelText="ยกเลิก"
-      onOk={() => {}}
+      onOk={() => {
+        form.submit();
+      }}
       okButtonProps={{
         icon: <FontAwesomeIcon icon={faSave} />,
       }}
       width={800}
     >
-      <Form form={form} labelCol={{ span: 8 }}>
+      <Form
+        form={form}
+        labelCol={{ span: 8 }}
+        onFinish={(values) => {
+          const input = {
+            id: taskDetail?.id,
+            slaId: values.masterId,
+            status: TaskStatus.Open,
+            homecareId: values.homecareId,
+            homecareStatus: TaskStatus.Open,
+            homecareInDate: values.homecareInDate,
+            homecareRangeTime: values.homecareRangeTime,
+          };
+        }}
+      >
         <Row gutter={[8, 8]}>
           <Col xs={24} sm={12}>
-            <Form.Item label="ประเภทหลัก" name="masterId">
+            <Form.Item
+              label="ประเภทหลัก"
+              name="masterId"
+              required={false}
+              rules={[{ required: true, message: "กรุณาเลือกประเภทหลัก" }]}
+            >
               <Select placeholder="เลือกประเภทหลัก" options={slaOptions} />
             </Form.Item>
           </Col>
           <Col xs={24} sm={12}>
-            <Form.Item label="ประเภทย่อย" name="childId">
+            <Form.Item
+              label="ประเภทย่อย"
+              name="childId"
+              required={false}
+              rules={[{ required: true, message: "กรุณาเลือกประเภทย่อย" }]}
+            >
               <Select placeholder="เลือกประเภทย่อย" options={slaChildOptions} />
             </Form.Item>
           </Col>
           <Col xs={24} sm={12}>
-            <Form.Item label="ผู้รับผิดชอบ" name="employeeId">
+            <Form.Item
+              label="ผู้รับผิดชอบ"
+              name="homecareId"
+              required={false}
+              rules={[{ required: true, message: "กรุณาเลือกผู้รับผิดชอบ" }]}
+            >
               <Select placeholder="เลือกผู้รับผิดชอบ" />
             </Form.Item>
           </Col>
           <Col xs={24} sm={12}>
-            <Form.Item label="SLA" name="SLA">
-              <InputNumber variant="borderless" addonAfter="ชั่วโมง" />
+            <Form.Item label="SLA" name="SLA" required={false}>
+              <InputNumber variant="borderless" addonAfter="ชั่วโมง" disabled />
             </Form.Item>
           </Col>
           <Col xs={24} sm={12}>
-            <Form.Item label="วันที่เข้าตรวจสอบ" name="checkInDate">
+            <Form.Item
+              label="วันที่เข้าตรวจสอบ"
+              name="homecareInDate"
+              required={false}
+              rules={[
+                {
+                  required: true,
+                  message: "กรุณากรอกวันที่เข้าตรวจสอบ",
+                },
+              ]}
+            >
               <DatePicker
                 placeholder="เลือกวันที่เข้าตรวจสอบ"
                 format="DD/MM/YYYY"
@@ -125,7 +180,12 @@ export const RepairAssignedDialog = ({
             </Form.Item>
           </Col>
           <Col xs={24} sm={12}>
-            <Form.Item label="เวลาเข้าตรวจสอบ" name="checkInTime">
+            <Form.Item
+              label="เวลาเข้าตรวจสอบ"
+              name="homecareRangeTime"
+              required={false}
+              rules={[{ required: true, message: "กรุณาเลือกเวลาเข้าตรวจสอบ" }]}
+            >
               <Select
                 placeholder="เลือกเวลาเข้าตรวจสอบ"
                 options={timeOptions}

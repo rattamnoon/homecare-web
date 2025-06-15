@@ -524,6 +524,17 @@ export type TaskDetailFragment = {
     nameEn: string;
     color: string;
   } | null;
+  task: {
+    __typename?: "Task";
+    id: string;
+    checkInDate?: Date | null;
+    checkInRangeTime?: {
+      __typename?: "TaskRangeTimeDto";
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    } | null;
+  };
   homecareInRangeTime?: {
     __typename?: "TaskRangeTimeDto";
     id: string;
@@ -1038,6 +1049,17 @@ export type TaskQuery = {
         nameEn: string;
         color: string;
       } | null;
+      task: {
+        __typename?: "Task";
+        id: string;
+        checkInDate?: Date | null;
+        checkInRangeTime?: {
+          __typename?: "TaskRangeTimeDto";
+          id: string;
+          nameTh: string;
+          nameEn: string;
+        } | null;
+      };
       homecareInRangeTime?: {
         __typename?: "TaskRangeTimeDto";
         id: string;
@@ -1778,6 +1800,17 @@ export type UpdateTaskDetailMutation = {
       nameEn: string;
       color: string;
     } | null;
+    task: {
+      __typename?: "Task";
+      id: string;
+      checkInDate?: Date | null;
+      checkInRangeTime?: {
+        __typename?: "TaskRangeTimeDto";
+        id: string;
+        nameTh: string;
+        nameEn: string;
+      } | null;
+    };
     homecareInRangeTime?: {
       __typename?: "TaskRangeTimeDto";
       id: string;
@@ -2432,6 +2465,13 @@ export const TaskDetailFragmentDoc = gql`
     }
     homecareStatus {
       ...TaskStatus
+    }
+    task {
+      id
+      checkInDate
+      checkInRangeTime {
+        ...TaskRangeTime
+      }
     }
     description
     categoryId
