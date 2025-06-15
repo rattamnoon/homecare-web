@@ -6,7 +6,6 @@ fragment User on User {
   lastName
   email
   lastLoginAt
-  status
   createdAt
   updatedAt
   deletedAt
@@ -22,12 +21,19 @@ query Users($page: Int!, $limit: Int!, $searchText: String) {
     }
     items {
       ...User
+      status
     }
   }
 }
 
 query Me {
   me {
+    ...User
+  }
+}
+
+query AllActiveUsers {
+  allActiveUsers {
     ...User
   }
 }

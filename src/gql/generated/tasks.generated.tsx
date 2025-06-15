@@ -624,7 +624,6 @@ export type TaskDetailFragment = {
     lastName?: string | null;
     email: string;
     lastLoginAt: Date;
-    status: string;
     createdAt: Date;
     updatedAt: Date;
     deletedAt?: Date | null;
@@ -1149,7 +1148,6 @@ export type TaskQuery = {
         lastName?: string | null;
         email: string;
         lastLoginAt: Date;
-        status: string;
         createdAt: Date;
         updatedAt: Date;
         deletedAt?: Date | null;
@@ -1900,7 +1898,6 @@ export type UpdateTaskDetailMutation = {
       lastName?: string | null;
       email: string;
       lastLoginAt: Date;
-      status: string;
       createdAt: Date;
       updatedAt: Date;
       deletedAt?: Date | null;

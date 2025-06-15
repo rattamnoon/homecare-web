@@ -16,7 +16,6 @@ export type UserFragment = {
   lastName?: string | null;
   email: string;
   lastLoginAt: Date;
-  status: string;
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date | null;
@@ -49,6 +48,7 @@ export type UsersQuery = {
     } | null;
     items: Array<{
       __typename?: "User";
+      status: string;
       id: string;
       employeeId: string;
       username: string;
@@ -56,7 +56,6 @@ export type UsersQuery = {
       lastName?: string | null;
       email: string;
       lastLoginAt: Date;
-      status: string;
       createdAt: Date;
       updatedAt: Date;
       deletedAt?: Date | null;
@@ -77,11 +76,31 @@ export type MeQuery = {
     lastName?: string | null;
     email: string;
     lastLoginAt: Date;
-    status: string;
     createdAt: Date;
     updatedAt: Date;
     deletedAt?: Date | null;
   };
+};
+
+export type AllActiveUsersQueryVariables = Types.Exact<{
+  [key: string]: never;
+}>;
+
+export type AllActiveUsersQuery = {
+  __typename?: "Query";
+  allActiveUsers: Array<{
+    __typename?: "User";
+    id: string;
+    employeeId: string;
+    username: string;
+    firstName?: string | null;
+    lastName?: string | null;
+    email: string;
+    lastLoginAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+  }>;
 };
 
 export const UserFragmentDoc = gql`
@@ -93,7 +112,6 @@ export const UserFragmentDoc = gql`
     lastName
     email
     lastLoginAt
-    status
     createdAt
     updatedAt
     deletedAt
@@ -110,6 +128,7 @@ export const UsersDocument = gql`
       }
       items {
         ...User
+        status
       }
     }
   }
@@ -232,3 +251,81 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeSuspenseQueryHookResult = ReturnType<typeof useMeSuspenseQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const AllActiveUsersDocument = gql`
+  query AllActiveUsers {
+    allActiveUsers {
+      ...User
+    }
+  }
+  ${UserFragmentDoc}
+`;
+
+/**
+ * __useAllActiveUsersQuery__
+ *
+ * To run a query within a React component, call `useAllActiveUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllActiveUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllActiveUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllActiveUsersQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    AllActiveUsersQuery,
+    AllActiveUsersQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<AllActiveUsersQuery, AllActiveUsersQueryVariables>(
+    AllActiveUsersDocument,
+    options,
+  );
+}
+export function useAllActiveUsersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AllActiveUsersQuery,
+    AllActiveUsersQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<AllActiveUsersQuery, AllActiveUsersQueryVariables>(
+    AllActiveUsersDocument,
+    options,
+  );
+}
+export function useAllActiveUsersSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        AllActiveUsersQuery,
+        AllActiveUsersQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    AllActiveUsersQuery,
+    AllActiveUsersQueryVariables
+  >(AllActiveUsersDocument, options);
+}
+export type AllActiveUsersQueryHookResult = ReturnType<
+  typeof useAllActiveUsersQuery
+>;
+export type AllActiveUsersLazyQueryHookResult = ReturnType<
+  typeof useAllActiveUsersLazyQuery
+>;
+export type AllActiveUsersSuspenseQueryHookResult = ReturnType<
+  typeof useAllActiveUsersSuspenseQuery
+>;
+export type AllActiveUsersQueryResult = Apollo.QueryResult<
+  AllActiveUsersQuery,
+  AllActiveUsersQueryVariables
+>;

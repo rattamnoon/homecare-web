@@ -294,6 +294,7 @@ export type Project = {
 
 export type Query = {
   __typename?: "Query";
+  allActiveUsers: Array<User>;
   master: Master;
   masters: Array<Master>;
   me: User;
