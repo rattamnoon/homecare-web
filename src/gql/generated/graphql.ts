@@ -61,8 +61,8 @@ export type CreateProjectInput = {
 export type CreateTaskDetailInput = {
   CSATComment?: InputMaybe<Scalars["String"]["input"]>;
   appointmentDate?: InputMaybe<Scalars["Date"]["input"]>;
-  appointmentRepairComment?: InputMaybe<Scalars["String"]["input"]>;
   appointmentRepairDate?: InputMaybe<Scalars["Date"]["input"]>;
+  appointmentRepairRemark?: InputMaybe<Scalars["String"]["input"]>;
   appointmentRepairTime?: InputMaybe<Scalars["String"]["input"]>;
   appointmentTime?: InputMaybe<Scalars["String"]["input"]>;
   assignDate?: InputMaybe<Scalars["Date"]["input"]>;
@@ -77,10 +77,10 @@ export type CreateTaskDetailInput = {
   description?: InputMaybe<Scalars["String"]["input"]>;
   files: Array<CreateUploadFileInput>;
   finishDate?: InputMaybe<Scalars["Date"]["input"]>;
-  homecareComment?: InputMaybe<Scalars["String"]["input"]>;
   homecareId?: InputMaybe<Scalars["String"]["input"]>;
   homecareInDate?: InputMaybe<Scalars["Date"]["input"]>;
   homecareRangeTime?: InputMaybe<Scalars["String"]["input"]>;
+  homecareRemark?: InputMaybe<Scalars["String"]["input"]>;
   homecareStatus?: InputMaybe<TaskStatus>;
   inProgressDate?: InputMaybe<Scalars["Date"]["input"]>;
   isCSAT?: InputMaybe<Scalars["Boolean"]["input"]>;
@@ -399,8 +399,8 @@ export type TaskDetail = {
   __typename?: "TaskDetail";
   CSATComment?: Maybe<Scalars["String"]["output"]>;
   appointmentDate?: Maybe<Scalars["Date"]["output"]>;
-  appointmentRepairComment?: Maybe<Scalars["String"]["output"]>;
   appointmentRepairDate?: Maybe<Scalars["Date"]["output"]>;
+  appointmentRepairRemark?: Maybe<Scalars["String"]["output"]>;
   appointmentRepairTime?: Maybe<Scalars["String"]["output"]>;
   appointmentTime?: Maybe<Scalars["String"]["output"]>;
   assignDate?: Maybe<Scalars["Date"]["output"]>;
@@ -423,10 +423,10 @@ export type TaskDetail = {
   description?: Maybe<Scalars["String"]["output"]>;
   finishDate?: Maybe<Scalars["Date"]["output"]>;
   homecare?: Maybe<User>;
-  homecareComment?: Maybe<Scalars["String"]["output"]>;
   homecareId?: Maybe<Scalars["String"]["output"]>;
   homecareInDate?: Maybe<Scalars["Date"]["output"]>;
   homecareInRangeTime?: Maybe<TaskRangeTimeDto>;
+  homecareRemark?: Maybe<Scalars["String"]["output"]>;
   homecareStatus?: Maybe<TaskStatusDto>;
   id: Scalars["ID"]["output"];
   images: Array<UploadFile>;
@@ -455,7 +455,6 @@ export type TaskDetailAssign = {
   SLAWorkHour?: Maybe<Scalars["Int"]["output"]>;
   assetComment?: Maybe<Scalars["String"]["output"]>;
   code: Scalars["String"]["output"];
-  comment?: Maybe<Scalars["String"]["output"]>;
   createdAt: Scalars["Date"]["output"];
   createdBy?: Maybe<User>;
   customerNameFinish?: Maybe<Scalars["String"]["output"]>;
@@ -470,6 +469,7 @@ export type TaskDetailAssign = {
   reAssignInDate?: Maybe<Scalars["Date"]["output"]>;
   reAssignRangeTime?: Maybe<TaskRangeTimeDto>;
   reAssignRemark?: Maybe<Scalars["String"]["output"]>;
+  remark?: Maybe<Scalars["String"]["output"]>;
   reportLogs: Array<TaskDetailReportLog>;
   requestDate?: Maybe<Scalars["Date"]["output"]>;
   requestRangeTime?: Maybe<TaskRangeTimeDto>;
@@ -488,13 +488,13 @@ export type TaskDetailReportLog = {
   callbackDate?: Maybe<Scalars["Date"]["output"]>;
   checkInDate?: Maybe<Scalars["Date"]["output"]>;
   checkInRangeTime?: Maybe<TaskRangeTimeDto>;
-  comment?: Maybe<Scalars["String"]["output"]>;
   createdAt: Scalars["Date"]["output"];
   createdBy?: Maybe<User>;
   deletedAt?: Maybe<Scalars["Date"]["output"]>;
   deletedBy?: Maybe<User>;
   id: Scalars["ID"]["output"];
   images: Array<UploadFile>;
+  remark?: Maybe<Scalars["String"]["output"]>;
   task?: Maybe<Task>;
   taskDetailAssignId?: Maybe<Scalars["String"]["output"]>;
   taskDetailId?: Maybe<Scalars["String"]["output"]>;
@@ -628,8 +628,8 @@ export type UpdateProjectInput = {
 export type UpdateTaskDetailInput = {
   CSATComment?: InputMaybe<Scalars["String"]["input"]>;
   appointmentDate?: InputMaybe<Scalars["Date"]["input"]>;
-  appointmentRepairComment?: InputMaybe<Scalars["String"]["input"]>;
   appointmentRepairDate?: InputMaybe<Scalars["Date"]["input"]>;
+  appointmentRepairRemark?: InputMaybe<Scalars["String"]["input"]>;
   appointmentRepairTime?: InputMaybe<Scalars["String"]["input"]>;
   appointmentTime?: InputMaybe<Scalars["String"]["input"]>;
   assignDate?: InputMaybe<Scalars["Date"]["input"]>;
@@ -644,10 +644,10 @@ export type UpdateTaskDetailInput = {
   description?: InputMaybe<Scalars["String"]["input"]>;
   files?: InputMaybe<Array<CreateUploadFileInput>>;
   finishDate?: InputMaybe<Scalars["Date"]["input"]>;
-  homecareComment?: InputMaybe<Scalars["String"]["input"]>;
   homecareId?: InputMaybe<Scalars["String"]["input"]>;
   homecareInDate?: InputMaybe<Scalars["Date"]["input"]>;
   homecareRangeTime?: InputMaybe<Scalars["String"]["input"]>;
+  homecareRemark?: InputMaybe<Scalars["String"]["input"]>;
   homecareStatus?: InputMaybe<TaskStatus>;
   id: Scalars["ID"]["input"];
   inProgressDate?: InputMaybe<Scalars["Date"]["input"]>;

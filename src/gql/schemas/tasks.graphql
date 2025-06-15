@@ -138,7 +138,7 @@ fragment TaskDetailAssign on TaskDetailAssign {
   SLAWorkHour
   assetComment
   code
-  comment
+  remark
   createdAt
   customerNameFinish
   finishDate
@@ -195,7 +195,7 @@ fragment TaskPriority on TaskPriorityDto {
 fragment TaskDetailReportLog on TaskDetailReportLog {
   callbackDate
   checkInDate
-  comment
+  remark
   createdAt
   deletedAt
   id
@@ -231,13 +231,13 @@ fragment TaskDetail on TaskDetail {
   contractorId
   homecareId
   homecareInDate
-  homecareComment
+  homecareRemark
   assignInDate
   appointmentDate
   appointmentTime
   appointmentRepairDate
   appointmentRepairTime
-  appointmentRepairComment
+  appointmentRepairRemark
   callingDate
   assignDate
   inProgressDate

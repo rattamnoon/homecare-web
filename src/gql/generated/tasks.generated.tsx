@@ -347,7 +347,7 @@ export type TaskDetailAssignFragment = {
   SLAStartDate?: Date | null;
   SLAWorkHour?: number | null;
   assetComment?: string | null;
-  comment?: string | null;
+  remark?: string | null;
   createdAt: Date;
   customerNameFinish?: string | null;
   finishDate?: Date | null;
@@ -440,7 +440,7 @@ export type TaskDetailReportLogFragment = {
   __typename?: "TaskDetailReportLog";
   callbackDate?: Date | null;
   checkInDate?: Date | null;
-  comment?: string | null;
+  remark?: string | null;
   createdAt: Date;
   deletedAt?: Date | null;
   id: string;
@@ -492,13 +492,13 @@ export type TaskDetailFragment = {
   contractorId?: string | null;
   homecareId?: string | null;
   homecareInDate?: Date | null;
-  homecareComment?: string | null;
+  homecareRemark?: string | null;
   assignInDate?: Date | null;
   appointmentDate?: Date | null;
   appointmentTime?: string | null;
   appointmentRepairDate?: Date | null;
   appointmentRepairTime?: string | null;
-  appointmentRepairComment?: string | null;
+  appointmentRepairRemark?: string | null;
   callingDate?: Date | null;
   assignDate?: Date | null;
   inProgressDate?: Date | null;
@@ -715,7 +715,7 @@ export type TaskDetailFragment = {
     SLAStartDate?: Date | null;
     SLAWorkHour?: number | null;
     assetComment?: string | null;
-    comment?: string | null;
+    remark?: string | null;
     createdAt: Date;
     customerNameFinish?: string | null;
     finishDate?: Date | null;
@@ -732,7 +732,7 @@ export type TaskDetailFragment = {
       SLAStartDate?: Date | null;
       SLAWorkHour?: number | null;
       assetComment?: string | null;
-      comment?: string | null;
+      remark?: string | null;
       createdAt: Date;
       customerNameFinish?: string | null;
       finishDate?: Date | null;
@@ -816,7 +816,7 @@ export type TaskDetailFragment = {
       __typename?: "TaskDetailReportLog";
       callbackDate?: Date | null;
       checkInDate?: Date | null;
-      comment?: string | null;
+      remark?: string | null;
       createdAt: Date;
       deletedAt?: Date | null;
       id: string;
@@ -930,7 +930,7 @@ export type TaskDetailFragment = {
     __typename?: "TaskDetailReportLog";
     callbackDate?: Date | null;
     checkInDate?: Date | null;
-    comment?: string | null;
+    remark?: string | null;
     createdAt: Date;
     deletedAt?: Date | null;
     id: string;
@@ -1006,13 +1006,13 @@ export type TaskQuery = {
       contractorId?: string | null;
       homecareId?: string | null;
       homecareInDate?: Date | null;
-      homecareComment?: string | null;
+      homecareRemark?: string | null;
       assignInDate?: Date | null;
       appointmentDate?: Date | null;
       appointmentTime?: string | null;
       appointmentRepairDate?: Date | null;
       appointmentRepairTime?: string | null;
-      appointmentRepairComment?: string | null;
+      appointmentRepairRemark?: string | null;
       callingDate?: Date | null;
       assignDate?: Date | null;
       inProgressDate?: Date | null;
@@ -1229,7 +1229,7 @@ export type TaskQuery = {
         SLAStartDate?: Date | null;
         SLAWorkHour?: number | null;
         assetComment?: string | null;
-        comment?: string | null;
+        remark?: string | null;
         createdAt: Date;
         customerNameFinish?: string | null;
         finishDate?: Date | null;
@@ -1246,7 +1246,7 @@ export type TaskQuery = {
           SLAStartDate?: Date | null;
           SLAWorkHour?: number | null;
           assetComment?: string | null;
-          comment?: string | null;
+          remark?: string | null;
           createdAt: Date;
           customerNameFinish?: string | null;
           finishDate?: Date | null;
@@ -1330,7 +1330,7 @@ export type TaskQuery = {
           __typename?: "TaskDetailReportLog";
           callbackDate?: Date | null;
           checkInDate?: Date | null;
-          comment?: string | null;
+          remark?: string | null;
           createdAt: Date;
           deletedAt?: Date | null;
           id: string;
@@ -1444,7 +1444,7 @@ export type TaskQuery = {
         __typename?: "TaskDetailReportLog";
         callbackDate?: Date | null;
         checkInDate?: Date | null;
-        comment?: string | null;
+        remark?: string | null;
         createdAt: Date;
         deletedAt?: Date | null;
         id: string;
@@ -1746,13 +1746,13 @@ export type UpdateTaskDetailMutation = {
     contractorId?: string | null;
     homecareId?: string | null;
     homecareInDate?: Date | null;
-    homecareComment?: string | null;
+    homecareRemark?: string | null;
     assignInDate?: Date | null;
     appointmentDate?: Date | null;
     appointmentTime?: string | null;
     appointmentRepairDate?: Date | null;
     appointmentRepairTime?: string | null;
-    appointmentRepairComment?: string | null;
+    appointmentRepairRemark?: string | null;
     callingDate?: Date | null;
     assignDate?: Date | null;
     inProgressDate?: Date | null;
@@ -1969,7 +1969,7 @@ export type UpdateTaskDetailMutation = {
       SLAStartDate?: Date | null;
       SLAWorkHour?: number | null;
       assetComment?: string | null;
-      comment?: string | null;
+      remark?: string | null;
       createdAt: Date;
       customerNameFinish?: string | null;
       finishDate?: Date | null;
@@ -1986,7 +1986,7 @@ export type UpdateTaskDetailMutation = {
         SLAStartDate?: Date | null;
         SLAWorkHour?: number | null;
         assetComment?: string | null;
-        comment?: string | null;
+        remark?: string | null;
         createdAt: Date;
         customerNameFinish?: string | null;
         finishDate?: Date | null;
@@ -2070,7 +2070,7 @@ export type UpdateTaskDetailMutation = {
         __typename?: "TaskDetailReportLog";
         callbackDate?: Date | null;
         checkInDate?: Date | null;
-        comment?: string | null;
+        remark?: string | null;
         createdAt: Date;
         deletedAt?: Date | null;
         id: string;
@@ -2184,7 +2184,7 @@ export type UpdateTaskDetailMutation = {
       __typename?: "TaskDetailReportLog";
       callbackDate?: Date | null;
       checkInDate?: Date | null;
-      comment?: string | null;
+      remark?: string | null;
       createdAt: Date;
       deletedAt?: Date | null;
       id: string;
@@ -2348,7 +2348,7 @@ export const TaskDetailAssignFragmentDoc = gql`
     SLAWorkHour
     assetComment
     code
-    comment
+    remark
     createdAt
     customerNameFinish
     finishDate
@@ -2401,7 +2401,7 @@ export const TaskDetailReportLogFragmentDoc = gql`
   fragment TaskDetailReportLog on TaskDetailReportLog {
     callbackDate
     checkInDate
-    comment
+    remark
     createdAt
     deletedAt
     id
@@ -2441,13 +2441,13 @@ export const TaskDetailFragmentDoc = gql`
     contractorId
     homecareId
     homecareInDate
-    homecareComment
+    homecareRemark
     assignInDate
     appointmentDate
     appointmentTime
     appointmentRepairDate
     appointmentRepairTime
-    appointmentRepairComment
+    appointmentRepairRemark
     callingDate
     assignDate
     inProgressDate

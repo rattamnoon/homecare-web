@@ -68,7 +68,7 @@ export const RepairApprovePlan = ({ taskDetail }: RepairApprovePlanProps) => {
             </Text>
           </Col>
           <Col span={6}>
-            <Text>หมายเหตุ : {taskDetail?.reportLogs?.[0]?.comment}</Text>
+            <Text>หมายเหตุ : {taskDetail?.reportLogs?.[0]?.remark}</Text>
           </Col>
           <Col span={6}>
             <Space.Compact>

@@ -41,7 +41,7 @@ export const RepairLogsDialog = ({
             <div>สถานะ : {item.type?.nameTh}</div>
             <div>วันที่ : {dayjs(item.checkInDate).format("DD/MM/YYYY")}</div>
             <div>ช่วงเวลา : {item.checkInRangeTime?.nameTh}</div>
-            <div>หมายเหตุ : {item.comment}</div>
+            <div>หมายเหตุ : {item.remark}</div>
             {item.images?.length > 0 && (
               <div>
                 <span>รูปภาพ : </span>

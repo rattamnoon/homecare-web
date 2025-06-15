@@ -5,6 +5,7 @@ import {
   faBuilding,
   faCalendarDays,
   faList,
+  faPhoneIntercom,
   faScrewdriverWrench,
   faWrench,
 } from "@fortawesome/pro-regular-svg-icons";
@@ -43,7 +44,7 @@ export default function TasksTemplate({
         onCollapse={(value) => setCollapsed(value)}
       >
         <Menu
-          mode="inline"
+          mode="vertical"
           defaultOpenKeys={["repair"]}
           selectedKeys={[pathname]}
           style={{ height: "100%", borderRight: 0 }}
@@ -61,9 +62,15 @@ export default function TasksTemplate({
                 },
                 {
                   key: Routes.TasksRepairCalendar,
-                  label: "ปฏิทินงาน",
+                  label: "ปฏิทินงานแจ้งซ่อม",
                   icon: <FontAwesomeIcon icon={faCalendarDays} />,
                   onClick: () => router.push(Routes.TasksRepairCalendar),
+                },
+                {
+                  key: Routes.TasksRepairCallCenter,
+                  label: "Call Center",
+                  icon: <FontAwesomeIcon icon={faPhoneIntercom} />,
+                  onClick: () => router.push(Routes.TasksRepairCallCenter),
                 },
               ],
             },

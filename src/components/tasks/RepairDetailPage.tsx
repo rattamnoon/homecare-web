@@ -335,7 +335,7 @@ export const RepairDetailPage = () => {
                         />
                       </Descriptions.Item>
                       <Descriptions.Item label="หมายเหตุ" span={3}>
-                        {detail.homecareComment}
+                        {detail.homecareRemark}
                       </Descriptions.Item>
                       <Descriptions.Item label="เหตุผล" span={3}>
                         <Space.Compact>
