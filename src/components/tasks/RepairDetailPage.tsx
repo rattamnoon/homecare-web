@@ -377,11 +377,15 @@ export const RepairDetailPage = () => {
                         </Space.Compact>
                       </Descriptions.Item>
                     </Descriptions>
-                    <DividerWithIcon icon={<FontAwesomeIcon icon={faClock} />}>
-                      รายการรออนุมัติงาน
-                    </DividerWithIcon>
                     {handleShowApprovePlan(detail) && (
-                      <RepairApprovePlan taskDetail={detail} />
+                      <Flex vertical gap={8}>
+                        <DividerWithIcon
+                          icon={<FontAwesomeIcon icon={faClock} />}
+                        >
+                          รายการรออนุมัติงาน
+                        </DividerWithIcon>
+                        <RepairApprovePlan taskDetail={detail} />
+                      </Flex>
                     )}
                     <DividerWithIcon
                       icon={<FontAwesomeIcon icon={faListDots} />}
@@ -457,7 +461,11 @@ export const RepairDetailPage = () => {
                           {detail.homecare?.lastName}
                         </Descriptions.Item>
                         <Descriptions.Item label="ผู้รับเหมา" span={3}>
-                          {detail.contractor?.nameTh}
+                          {detail.contractor?.nameTh ? (
+                            detail.contractor?.nameTh
+                          ) : (
+                            <Text type="secondary">ยังไม่ได้ระบุ</Text>
+                          )}
                         </Descriptions.Item>
                         <Descriptions.Item label="วันที่และเวลาเข้าตรวจสอบ">
                           {dayjs(detail.homecareInDate).format("DD/MM/YYYY")}{" "}

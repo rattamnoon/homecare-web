@@ -140,7 +140,7 @@ export const RepairFilter = () => {
               <Input
                 placeholder="ค้นหาโดยรหัสงาน, ชื่อลูกค้า, เบอร์โทรลูกค้า"
                 allowClear
-                value={searchText}
+                defaultValue={searchText}
                 onChange={(e) => {
                   handleSearch("searchText", e.target.value);
                 }}
