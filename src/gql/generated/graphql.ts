@@ -45,8 +45,8 @@ export type CreateMasterInput = {
   SLA3H?: InputMaybe<Scalars["Int"]["input"]>;
   areaTypeEn?: InputMaybe<Scalars["String"]["input"]>;
   areaTypeTh?: InputMaybe<Scalars["String"]["input"]>;
-  defaultScore?: InputMaybe<Scalars["String"]["input"]>;
-  maxScore?: InputMaybe<Scalars["String"]["input"]>;
+  defaultScore?: InputMaybe<Scalars["Int"]["input"]>;
+  maxScore?: InputMaybe<Scalars["Int"]["input"]>;
   nameEn?: InputMaybe<Scalars["String"]["input"]>;
   nameTh?: InputMaybe<Scalars["String"]["input"]>;
   sequence?: InputMaybe<Scalars["Int"]["input"]>;
@@ -167,10 +167,10 @@ export type Master = {
   areaTypeTh?: Maybe<Scalars["String"]["output"]>;
   children: Array<Master>;
   createdAt: Scalars["Date"]["output"];
-  defaultScore?: Maybe<Scalars["String"]["output"]>;
+  defaultScore?: Maybe<Scalars["Int"]["output"]>;
   deletedAt?: Maybe<Scalars["Date"]["output"]>;
   id: Scalars["ID"]["output"];
-  maxScore?: Maybe<Scalars["String"]["output"]>;
+  maxScore?: Maybe<Scalars["Int"]["output"]>;
   nameEn?: Maybe<Scalars["String"]["output"]>;
   nameTh?: Maybe<Scalars["String"]["output"]>;
   parent?: Maybe<Master>;
@@ -563,6 +563,7 @@ export enum TaskStatus {
   RejectHoldHomecare = "REJECT_HOLD_HOMECARE",
   ReAssigned = "RE_ASSIGNED",
   ReInProgress = "RE_IN_PROGRESS",
+  WaitingCallCustomer = "WAITING_CALL_CUSTOMER",
   WaitingConclude = "WAITING_CONCLUDE",
   WaitingConstruction = "WAITING_CONSTRUCTION",
   WaitingConstructionMaterial = "WAITING_CONSTRUCTION_MATERIAL",
@@ -608,9 +609,9 @@ export type UpdateMasterInput = {
   SLA3H?: InputMaybe<Scalars["Int"]["input"]>;
   areaTypeEn?: InputMaybe<Scalars["String"]["input"]>;
   areaTypeTh?: InputMaybe<Scalars["String"]["input"]>;
-  defaultScore?: InputMaybe<Scalars["String"]["input"]>;
+  defaultScore?: InputMaybe<Scalars["Int"]["input"]>;
   id?: InputMaybe<Scalars["ID"]["input"]>;
-  maxScore?: InputMaybe<Scalars["String"]["input"]>;
+  maxScore?: InputMaybe<Scalars["Int"]["input"]>;
   nameEn?: InputMaybe<Scalars["String"]["input"]>;
   nameTh?: InputMaybe<Scalars["String"]["input"]>;
   parentId?: InputMaybe<Scalars["ID"]["input"]>;

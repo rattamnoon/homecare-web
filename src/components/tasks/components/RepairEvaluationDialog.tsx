@@ -65,7 +65,12 @@ export const RepairEvaluationDialog = ({
                 { required: true, message: `กรุณาใส่คะแนน ${master.nameTh}` },
               ]}
             >
-              <Rate count={5} />
+              <Rate
+                count={5}
+                defaultValue={
+                  master.defaultScore ? master.defaultScore : undefined
+                }
+              />
             </Form.Item>
           ))}
           <Form.Item label="ชมเชย/ข้อเสนอแนะ" name="CSATComment">

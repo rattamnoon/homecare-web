@@ -11,8 +11,8 @@ export type MasterFragment = {
   sequence?: number | null;
   nameTh?: string | null;
   nameEn?: string | null;
-  maxScore?: string | null;
-  defaultScore?: string | null;
+  maxScore?: number | null;
+  defaultScore?: number | null;
   areaTypeTh?: string | null;
   areaTypeEn?: string | null;
   SLA1H?: number | null;
@@ -41,8 +41,8 @@ export type MastersQuery = {
     sequence?: number | null;
     nameTh?: string | null;
     nameEn?: string | null;
-    maxScore?: string | null;
-    defaultScore?: string | null;
+    maxScore?: number | null;
+    defaultScore?: number | null;
     areaTypeTh?: string | null;
     areaTypeEn?: string | null;
     SLA1H?: number | null;
@@ -62,8 +62,8 @@ export type MastersQuery = {
       sequence?: number | null;
       nameTh?: string | null;
       nameEn?: string | null;
-      maxScore?: string | null;
-      defaultScore?: string | null;
+      maxScore?: number | null;
+      defaultScore?: number | null;
       areaTypeTh?: string | null;
       areaTypeEn?: string | null;
       SLA1H?: number | null;
