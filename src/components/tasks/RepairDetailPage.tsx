@@ -1,16 +1,19 @@
 "use client";
 
 import { LayoutWithBreadcrumb } from "@/components/layout/LayoutWithBreadcrumb";
-import { UploadFileType } from "@/gql/generated/graphql";
+import { TaskStatus, UploadFileType } from "@/gql/generated/graphql";
 import {
   TaskDetailFragment,
   TaskStatusFragment,
   useTaskQuery,
 } from "@/gql/generated/tasks.generated";
 import {
+  faClock,
   faEdit,
   faFaceSmile,
   faHouseCircleCheck,
+  faListDots,
+  faPersonCircleCheck,
   faPlus,
 } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,6 +33,7 @@ import {
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
+import { RepairApprovePlan } from "./components/RepairApprovePlan";
 import { RepairAssignedDialog } from "./components/RepairAssignedDialog";
 import { RepairEvaluationDialog } from "./components/RepairEvaluationDialog";
 import { RepairImagePreview } from "./components/RepairImagePreview";
@@ -40,6 +44,22 @@ import { RepairSOPImagePreview } from "./components/RepairSOPImagePreview";
 import { RepairWaitingConstructionDialog } from "./components/RepairWaitingConstructionDialog";
 
 const { Title, Text } = Typography;
+
+const DividerWithIcon = ({
+  icon,
+  children,
+}: {
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}) => {
+  return (
+    <Divider plain orientation="left">
+      <Space>
+        {icon} {children}
+      </Space>
+    </Divider>
+  );
+};
 
 export const RepairDetailPage = () => {
   const params = useParams();
@@ -101,6 +121,13 @@ export const RepairDetailPage = () => {
 
   const handleHide = (detail: TaskDetailFragment) => {
     return false;
+  };
+
+  const handleShowApprovePlan = (detail: TaskDetailFragment) => {
+    if (!detail.status) return false;
+    return [TaskStatus.HomecareFinished, TaskStatus.Hold].includes(
+      detail.status?.id
+    );
   };
 
   return (
@@ -263,9 +290,11 @@ export const RepairDetailPage = () => {
                         {detail.description}
                       </Descriptions.Item>
                     </Descriptions>
-                    <Divider plain orientation="left">
+                    <DividerWithIcon
+                      icon={<FontAwesomeIcon icon={faPersonCircleCheck} />}
+                    >
                       ตรวจสอบหน้างาน
-                    </Divider>
+                    </DividerWithIcon>
                     <Descriptions size="small" bordered>
                       <Descriptions.Item label="ผู้รับผิดชอบ" span={3}>
                         {detail.homecare?.firstName} {detail.homecare?.lastName}
@@ -348,9 +377,17 @@ export const RepairDetailPage = () => {
                         </Space.Compact>
                       </Descriptions.Item>
                     </Descriptions>
-                    <Divider plain orientation="left">
-                      รายการ
-                    </Divider>
+                    <DividerWithIcon icon={<FontAwesomeIcon icon={faClock} />}>
+                      รายการรออนุมัติงาน
+                    </DividerWithIcon>
+                    {handleShowApprovePlan(detail) && (
+                      <RepairApprovePlan taskDetail={detail} />
+                    )}
+                    <DividerWithIcon
+                      icon={<FontAwesomeIcon icon={faListDots} />}
+                    >
+                      รายการจ่ายงาน
+                    </DividerWithIcon>
                     <Flex vertical gap={8}>
                       <Flex justify="space-between" gap={8}>
                         <Space>
