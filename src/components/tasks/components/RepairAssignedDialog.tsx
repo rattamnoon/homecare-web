@@ -168,6 +168,7 @@ export const RepairAssignedDialog = ({
         }}
         width={800}
         confirmLoading={updateTaskDetailLoading}
+        destroyOnHidden
       >
         <Skeleton
           active
@@ -175,6 +176,7 @@ export const RepairAssignedDialog = ({
         >
           <Form
             form={form}
+            preserve={false}
             labelCol={{ span: 8 }}
             initialValues={{
               parentId: taskDetail?.sla?.parent?.id,

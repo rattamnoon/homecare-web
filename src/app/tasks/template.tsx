@@ -50,7 +50,7 @@ export default function TasksTemplate({
           style={{ height: "100%", borderRight: 0 }}
           items={[
             {
-              key: Routes.TasksRepair,
+              key: "repair",
               label: "รายการแจ้งซ่อม",
               icon: <FontAwesomeIcon icon={faList} />,
               children: [

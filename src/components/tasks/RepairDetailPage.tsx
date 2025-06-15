@@ -541,48 +541,36 @@ export const RepairDetailPage = () => {
           </Skeleton>
         </>
       )}
-      {priorityDialogOpen && (
-        <RepairPriorityDialog
-          open={priorityDialogOpen}
-          onCancel={() => setPriorityDialogOpen(false)}
-          taskDetail={priorityDialogTaskDetail}
-        />
-      )}
-      {assignedDialogOpen && (
-        <RepairAssignedDialog
-          open={assignedDialogOpen}
-          onCancel={() => setAssignedDialogOpen(false)}
-          taskDetail={assignedDialogTaskDetail}
-        />
-      )}
-      {misscallDialogOpen && (
-        <RepairMisscallDialog
-          open={misscallDialogOpen}
-          onCancel={() => setMisscallDialogOpen(false)}
-          taskDetail={misscallDialogTaskDetail}
-        />
-      )}
-      {waitingConstructionDialogOpen && (
-        <RepairWaitingConstructionDialog
-          open={waitingConstructionDialogOpen}
-          onCancel={() => setWaitingConstructionDialogOpen(false)}
-          taskDetail={waitingConstructionDialogTaskDetail}
-        />
-      )}
-      {logsDialogOpen && (
-        <RepairLogsDialog
-          open={logsDialogOpen}
-          onCancel={() => setLogsDialogOpen(false)}
-          taskDetail={logsDialogTaskDetail}
-        />
-      )}
-      {evaluationDialogOpen && (
-        <RepairEvaluationDialog
-          open={evaluationDialogOpen}
-          onCancel={() => setEvaluationDialogOpen(false)}
-          taskDetail={evaluationDialogTaskDetail}
-        />
-      )}
+      <RepairPriorityDialog
+        open={priorityDialogOpen}
+        onCancel={() => setPriorityDialogOpen(false)}
+        taskDetail={priorityDialogTaskDetail}
+      />
+      <RepairAssignedDialog
+        open={assignedDialogOpen}
+        onCancel={() => setAssignedDialogOpen(false)}
+        taskDetail={assignedDialogTaskDetail}
+      />
+      <RepairMisscallDialog
+        open={misscallDialogOpen}
+        onCancel={() => setMisscallDialogOpen(false)}
+        taskDetail={misscallDialogTaskDetail}
+      />
+      <RepairWaitingConstructionDialog
+        open={waitingConstructionDialogOpen}
+        onCancel={() => setWaitingConstructionDialogOpen(false)}
+        taskDetail={waitingConstructionDialogTaskDetail}
+      />
+      <RepairLogsDialog
+        open={logsDialogOpen}
+        onCancel={() => setLogsDialogOpen(false)}
+        taskDetail={logsDialogTaskDetail}
+      />
+      <RepairEvaluationDialog
+        open={evaluationDialogOpen}
+        onCancel={() => setEvaluationDialogOpen(false)}
+        taskDetail={evaluationDialogTaskDetail}
+      />
     </LayoutWithBreadcrumb>
   );
 };

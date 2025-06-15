@@ -5,6 +5,7 @@ import { notoSansThai } from "@/config/fonts";
 import { Routes } from "@/config/routes";
 import { siteConfig } from "@/config/site";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import "@ant-design/v5-patch-for-react-19";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import type { Metadata } from "next";

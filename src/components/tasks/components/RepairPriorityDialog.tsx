@@ -7,7 +7,7 @@ import {
 } from "@/gql/generated/tasks.generated";
 import { faSave } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Form, notification, Radio, Space } from "antd";
+import { Form, notification, Radio, Skeleton, Space } from "antd";
 import { useEffect, useMemo } from "react";
 
 interface RepairPriorityDialogProps {
@@ -92,34 +92,38 @@ export const RepairPriorityDialog = ({
         okButtonProps={{
           icon: <FontAwesomeIcon icon={faSave} />,
         }}
+        destroyOnHidden
       >
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={(values) => {
-            onOk(values.priority);
-          }}
-          initialValues={{
-            priority: taskDetail?.priority?.id || 0,
-          }}
-        >
-          <Form.Item
-            label="Priority"
-            name="priority"
-            required={false}
-            rules={[{ required: true, message: "กรุณาเลือกความสำคัญ" }]}
+        <Skeleton loading={optionsLoading}>
+          <Form
+            form={form}
+            layout="vertical"
+            preserve={false}
+            onFinish={(values) => {
+              onOk(values.priority);
+            }}
+            initialValues={{
+              priority: taskDetail?.priority?.id || 0,
+            }}
           >
-            <Radio.Group>
-              <Space direction="vertical">
-                {priorities.map((priority) => (
-                  <Radio key={priority.id} value={priority.id}>
-                    {priority.nameTh}
-                  </Radio>
-                ))}
-              </Space>
-            </Radio.Group>
-          </Form.Item>
-        </Form>
+            <Form.Item
+              label="Priority"
+              name="priority"
+              required={false}
+              rules={[{ required: true, message: "กรุณาเลือกความสำคัญ" }]}
+            >
+              <Radio.Group>
+                <Space direction="vertical">
+                  {priorities.map((priority) => (
+                    <Radio key={priority.id} value={priority.id}>
+                      {priority.nameTh}
+                    </Radio>
+                  ))}
+                </Space>
+              </Radio.Group>
+            </Form.Item>
+          </Form>
+        </Skeleton>
       </CustomModal>
     </>
   );

@@ -34,7 +34,13 @@ export const RepairLogsDialog = ({
   }, [taskDetail]);
 
   return (
-    <CustomModal open={open} onCancel={onCancel} title="Logs" footer={null}>
+    <CustomModal
+      open={open}
+      onCancel={onCancel}
+      title="Logs"
+      footer={null}
+      destroyOnHidden
+    >
       {items.map((item) => (
         <Card key={item.id} color={item.type?.color}>
           <div>

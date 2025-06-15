@@ -48,8 +48,14 @@ export const RepairMisscallDialog = ({
       okButtonProps={{
         icon: <FontAwesomeIcon icon={faSave} />,
       }}
+      destroyOnHidden
     >
-      <Form form={form} layout="horizontal" labelCol={{ span: 8 }}>
+      <Form
+        form={form}
+        layout="horizontal"
+        labelCol={{ span: 8 }}
+        preserve={false}
+      >
         <Form.Item
           label="ติดต่อกลับอีกทีวันที่"
           name="callBackDate"

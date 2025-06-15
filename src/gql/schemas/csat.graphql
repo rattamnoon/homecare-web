@@ -1,0 +1,25 @@
+fragment Csat on Csat {
+  id
+  taskId
+  taskDetailId
+  questionId
+  score
+  comment
+  createdAt
+  updatedAt
+  deletedAt
+}
+
+mutation CreateCsat(
+  $createCsatInput: [CreateCsatInput!]!
+  $taskDetailId: ID!
+  $csatComment: String
+) {
+  createCsat(
+    createCsatInput: $createCsatInput
+    taskDetailId: $taskDetailId
+    CSATComment: $csatComment
+  ) {
+    ...Csat
+  }
+}
