@@ -468,8 +468,16 @@ export const RepairDetailPage = () => {
                           )}
                         </Descriptions.Item>
                         <Descriptions.Item label="วันที่และเวลาเข้าตรวจสอบ">
-                          {dayjs(detail.homecareInDate).format("DD/MM/YYYY")}{" "}
-                          {detail.homecareInRangeTime?.nameTh}
+                          {detail.homecareInDate ? (
+                            <>
+                              {dayjs(detail.homecareInDate).format(
+                                "DD/MM/YYYY"
+                              )}{" "}
+                              {detail.homecareInRangeTime?.nameTh}
+                            </>
+                          ) : (
+                            <Text type="secondary">ยังไม่ได้ระบุ</Text>
+                          )}
                         </Descriptions.Item>
                         <Descriptions.Item
                           label="วันที่และเวลาเข้าซ่อม"
