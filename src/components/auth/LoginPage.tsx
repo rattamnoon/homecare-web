@@ -43,8 +43,6 @@ export const LoginPage = () => {
         redirect: false,
       });
 
-      console.log("result", result);
-
       if (result?.error) {
         form.setFields([
           {
@@ -60,7 +58,7 @@ export const LoginPage = () => {
         setLoading(false);
       }
     } catch (error) {
-      console.log("error", error);
+      console.error("error", error);
     } finally {
       setLoading(false);
     }
