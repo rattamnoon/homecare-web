@@ -19,7 +19,7 @@ import {
   DatePicker,
   Form,
   InputNumber,
-  message,
+  notification,
   Row,
   Select,
   Skeleton,
@@ -38,6 +38,8 @@ export const RepairAssignedDialog = ({
   onCancel,
   taskDetail,
 }: RepairAssignedDialogProps) => {
+  const [notificationApi, notificationContextHolder] =
+    notification.useNotification();
   const [form] = Form.useForm();
   const parentId = Form.useWatch("parentId", form);
   const slaId = Form.useWatch("slaId", form);
@@ -56,11 +58,19 @@ export const RepairAssignedDialog = ({
   const [updateTaskDetail, { loading: updateTaskDetailLoading }] =
     useUpdateTaskDetailMutation({
       onCompleted: () => {
-        message.success("บันทึกข้อมูลสำเร็จ");
+        notificationApi.success({
+          message: "สำเร็จ",
+          description: "ทำรายการสำเร็จแล้ว",
+          duration: 3,
+        });
         onCancel();
       },
       onError: (error) => {
-        message.error(error.message);
+        notificationApi.error({
+          message: "เกิดข้อผิดพลาด",
+          description: error.message,
+          duration: 5,
+        });
       },
       refetchQueries: [
         {
@@ -142,153 +152,158 @@ export const RepairAssignedDialog = ({
   }, [taskDetail]);
 
   return (
-    <CustomModal
-      title="จ่ายงาน"
-      open={open}
-      onCancel={onCancel}
-      okText="บันทึก"
-      cancelText="ยกเลิก"
-      onOk={() => {
-        form.submit();
-      }}
-      okButtonProps={{
-        icon: <FontAwesomeIcon icon={faSave} />,
-      }}
-      width={800}
-      confirmLoading={updateTaskDetailLoading}
-    >
-      <Skeleton
-        active
-        loading={mastersLoading || optionsLoading || usersLoading}
+    <>
+      {notificationContextHolder}
+      <CustomModal
+        title="จ่ายงาน"
+        open={open}
+        onCancel={onCancel}
+        okText="บันทึก"
+        cancelText="ยกเลิก"
+        onOk={() => {
+          form.submit();
+        }}
+        okButtonProps={{
+          icon: <FontAwesomeIcon icon={faSave} />,
+        }}
+        width={800}
+        confirmLoading={updateTaskDetailLoading}
       >
-        <Form
-          form={form}
-          labelCol={{ span: 8 }}
-          initialValues={{
-            parentId: taskDetail?.sla?.parent?.id,
-            slaId: taskDetail?.slaId,
-            homecareId: taskDetail?.homecareId,
-            homecareInDate: homecareInDate,
-            homecareRangeTime: homecareRangeTime,
-          }}
-          onFinish={async (values) => {
-            const updateTaskDetailInput: UpdateTaskDetailInput = {
-              id: taskDetail?.id ?? "",
-              slaId: values.slaId,
-              status: TaskStatus.Open,
-              homecareId: values.homecareId,
-              homecareStatus: TaskStatus.Open,
-              homecareInDate: values.homecareInDate
-                ? dayjs(values.homecareInDate).startOf("day").toDate()
-                : undefined,
-              homecareRangeTime: values.homecareRangeTime
-                ? values.homecareRangeTime
-                : undefined,
-            };
-
-            await updateTaskDetail({
-              variables: { updateTaskDetailInput },
-            });
-          }}
+        <Skeleton
+          active
+          loading={mastersLoading || optionsLoading || usersLoading}
         >
-          <Row gutter={[8, 8]}>
-            <Col xs={24} sm={12}>
-              <Form.Item
-                label="ประเภทหลัก"
-                name="parentId"
-                required={false}
-                rules={[{ required: true, message: "กรุณาเลือกประเภทหลัก" }]}
-              >
-                <Select
-                  placeholder="เลือกประเภทหลัก"
-                  options={slaOptions}
-                  loading={mastersLoading}
-                />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item
-                label="ประเภทย่อย"
-                name="slaId"
-                required={false}
-                rules={[{ required: true, message: "กรุณาเลือกประเภทย่อย" }]}
-              >
-                <Select
-                  placeholder="เลือกประเภทย่อย"
-                  options={slaChildOptions}
-                  loading={mastersLoading}
-                />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item
-                label="ผู้รับผิดชอบ"
-                name="homecareId"
-                required={false}
-                rules={[{ required: true, message: "กรุณาเลือกผู้รับผิดชอบ" }]}
-              >
-                <Select
-                  showSearch
-                  optionFilterProp="label"
-                  placeholder="เลือกผู้รับผิดชอบ"
-                  options={userOptions}
-                  loading={usersLoading}
-                />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item label="SLA" name="SLA" required={false}>
-                <InputNumber
-                  variant="borderless"
-                  addonAfter="ชั่วโมง"
-                  disabled
-                />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item
-                label="วันที่เข้าตรวจสอบ"
-                name="homecareInDate"
-                required={false}
-                rules={[
-                  {
-                    required: true,
-                    message: "กรุณากรอกวันที่เข้าตรวจสอบ",
-                  },
-                ]}
-              >
-                <DatePicker
-                  placeholder="เลือกวันที่เข้าตรวจสอบ"
-                  format="DD/MM/YYYY"
-                  style={{ width: "100%" }}
-                  disabledDate={(current) => {
-                    return (
-                      current &&
-                      current < dayjs().subtract(1, "day").endOf("day")
-                    );
-                  }}
-                />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item
-                label="เวลาเข้าตรวจสอบ"
-                name="homecareRangeTime"
-                required={false}
-                rules={[
-                  { required: true, message: "กรุณาเลือกเวลาเข้าตรวจสอบ" },
-                ]}
-              >
-                <Select
-                  placeholder="เลือกเวลาเข้าตรวจสอบ"
-                  options={timeOptions}
-                  loading={optionsLoading}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      </Skeleton>
-    </CustomModal>
+          <Form
+            form={form}
+            labelCol={{ span: 8 }}
+            initialValues={{
+              parentId: taskDetail?.sla?.parent?.id,
+              slaId: taskDetail?.slaId,
+              homecareId: taskDetail?.homecareId,
+              homecareInDate: homecareInDate,
+              homecareRangeTime: homecareRangeTime,
+            }}
+            onFinish={async (values) => {
+              const updateTaskDetailInput: UpdateTaskDetailInput = {
+                id: taskDetail?.id ?? "",
+                slaId: values.slaId,
+                status: TaskStatus.Open,
+                homecareId: values.homecareId,
+                homecareStatus: TaskStatus.Open,
+                homecareInDate: values.homecareInDate
+                  ? dayjs(values.homecareInDate).startOf("day").toDate()
+                  : undefined,
+                homecareRangeTime: values.homecareRangeTime
+                  ? values.homecareRangeTime
+                  : undefined,
+              };
+
+              await updateTaskDetail({
+                variables: { updateTaskDetailInput },
+              });
+            }}
+          >
+            <Row gutter={[8, 8]}>
+              <Col xs={24} sm={12}>
+                <Form.Item
+                  label="ประเภทหลัก"
+                  name="parentId"
+                  required={false}
+                  rules={[{ required: true, message: "กรุณาเลือกประเภทหลัก" }]}
+                >
+                  <Select
+                    placeholder="เลือกประเภทหลัก"
+                    options={slaOptions}
+                    loading={mastersLoading}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={12}>
+                <Form.Item
+                  label="ประเภทย่อย"
+                  name="slaId"
+                  required={false}
+                  rules={[{ required: true, message: "กรุณาเลือกประเภทย่อย" }]}
+                >
+                  <Select
+                    placeholder="เลือกประเภทย่อย"
+                    options={slaChildOptions}
+                    loading={mastersLoading}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={12}>
+                <Form.Item
+                  label="ผู้รับผิดชอบ"
+                  name="homecareId"
+                  required={false}
+                  rules={[
+                    { required: true, message: "กรุณาเลือกผู้รับผิดชอบ" },
+                  ]}
+                >
+                  <Select
+                    showSearch
+                    optionFilterProp="label"
+                    placeholder="เลือกผู้รับผิดชอบ"
+                    options={userOptions}
+                    loading={usersLoading}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={12}>
+                <Form.Item label="SLA" name="SLA" required={false}>
+                  <InputNumber
+                    variant="borderless"
+                    addonAfter="ชั่วโมง"
+                    disabled
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={12}>
+                <Form.Item
+                  label="วันที่เข้าตรวจสอบ"
+                  name="homecareInDate"
+                  required={false}
+                  rules={[
+                    {
+                      required: true,
+                      message: "กรุณากรอกวันที่เข้าตรวจสอบ",
+                    },
+                  ]}
+                >
+                  <DatePicker
+                    placeholder="เลือกวันที่เข้าตรวจสอบ"
+                    format="DD/MM/YYYY"
+                    style={{ width: "100%" }}
+                    disabledDate={(current) => {
+                      return (
+                        current &&
+                        current < dayjs().subtract(1, "day").endOf("day")
+                      );
+                    }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={12}>
+                <Form.Item
+                  label="เวลาเข้าตรวจสอบ"
+                  name="homecareRangeTime"
+                  required={false}
+                  rules={[
+                    { required: true, message: "กรุณาเลือกเวลาเข้าตรวจสอบ" },
+                  ]}
+                >
+                  <Select
+                    placeholder="เลือกเวลาเข้าตรวจสอบ"
+                    options={timeOptions}
+                    loading={optionsLoading}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        </Skeleton>
+      </CustomModal>
+    </>
   );
 };

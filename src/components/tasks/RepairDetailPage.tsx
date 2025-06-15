@@ -4,8 +4,10 @@ import { LayoutWithBreadcrumb } from "@/components/layout/LayoutWithBreadcrumb";
 import { TaskStatus, UploadFileType } from "@/gql/generated/graphql";
 import {
   TaskDetailFragment,
+  TaskDocument,
   TaskStatusFragment,
   useTaskQuery,
+  useUpdateTaskDetailMutation,
 } from "@/gql/generated/tasks.generated";
 import {
   faClock,
@@ -23,6 +25,7 @@ import {
   Divider,
   Flex,
   Modal,
+  notification,
   Result,
   Skeleton,
   Space,
@@ -64,6 +67,8 @@ export const RepairDetailPage = () => {
   const params = useParams();
   const taskId = params.id as string;
   const [modalApi, modalContextHolder] = Modal.useModal();
+  const [notificationApi, notificationContextHolder] =
+    notification.useNotification();
   const [priorityDialogOpen, setPriorityDialogOpen] = useState(false);
   const [priorityDialogTaskDetail, setPriorityDialogTaskDetail] =
     useState<TaskDetailFragment | null>(null);
@@ -89,6 +94,30 @@ export const RepairDetailPage = () => {
   const { data, loading, error } = useTaskQuery({
     variables: { id: taskId },
     skip: !taskId,
+    fetchPolicy: "cache-and-network",
+  });
+
+  const [updateTaskDetail] = useUpdateTaskDetailMutation({
+    onCompleted: () => {
+      notificationApi.success({
+        message: "สำเร็จ",
+        description: "ทำรายการสำเร็จแล้ว",
+        duration: 3,
+      });
+    },
+    onError: (error) => {
+      notificationApi.error({
+        message: "เกิดข้อผิดพลาด",
+        description: error.message,
+        duration: 5,
+      });
+    },
+    refetchQueries: [
+      {
+        query: TaskDocument,
+        variables: { id: taskId },
+      },
+    ],
   });
 
   const task = useMemo(() => data?.task, [data]);
@@ -101,8 +130,17 @@ export const RepairDetailPage = () => {
         "งานจะถูกจบงานอัตโนมัติ หากต้องการจบงานเอง กรุณากดปุ่มจบงานด้านล่าง",
       okText: "ตกลง",
       cancelText: "ยกเลิก",
-      onOk: () => {
-        console.log("finish");
+      onOk: async () => {
+        await updateTaskDetail({
+          variables: {
+            updateTaskDetailInput: {
+              id: detail.id,
+              status: TaskStatus.Finished,
+              homecareStatus: TaskStatus.Finished,
+              finishDate: dayjs().toDate(),
+            },
+          },
+        });
       },
     });
   };
@@ -148,6 +186,7 @@ export const RepairDetailPage = () => {
       ) : (
         <>
           {modalContextHolder}
+          {notificationContextHolder}
           <Skeleton loading={loading} active paragraph={{ rows: 6 }}>
             <Title level={5}>รายละเอียดงานแจ้งซ่อม</Title>
             <Descriptions size="small">

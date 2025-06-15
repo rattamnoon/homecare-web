@@ -7,7 +7,7 @@ import {
 } from "@/gql/generated/tasks.generated";
 import { faSave } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Form, message, Radio, Space } from "antd";
+import { Form, notification, Radio, Space } from "antd";
 import { useEffect, useMemo } from "react";
 
 interface RepairPriorityDialogProps {
@@ -21,16 +21,26 @@ export const RepairPriorityDialog = ({
   onCancel,
   taskDetail,
 }: RepairPriorityDialogProps) => {
+  const [notificationApi, notificationContextHolder] =
+    notification.useNotification();
   const [form] = Form.useForm();
   const [updateTaskDetail, { loading: updateTaskDetailLoading }] =
     useUpdateTaskDetailMutation({
       onCompleted: () => {
-        message.success("บันทึกสำเร็จ");
+        notificationApi.success({
+          message: "สำเร็จ",
+          description: "ทำรายการสำเร็จแล้ว",
+          duration: 3,
+        });
         onCancel();
         form.resetFields();
       },
       onError: (error) => {
-        message.error(error.message);
+        notificationApi.error({
+          message: "เกิดข้อผิดพลาด",
+          description: error.message,
+          duration: 5,
+        });
       },
       refetchQueries: [
         {
@@ -67,47 +77,50 @@ export const RepairPriorityDialog = ({
   };
 
   return (
-    <CustomModal
-      title="Priority"
-      open={open}
-      onCancel={onCancel}
-      onOk={() => {
-        form.submit();
-      }}
-      okText="บันทึก"
-      cancelText="ยกเลิก"
-      confirmLoading={updateTaskDetailLoading}
-      okButtonProps={{
-        icon: <FontAwesomeIcon icon={faSave} />,
-      }}
-    >
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={(values) => {
-          onOk(values.priority);
+    <>
+      {notificationContextHolder}
+      <CustomModal
+        title="Priority"
+        open={open}
+        onCancel={onCancel}
+        onOk={() => {
+          form.submit();
         }}
-        initialValues={{
-          priority: taskDetail?.priority?.id || 0,
+        okText="บันทึก"
+        cancelText="ยกเลิก"
+        confirmLoading={updateTaskDetailLoading}
+        okButtonProps={{
+          icon: <FontAwesomeIcon icon={faSave} />,
         }}
       >
-        <Form.Item
-          label="Priority"
-          name="priority"
-          required={false}
-          rules={[{ required: true, message: "กรุณาเลือกความสำคัญ" }]}
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={(values) => {
+            onOk(values.priority);
+          }}
+          initialValues={{
+            priority: taskDetail?.priority?.id || 0,
+          }}
         >
-          <Radio.Group>
-            <Space direction="vertical">
-              {priorities.map((priority) => (
-                <Radio key={priority.id} value={priority.id}>
-                  {priority.nameTh}
-                </Radio>
-              ))}
-            </Space>
-          </Radio.Group>
-        </Form.Item>
-      </Form>
-    </CustomModal>
+          <Form.Item
+            label="Priority"
+            name="priority"
+            required={false}
+            rules={[{ required: true, message: "กรุณาเลือกความสำคัญ" }]}
+          >
+            <Radio.Group>
+              <Space direction="vertical">
+                {priorities.map((priority) => (
+                  <Radio key={priority.id} value={priority.id}>
+                    {priority.nameTh}
+                  </Radio>
+                ))}
+              </Space>
+            </Radio.Group>
+          </Form.Item>
+        </Form>
+      </CustomModal>
+    </>
   );
 };
