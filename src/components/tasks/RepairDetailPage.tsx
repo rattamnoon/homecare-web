@@ -9,7 +9,6 @@ import {
 } from "@/gql/generated/tasks.generated";
 import {
   faClock,
-  faEdit,
   faFaceSmile,
   faHouseCircleCheck,
   faListDots,
@@ -70,9 +69,6 @@ export const RepairDetailPage = () => {
     useState<TaskDetailFragment | null>(null);
   const [assignedDialogOpen, setAssignedDialogOpen] = useState(false);
   const [assignedDialogTaskDetail, setAssignedDialogTaskDetail] =
-    useState<TaskDetailFragment | null>(null);
-  const [editAssignDialogOpen, setEditAssignDialogOpen] = useState(false);
-  const [editAssignDialogTaskDetail, setEditAssignDialogTaskDetail] =
     useState<TaskDetailFragment | null>(null);
   const [misscallDialogOpen, setMisscallDialogOpen] = useState(false);
   const [misscallDialogTaskDetail, setMisscallDialogTaskDetail] =
@@ -397,7 +393,7 @@ export const RepairDetailPage = () => {
                         <Space>
                           <Button
                             variant="solid"
-                            color="blue"
+                            color={detail.slaId ? "orange" : "blue"}
                             icon={<FontAwesomeIcon icon={faPlus} />}
                             onClick={() => {
                               setAssignedDialogTaskDetail(detail);
@@ -405,7 +401,7 @@ export const RepairDetailPage = () => {
                             }}
                             disabled={handleDisabled(detail.status)}
                           >
-                            จ่ายงาน
+                            {detail.slaId ? "แก้ไขข้อมูลจ่ายงาน" : "จ่ายงาน"}
                           </Button>
                           <Button
                             variant="solid"
@@ -427,21 +423,6 @@ export const RepairDetailPage = () => {
                             disabled={handleDisabled(detail.status)}
                           >
                             Piority
-                          </Button>
-                          <Button
-                            variant="solid"
-                            color="orange"
-                            icon={<FontAwesomeIcon icon={faEdit} />}
-                            disabled={
-                              detail.assigns?.length === 0 ||
-                              handleDisabled(detail.status)
-                            }
-                            onClick={() => {
-                              setEditAssignDialogTaskDetail(detail);
-                              setEditAssignDialogOpen(true);
-                            }}
-                          >
-                            แก้ไขข้อมูล
                           </Button>
                         </Space>
                       </Flex>
