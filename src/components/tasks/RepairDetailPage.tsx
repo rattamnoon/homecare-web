@@ -135,6 +135,7 @@ export const RepairDetailPage = () => {
           variables: {
             updateTaskDetailInput: {
               id: detail.id,
+              priority: detail.priority?.id,
               status: TaskStatus.Finished,
               homecareStatus: TaskStatus.Finished,
               finishDate: dayjs().toDate(),

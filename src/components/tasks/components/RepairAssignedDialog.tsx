@@ -189,6 +189,7 @@ export const RepairAssignedDialog = ({
               const updateTaskDetailInput: UpdateTaskDetailInput = {
                 id: taskDetail?.id ?? "",
                 slaId: values.slaId,
+                priority: taskDetail?.priority?.id,
                 status: TaskStatus.Open,
                 homecareId: values.homecareId,
                 homecareStatus: TaskStatus.Open,
