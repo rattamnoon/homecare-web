@@ -18,7 +18,8 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import dayjs from "dayjs";
 import { createClient } from "graphql-ws";
 import { JWT } from "next-auth/jwt";
-import { getSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
+import { auth } from "./auth";
 import { RefreshTokenDocument } from "./gql/generated/auth.generated";
 
 const isServer = typeof window === "undefined";
@@ -59,7 +60,7 @@ const refreshMiddleware = onError(
           (observer) => {
             (async () => {
               try {
-                const session = await getSession();
+                const session = await auth();
                 if (!session || session.error === "RefreshAccessTokenError") {
                   await signOut();
                 }
@@ -118,7 +119,7 @@ const refreshMiddleware = onError(
 
 const authMiddleware = setContext(async (request, previousContext) => {
   const { headers } = previousContext;
-  const session = await getSession();
+  const session = await auth();
   const token = session?.token;
 
   return {

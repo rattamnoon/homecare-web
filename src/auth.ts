@@ -1,5 +1,4 @@
-import type { NextAuthOptions } from "next-auth";
-import { getServerSession } from "next-auth";
+import NextAuth from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { authClient } from "./apolloClient";
@@ -45,9 +44,8 @@ const requestRefreshOfAccessToken = async (token: JWT) => {
   }
 };
 
-const authOptions: NextAuthOptions = {
+export const { handlers, signIn, signOut, auth } = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
-  debug: process.env.NODE_ENV === "development",
   session: {
     strategy: "jwt",
   },
@@ -62,6 +60,7 @@ const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
+        console.log(credentials);
         try {
           const { data } = await authClient.mutate<
             LoginMutation,
@@ -69,8 +68,8 @@ const authOptions: NextAuthOptions = {
           >({
             mutation: LoginDocument,
             variables: {
-              username: credentials?.username ?? "",
-              password: credentials?.password ?? "",
+              username: credentials?.username as string,
+              password: credentials?.password as string,
             },
           });
 
@@ -141,8 +140,4 @@ const authOptions: NextAuthOptions = {
       }
     },
   },
-};
-
-const getSession = () => getServerSession(authOptions);
-
-export { authOptions, getSession };
+});

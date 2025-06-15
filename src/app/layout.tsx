@@ -1,4 +1,4 @@
-import { getSession } from "@/auth";
+import { auth } from "@/auth";
 import { ApolloClientProvider } from "@/components/ApolloClientProvider";
 import { NextAuthProvider } from "@/components/NextAuthProvider";
 import { notoSansThai } from "@/config/fonts";
@@ -24,7 +24,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getSession();
+  const session = await auth();
 
   if (session?.error === "RefreshAccessTokenError") {
     redirect(Routes.Login);

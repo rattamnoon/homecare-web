@@ -36,24 +36,32 @@ export const LoginPage = () => {
 
   const onFinish = async (values: LoginForm) => {
     setLoading(true);
-    const result = await signIn("credentials", {
-      username: values.username,
-      password: values.password,
-      redirect: false,
-    });
+    try {
+      const result = await signIn("credentials", {
+        username: values.username,
+        password: values.password,
+        redirect: false,
+      });
 
-    if (result?.error) {
-      form.setFields([
-        {
-          name: "password",
-          errors: [result.error],
-        },
-      ]);
-      setLoading(false);
-    }
+      console.log("result", result);
 
-    if (result?.ok) {
-      router.push(callbackUrl);
+      if (result?.error) {
+        form.setFields([
+          {
+            name: "password",
+            errors: [result.error],
+          },
+        ]);
+        setLoading(false);
+      }
+
+      if (result?.ok) {
+        router.push(callbackUrl);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log("error", error);
+    } finally {
       setLoading(false);
     }
   };

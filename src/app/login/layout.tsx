@@ -1,4 +1,4 @@
-import { getSession } from "@/auth";
+import { auth } from "@/auth";
 import { Routes } from "@/config/routes";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function LoginLayout({ children }: PropsWithChildren) {
-  const session = await getSession();
+  const session = await auth();
 
   if (session) {
     redirect(Routes.Home);
