@@ -121,6 +121,26 @@ export const RepairAssignedDialog = ({
     }
   }, [slaId, form, mastersData, parentId]);
 
+  const homecareInDate = useMemo(() => {
+    if (taskDetail?.homecareInDate) {
+      return dayjs(taskDetail?.homecareInDate);
+    }
+
+    if (taskDetail?.task?.checkInDate) {
+      return dayjs(taskDetail?.task?.checkInDate);
+    }
+  }, [taskDetail]);
+
+  const homecareRangeTime = useMemo(() => {
+    if (taskDetail?.homecareInRangeTime) {
+      return taskDetail?.homecareInRangeTime.id;
+    }
+
+    if (taskDetail?.task?.checkInRangeTime) {
+      return taskDetail?.task?.checkInRangeTime.id;
+    }
+  }, [taskDetail]);
+
   return (
     <CustomModal
       title="จ่ายงาน"
@@ -148,12 +168,8 @@ export const RepairAssignedDialog = ({
             parentId: taskDetail?.sla?.parent?.id,
             slaId: taskDetail?.slaId,
             homecareId: taskDetail?.homecareId,
-            homecareInDate: taskDetail?.task?.checkInDate
-              ? dayjs(taskDetail?.task?.checkInDate)
-              : undefined,
-            homecareRangeTime: taskDetail?.task?.checkInRangeTime?.id
-              ? taskDetail?.task?.checkInRangeTime?.id
-              : undefined,
+            homecareInDate: homecareInDate,
+            homecareRangeTime: homecareRangeTime,
           }}
           onFinish={async (values) => {
             const updateTaskDetailInput: UpdateTaskDetailInput = {
@@ -162,8 +178,12 @@ export const RepairAssignedDialog = ({
               status: TaskStatus.Open,
               homecareId: values.homecareId,
               homecareStatus: TaskStatus.Open,
-              homecareInDate: values.homecareInDate,
-              homecareRangeTime: values.homecareRangeTime,
+              homecareInDate: values.homecareInDate
+                ? dayjs(values.homecareInDate).startOf("day").toDate()
+                : undefined,
+              homecareRangeTime: values.homecareRangeTime
+                ? values.homecareRangeTime
+                : undefined,
             };
 
             await updateTaskDetail({
