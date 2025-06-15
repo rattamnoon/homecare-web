@@ -1,8 +1,16 @@
 import { CustomModal } from "@/components/common/CustomModal";
-import { MasterType, TaskStatus } from "@/gql/generated/graphql";
+import {
+  MasterType,
+  TaskStatus,
+  UpdateTaskDetailInput,
+} from "@/gql/generated/graphql";
 import { useMastersQuery } from "@/gql/generated/master.generated";
 import { useTaskOptionsQuery } from "@/gql/generated/option.generated";
-import { TaskDetailFragment } from "@/gql/generated/tasks.generated";
+import {
+  TaskDetailFragment,
+  TaskDocument,
+  useUpdateTaskDetailMutation,
+} from "@/gql/generated/tasks.generated";
 import { useAllActiveUsersQuery } from "@/gql/generated/user.generated";
 import { faSave } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +19,7 @@ import {
   DatePicker,
   Form,
   InputNumber,
+  message,
   Row,
   Select,
   Skeleton,
@@ -30,8 +39,8 @@ export const RepairAssignedDialog = ({
   taskDetail,
 }: RepairAssignedDialogProps) => {
   const [form] = Form.useForm();
-  const masterId = Form.useWatch("masterId", form);
-  const childId = Form.useWatch("childId", form);
+  const parentId = Form.useWatch("parentId", form);
+  const slaId = Form.useWatch("slaId", form);
   const { data: mastersData, loading: mastersLoading } = useMastersQuery({
     variables: {
       types: [MasterType.Sla],
@@ -44,6 +53,24 @@ export const RepairAssignedDialog = ({
   const { data: usersData, loading: usersLoading } = useAllActiveUsersQuery({
     skip: !open,
   });
+  const [updateTaskDetail, { loading: updateTaskDetailLoading }] =
+    useUpdateTaskDetailMutation({
+      onCompleted: () => {
+        message.success("บันทึกข้อมูลสำเร็จ");
+        onCancel();
+      },
+      onError: (error) => {
+        message.error(error.message);
+      },
+      refetchQueries: [
+        {
+          query: TaskDocument,
+          variables: {
+            id: taskDetail?.taskId ?? "",
+          },
+        },
+      ],
+    });
 
   const slaOptions = useMemo(() => {
     return mastersData?.masters
@@ -56,14 +83,14 @@ export const RepairAssignedDialog = ({
 
   const slaChildOptions = useMemo(() => {
     return mastersData?.masters
-      .filter((master) => master.id === masterId)
+      .filter((master) => master.id === parentId)
       .map((master) => master.children)
       .flat()
       .map((child) => ({
         label: child.nameTh,
         value: child.id,
       }));
-  }, [mastersData, masterId]);
+  }, [mastersData, parentId]);
 
   const timeOptions = useMemo(() => {
     return optionsData?.rangeTimes.map((time) => ({
@@ -80,11 +107,11 @@ export const RepairAssignedDialog = ({
   }, [usersData]);
 
   useEffect(() => {
-    if (childId) {
+    if (slaId) {
       const child = mastersData?.masters
-        .filter((master) => master.id === masterId)
+        .filter((master) => master.id === parentId)
         .flatMap((master) => master.children)
-        .find((child) => child.id === childId);
+        .find((child) => child.id === slaId);
 
       if (child) {
         form.setFieldsValue({
@@ -92,27 +119,7 @@ export const RepairAssignedDialog = ({
         });
       }
     }
-
-    if (taskDetail?.task?.checkInDate && taskDetail?.task?.checkInRangeTime) {
-      form.setFieldsValue({
-        homecareInDate: dayjs(taskDetail?.task?.checkInDate),
-        homecareRangeTime: taskDetail?.task?.checkInRangeTime.id,
-      });
-    }
-
-    if (taskDetail?.homecareId) {
-      form.setFieldsValue({
-        homecareId: taskDetail?.homecareId,
-      });
-    }
-
-    if (taskDetail?.slaId && taskDetail?.sla?.parent) {
-      form.setFieldsValue({
-        masterId: taskDetail?.sla?.parent?.id,
-        childId: taskDetail?.slaId,
-      });
-    }
-  }, [childId, form, mastersData, masterId, taskDetail]);
+  }, [slaId, form, mastersData, parentId]);
 
   return (
     <CustomModal
@@ -128,6 +135,7 @@ export const RepairAssignedDialog = ({
         icon: <FontAwesomeIcon icon={faSave} />,
       }}
       width={800}
+      confirmLoading={updateTaskDetailLoading}
     >
       <Skeleton
         active
@@ -136,23 +144,38 @@ export const RepairAssignedDialog = ({
         <Form
           form={form}
           labelCol={{ span: 8 }}
-          onFinish={(values) => {
-            const input = {
-              id: taskDetail?.id,
-              slaId: values.masterId,
+          initialValues={{
+            parentId: taskDetail?.sla?.parent?.id,
+            slaId: taskDetail?.slaId,
+            homecareId: taskDetail?.homecareId,
+            homecareInDate: taskDetail?.task?.checkInDate
+              ? dayjs(taskDetail?.task?.checkInDate)
+              : undefined,
+            homecareRangeTime: taskDetail?.task?.checkInRangeTime?.id
+              ? taskDetail?.task?.checkInRangeTime?.id
+              : undefined,
+          }}
+          onFinish={async (values) => {
+            const updateTaskDetailInput: UpdateTaskDetailInput = {
+              id: taskDetail?.id ?? "",
+              slaId: values.slaId,
               status: TaskStatus.Open,
               homecareId: values.homecareId,
               homecareStatus: TaskStatus.Open,
               homecareInDate: values.homecareInDate,
               homecareRangeTime: values.homecareRangeTime,
             };
+
+            await updateTaskDetail({
+              variables: { updateTaskDetailInput },
+            });
           }}
         >
           <Row gutter={[8, 8]}>
             <Col xs={24} sm={12}>
               <Form.Item
                 label="ประเภทหลัก"
-                name="masterId"
+                name="parentId"
                 required={false}
                 rules={[{ required: true, message: "กรุณาเลือกประเภทหลัก" }]}
               >
@@ -166,7 +189,7 @@ export const RepairAssignedDialog = ({
             <Col xs={24} sm={12}>
               <Form.Item
                 label="ประเภทย่อย"
-                name="childId"
+                name="slaId"
                 required={false}
                 rules={[{ required: true, message: "กรุณาเลือกประเภทย่อย" }]}
               >
