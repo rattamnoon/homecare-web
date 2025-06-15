@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import NextAuth from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -7,16 +8,11 @@ import {
   LoginMutation,
   LoginMutationVariables,
   RefreshTokenDocument,
-  RefreshTokenMutation,
-  RefreshTokenMutationVariables,
 } from "./gql/generated/auth.generated";
 
 const requestRefreshOfAccessToken = async (token: JWT) => {
   try {
-    const { data } = await authClient.mutate<
-      RefreshTokenMutation,
-      RefreshTokenMutationVariables
-    >({
+    const { data } = await authClient.mutate({
       mutation: RefreshTokenDocument,
       context: {
         headers: {
@@ -127,7 +123,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return token;
       }
 
-      if (Date.now() < token.expiresAt) {
+      const isExpired = dayjs().isAfter(dayjs.unix(token.expiresAt));
+
+      if (!isExpired) {
         return token;
       }
 

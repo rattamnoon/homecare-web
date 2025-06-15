@@ -41,7 +41,7 @@ const refreshToken = async (token: JWT) => {
         },
       });
 
-      return data.refreshToken;
+      return data?.refreshToken;
     }
   }
   return null;
@@ -81,7 +81,7 @@ const refreshMiddleware = onError(
 
                   if (
                     !newToken ||
-                    newToken.error === "RefreshAccessTokenError"
+                    newToken?.error === "RefreshAccessTokenError"
                   ) {
                     await signOut();
                     observer.error(new Error("Unauthorized"));
@@ -91,7 +91,7 @@ const refreshMiddleware = onError(
                   operation.setContext(({ headers = {} }) => ({
                     headers: {
                       ...headers,
-                      Authorization: `Bearer ${newToken.accessToken}`,
+                      Authorization: `Bearer ${newToken?.accessToken}`,
                     },
                   }));
                 }
