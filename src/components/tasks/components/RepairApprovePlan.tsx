@@ -1,7 +1,7 @@
 import { TaskDetailFragment } from "@/gql/generated/tasks.generated";
 import { faCheck, faXmark } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Col, Modal, Row, Space, Typography } from "antd";
+import { Button, Col, Modal, Row, Space, Tooltip, Typography } from "antd";
 import dayjs from "dayjs";
 
 type RepairApprovePlanProps = {
@@ -72,24 +72,28 @@ export const RepairApprovePlan = ({ taskDetail }: RepairApprovePlanProps) => {
           </Col>
           <Col span={6}>
             <Space.Compact>
-              <Button
-                variant="outlined"
-                color="primary"
-                size="small"
-                icon={<FontAwesomeIcon icon={faCheck} />}
-                onClick={handleApprove}
-              >
-                Approve
-              </Button>
-              <Button
-                variant="outlined"
-                color="danger"
-                size="small"
-                icon={<FontAwesomeIcon icon={faXmark} />}
-                onClick={handleReject}
-              >
-                Reject
-              </Button>
+              <Tooltip title="อนุมัติงาน">
+                <Button
+                  variant="filled"
+                  color="green"
+                  size="small"
+                  icon={<FontAwesomeIcon icon={faCheck} />}
+                  onClick={handleApprove}
+                >
+                  Approve
+                </Button>
+              </Tooltip>
+              <Tooltip title="ยกเลิกงาน">
+                <Button
+                  variant="filled"
+                  color="red"
+                  size="small"
+                  icon={<FontAwesomeIcon icon={faXmark} />}
+                  onClick={handleReject}
+                >
+                  Reject
+                </Button>
+              </Tooltip>
             </Space.Compact>
           </Col>
         </Row>
