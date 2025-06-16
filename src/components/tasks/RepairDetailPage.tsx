@@ -138,7 +138,7 @@ export const RepairDetailPage = () => {
               priority: detail.priority?.id,
               status: TaskStatus.Finished,
               homecareStatus: TaskStatus.Finished,
-              finishDate: dayjs().toDate(),
+              finishedDate: dayjs().toDate(),
             },
           },
         });
@@ -353,10 +353,10 @@ export const RepairDetailPage = () => {
                         )}
                       </Descriptions.Item>
                       <Descriptions.Item label="วันที่และเวลาจบงาน">
-                        {detail.finishDate ? (
-                          `${dayjs(detail.finishDate).format(
+                        {detail.finishedDate ? (
+                          `${dayjs(detail.finishedDate).format(
                             "DD/MM/YYYY"
-                          )} ${dayjs(detail.finishDate).format("HH:mm")} น.`
+                          )} ${dayjs(detail.finishedDate).format("HH:mm")} น.`
                         ) : (
                           <Tag color="default" bordered={false}>
                             ยังไม่ได้จบงาน
@@ -504,12 +504,12 @@ export const RepairDetailPage = () => {
                           label="วันที่และเวลาเข้าซ่อม"
                           span={3}
                         >
-                          {detail.assigns?.[0]?.requestDate && (
+                          {detail.assigns?.[0]?.requestedDate && (
                             <>
-                              {dayjs(detail.assigns?.[0]?.requestDate).format(
+                              {dayjs(detail.assigns?.[0]?.requestedDate).format(
                                 "DD/MM/YYYY"
                               )}{" "}
-                              {detail.assigns?.[0]?.requestRangeTime?.nameTh}
+                              {detail.assigns?.[0]?.requestedRangeTime?.nameTh}
                             </>
                           )}
                         </Descriptions.Item>

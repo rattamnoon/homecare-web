@@ -350,11 +350,11 @@ export type TaskDetailAssignFragment = {
   remark?: string | null;
   createdAt: Date;
   customerNameFinish?: string | null;
-  finishDate?: Date | null;
   isAssetCustomer?: boolean | null;
-  requestDate?: Date | null;
-  reAssignInDate?: Date | null;
-  reAssignRemark?: string | null;
+  requestedDate?: Date | null;
+  reassignedInDate?: Date | null;
+  reassignedRemark?: string | null;
+  finishedDate?: Date | null;
   status?: {
     __typename?: "TaskStatusDto";
     id: Types.TaskStatus;
@@ -376,19 +376,19 @@ export type TaskDetailAssignFragment = {
     firstName?: string | null;
     lastName?: string | null;
   } | null;
-  requestRangeTime?: {
+  requestedRangeTime?: {
     __typename?: "TaskRangeTimeDto";
     id: string;
     nameTh: string;
     nameEn: string;
   } | null;
-  reAssignRangeTime?: {
+  reassignedRangeTime?: {
     __typename?: "TaskRangeTimeDto";
     id: string;
     nameTh: string;
     nameEn: string;
   } | null;
-  finishType?: {
+  finishedType?: {
     __typename?: "TaskStatusDto";
     id: Types.TaskStatus;
     nameTh: string;
@@ -499,12 +499,12 @@ export type TaskDetailFragment = {
   appointmentRepairDate?: Date | null;
   appointmentRepairTime?: string | null;
   appointmentRepairRemark?: string | null;
-  callingDate?: Date | null;
-  assignDate?: Date | null;
-  inProgressDate?: Date | null;
-  reProcessDate?: Date | null;
-  finishDate?: Date | null;
-  closeDate?: Date | null;
+  calledDate?: Date | null;
+  assignedDate?: Date | null;
+  inprogressDate?: Date | null;
+  reprocessedDate?: Date | null;
+  finishedDate?: Date | null;
+  closedDate?: Date | null;
   isCSAT?: boolean | null;
   CSATComment?: string | null;
   createdAt: Date;
@@ -728,11 +728,11 @@ export type TaskDetailFragment = {
     remark?: string | null;
     createdAt: Date;
     customerNameFinish?: string | null;
-    finishDate?: Date | null;
     isAssetCustomer?: boolean | null;
-    requestDate?: Date | null;
-    reAssignInDate?: Date | null;
-    reAssignRemark?: string | null;
+    requestedDate?: Date | null;
+    reassignedInDate?: Date | null;
+    reassignedRemark?: string | null;
+    finishedDate?: Date | null;
     logs: Array<{
       __typename?: "TaskDetailAssign";
       id: string;
@@ -745,11 +745,11 @@ export type TaskDetailFragment = {
       remark?: string | null;
       createdAt: Date;
       customerNameFinish?: string | null;
-      finishDate?: Date | null;
       isAssetCustomer?: boolean | null;
-      requestDate?: Date | null;
-      reAssignInDate?: Date | null;
-      reAssignRemark?: string | null;
+      requestedDate?: Date | null;
+      reassignedInDate?: Date | null;
+      reassignedRemark?: string | null;
+      finishedDate?: Date | null;
       status?: {
         __typename?: "TaskStatusDto";
         id: Types.TaskStatus;
@@ -771,19 +771,19 @@ export type TaskDetailFragment = {
         firstName?: string | null;
         lastName?: string | null;
       } | null;
-      requestRangeTime?: {
+      requestedRangeTime?: {
         __typename?: "TaskRangeTimeDto";
         id: string;
         nameTh: string;
         nameEn: string;
       } | null;
-      reAssignRangeTime?: {
+      reassignedRangeTime?: {
         __typename?: "TaskRangeTimeDto";
         id: string;
         nameTh: string;
         nameEn: string;
       } | null;
-      finishType?: {
+      finishedType?: {
         __typename?: "TaskStatusDto";
         id: Types.TaskStatus;
         nameTh: string;
@@ -885,19 +885,19 @@ export type TaskDetailFragment = {
       firstName?: string | null;
       lastName?: string | null;
     } | null;
-    requestRangeTime?: {
+    requestedRangeTime?: {
       __typename?: "TaskRangeTimeDto";
       id: string;
       nameTh: string;
       nameEn: string;
     } | null;
-    reAssignRangeTime?: {
+    reassignedRangeTime?: {
       __typename?: "TaskRangeTimeDto";
       id: string;
       nameTh: string;
       nameEn: string;
     } | null;
-    finishType?: {
+    finishedType?: {
       __typename?: "TaskStatusDto";
       id: Types.TaskStatus;
       nameTh: string;
@@ -1023,12 +1023,12 @@ export type TaskQuery = {
       appointmentRepairDate?: Date | null;
       appointmentRepairTime?: string | null;
       appointmentRepairRemark?: string | null;
-      callingDate?: Date | null;
-      assignDate?: Date | null;
-      inProgressDate?: Date | null;
-      reProcessDate?: Date | null;
-      finishDate?: Date | null;
-      closeDate?: Date | null;
+      calledDate?: Date | null;
+      assignedDate?: Date | null;
+      inprogressDate?: Date | null;
+      reprocessedDate?: Date | null;
+      finishedDate?: Date | null;
+      closedDate?: Date | null;
       isCSAT?: boolean | null;
       CSATComment?: string | null;
       createdAt: Date;
@@ -1252,11 +1252,11 @@ export type TaskQuery = {
         remark?: string | null;
         createdAt: Date;
         customerNameFinish?: string | null;
-        finishDate?: Date | null;
         isAssetCustomer?: boolean | null;
-        requestDate?: Date | null;
-        reAssignInDate?: Date | null;
-        reAssignRemark?: string | null;
+        requestedDate?: Date | null;
+        reassignedInDate?: Date | null;
+        reassignedRemark?: string | null;
+        finishedDate?: Date | null;
         logs: Array<{
           __typename?: "TaskDetailAssign";
           id: string;
@@ -1269,11 +1269,11 @@ export type TaskQuery = {
           remark?: string | null;
           createdAt: Date;
           customerNameFinish?: string | null;
-          finishDate?: Date | null;
           isAssetCustomer?: boolean | null;
-          requestDate?: Date | null;
-          reAssignInDate?: Date | null;
-          reAssignRemark?: string | null;
+          requestedDate?: Date | null;
+          reassignedInDate?: Date | null;
+          reassignedRemark?: string | null;
+          finishedDate?: Date | null;
           status?: {
             __typename?: "TaskStatusDto";
             id: Types.TaskStatus;
@@ -1295,19 +1295,19 @@ export type TaskQuery = {
             firstName?: string | null;
             lastName?: string | null;
           } | null;
-          requestRangeTime?: {
+          requestedRangeTime?: {
             __typename?: "TaskRangeTimeDto";
             id: string;
             nameTh: string;
             nameEn: string;
           } | null;
-          reAssignRangeTime?: {
+          reassignedRangeTime?: {
             __typename?: "TaskRangeTimeDto";
             id: string;
             nameTh: string;
             nameEn: string;
           } | null;
-          finishType?: {
+          finishedType?: {
             __typename?: "TaskStatusDto";
             id: Types.TaskStatus;
             nameTh: string;
@@ -1409,19 +1409,19 @@ export type TaskQuery = {
           firstName?: string | null;
           lastName?: string | null;
         } | null;
-        requestRangeTime?: {
+        requestedRangeTime?: {
           __typename?: "TaskRangeTimeDto";
           id: string;
           nameTh: string;
           nameEn: string;
         } | null;
-        reAssignRangeTime?: {
+        reassignedRangeTime?: {
           __typename?: "TaskRangeTimeDto";
           id: string;
           nameTh: string;
           nameEn: string;
         } | null;
-        finishType?: {
+        finishedType?: {
           __typename?: "TaskStatusDto";
           id: Types.TaskStatus;
           nameTh: string;
@@ -1773,12 +1773,12 @@ export type UpdateTaskDetailMutation = {
     appointmentRepairDate?: Date | null;
     appointmentRepairTime?: string | null;
     appointmentRepairRemark?: string | null;
-    callingDate?: Date | null;
-    assignDate?: Date | null;
-    inProgressDate?: Date | null;
-    reProcessDate?: Date | null;
-    finishDate?: Date | null;
-    closeDate?: Date | null;
+    calledDate?: Date | null;
+    assignedDate?: Date | null;
+    inprogressDate?: Date | null;
+    reprocessedDate?: Date | null;
+    finishedDate?: Date | null;
+    closedDate?: Date | null;
     isCSAT?: boolean | null;
     CSATComment?: string | null;
     createdAt: Date;
@@ -2002,11 +2002,11 @@ export type UpdateTaskDetailMutation = {
       remark?: string | null;
       createdAt: Date;
       customerNameFinish?: string | null;
-      finishDate?: Date | null;
       isAssetCustomer?: boolean | null;
-      requestDate?: Date | null;
-      reAssignInDate?: Date | null;
-      reAssignRemark?: string | null;
+      requestedDate?: Date | null;
+      reassignedInDate?: Date | null;
+      reassignedRemark?: string | null;
+      finishedDate?: Date | null;
       logs: Array<{
         __typename?: "TaskDetailAssign";
         id: string;
@@ -2019,11 +2019,11 @@ export type UpdateTaskDetailMutation = {
         remark?: string | null;
         createdAt: Date;
         customerNameFinish?: string | null;
-        finishDate?: Date | null;
         isAssetCustomer?: boolean | null;
-        requestDate?: Date | null;
-        reAssignInDate?: Date | null;
-        reAssignRemark?: string | null;
+        requestedDate?: Date | null;
+        reassignedInDate?: Date | null;
+        reassignedRemark?: string | null;
+        finishedDate?: Date | null;
         status?: {
           __typename?: "TaskStatusDto";
           id: Types.TaskStatus;
@@ -2045,19 +2045,19 @@ export type UpdateTaskDetailMutation = {
           firstName?: string | null;
           lastName?: string | null;
         } | null;
-        requestRangeTime?: {
+        requestedRangeTime?: {
           __typename?: "TaskRangeTimeDto";
           id: string;
           nameTh: string;
           nameEn: string;
         } | null;
-        reAssignRangeTime?: {
+        reassignedRangeTime?: {
           __typename?: "TaskRangeTimeDto";
           id: string;
           nameTh: string;
           nameEn: string;
         } | null;
-        finishType?: {
+        finishedType?: {
           __typename?: "TaskStatusDto";
           id: Types.TaskStatus;
           nameTh: string;
@@ -2159,19 +2159,19 @@ export type UpdateTaskDetailMutation = {
         firstName?: string | null;
         lastName?: string | null;
       } | null;
-      requestRangeTime?: {
+      requestedRangeTime?: {
         __typename?: "TaskRangeTimeDto";
         id: string;
         nameTh: string;
         nameEn: string;
       } | null;
-      reAssignRangeTime?: {
+      reassignedRangeTime?: {
         __typename?: "TaskRangeTimeDto";
         id: string;
         nameTh: string;
         nameEn: string;
       } | null;
-      finishType?: {
+      finishedType?: {
         __typename?: "TaskStatusDto";
         id: Types.TaskStatus;
         nameTh: string;
@@ -2381,7 +2381,6 @@ export const TaskDetailAssignFragmentDoc = gql`
     remark
     createdAt
     customerNameFinish
-    finishDate
     isAssetCustomer
     status {
       ...TaskStatus
@@ -2395,16 +2394,17 @@ export const TaskDetailAssignFragmentDoc = gql`
       firstName
       lastName
     }
-    requestDate
-    requestRangeTime {
+    requestedDate
+    requestedRangeTime {
       ...TaskRangeTime
     }
-    reAssignInDate
-    reAssignRemark
-    reAssignRangeTime {
+    reassignedInDate
+    reassignedRemark
+    reassignedRangeTime {
       ...TaskRangeTime
     }
-    finishType {
+    finishedDate
+    finishedType {
       ...TaskStatus
     }
     images {
@@ -2485,12 +2485,12 @@ export const TaskDetailFragmentDoc = gql`
     appointmentRepairDate
     appointmentRepairTime
     appointmentRepairRemark
-    callingDate
-    assignDate
-    inProgressDate
-    reProcessDate
-    finishDate
-    closeDate
+    calledDate
+    assignedDate
+    inprogressDate
+    reprocessedDate
+    finishedDate
+    closedDate
     isCSAT
     CSATComment
     createdAt

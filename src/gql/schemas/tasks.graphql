@@ -141,7 +141,7 @@ fragment TaskDetailAssign on TaskDetailAssign {
   remark
   createdAt
   customerNameFinish
-  finishDate
+
   isAssetCustomer
   status {
     ...TaskStatus
@@ -155,17 +155,18 @@ fragment TaskDetailAssign on TaskDetailAssign {
     firstName
     lastName
   }
-  requestDate
-  requestRangeTime {
+  requestedDate
+  requestedRangeTime {
     ...TaskRangeTime
   }
-  reAssignInDate
+  reassignedInDate
 
-  reAssignRemark
-  reAssignRangeTime {
+  reassignedRemark
+  reassignedRangeTime {
     ...TaskRangeTime
   }
-  finishType {
+  finishedDate
+  finishedType {
     ...TaskStatus
   }
   images {
@@ -245,12 +246,12 @@ fragment TaskDetail on TaskDetail {
   appointmentRepairDate
   appointmentRepairTime
   appointmentRepairRemark
-  callingDate
-  assignDate
-  inProgressDate
-  reProcessDate
-  finishDate
-  closeDate
+  calledDate
+  assignedDate
+  inprogressDate
+  reprocessedDate
+  finishedDate
+  closedDate
   isCSAT
   CSATComment
   createdAt
