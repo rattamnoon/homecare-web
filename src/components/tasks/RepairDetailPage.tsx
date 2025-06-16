@@ -147,11 +147,10 @@ export const RepairDetailPage = () => {
   };
 
   const handleDisabled = (status?: TaskStatusFragment | null) => {
-    // if (!status) return true;
-    // return (
-    //   status?.id === TaskStatus.Finished || status?.id === TaskStatus.Closed
-    // );
-    return false;
+    if (!status) return true;
+    return (
+      status?.id === TaskStatus.Finished || status?.id === TaskStatus.Closed
+    );
   };
 
   const handleHide = (detail: TaskDetailFragment) => {

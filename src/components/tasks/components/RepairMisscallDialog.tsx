@@ -117,7 +117,7 @@ export const RepairMisscallDialog = ({
                   : undefined,
                 checkInRangeTime: values.checkInRangeTime,
                 remark: values.remark,
-                type: TaskStatus.MissedCall,
+                type: TaskStatus.MissedCalled,
               };
 
             await createTaskDetailReportLog({
