@@ -83,7 +83,7 @@ export const RepairCreatePage = () => {
     },
   });
 
-  const uploadFile = useFileUpload("file", "task");
+  const uploadFile = useFileUpload("file", "customer");
 
   const { fields, append, remove } = useFieldArray({
     control,

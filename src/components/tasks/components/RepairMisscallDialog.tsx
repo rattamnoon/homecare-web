@@ -47,7 +47,7 @@ export const RepairMisscallDialog = ({
     notification.useNotification();
   const [form] = Form.useForm();
   const { data: taskOptions } = useTaskOptionsQuery();
-  const uploadFile = useFileUpload("file", "missed-call");
+  const uploadFile = useFileUpload("file", "other/missed-call");
 
   const [
     createTaskDetailReportLog,
@@ -124,7 +124,7 @@ export const RepairMisscallDialog = ({
                   : undefined,
                 checkInRangeTime: values.checkInRangeTime,
                 remark: values.remark,
-                type: TaskStatus.MissedCalled,
+                type: TaskStatus.MissedCall,
               };
 
             let createUploadFileInput: CreateUploadFileInput[] = [];

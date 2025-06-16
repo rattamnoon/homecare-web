@@ -47,7 +47,7 @@ export const RepairWaitingConstructionDialog = ({
     notification.useNotification();
   const [form] = Form.useForm();
   const { data: taskOptions } = useTaskOptionsQuery();
-  const uploadFile = useFileUpload("file", "waiting-construction");
+  const uploadFile = useFileUpload("file", "other/waiting-construction");
 
   const [
     createTaskDetailReportLog,

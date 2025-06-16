@@ -7,12 +7,12 @@ import { StepProps, Steps, Typography } from "antd";
 import { RepairImagePreview } from "./RepairImagePreview";
 
 const statuses = [
-  UploadFileType.AssignBefore,
-  UploadFileType.AssignProtection,
-  UploadFileType.AssignDoing,
-  UploadFileType.AssignFinish,
-  UploadFileType.CustomerSign,
-  UploadFileType.AssignUploadFinish,
+  UploadFileType.AssignmentBefore,
+  UploadFileType.AssignmentProtection,
+  UploadFileType.AssignmentInProgress,
+  UploadFileType.AssignmentCompleted,
+  UploadFileType.Signature,
+  UploadFileType.AssignmentUploadCompleted,
 ];
 
 const { Text } = Typography;
@@ -46,67 +46,67 @@ export const RepairSOPImagePreview = ({
       items={[
         {
           title: "Before",
-          status: getStatus(UploadFileType.AssignBefore),
+          status: getStatus(UploadFileType.AssignmentBefore),
           subTitle: "รูปภาพก่อนรับงาน",
           description: (
             <RepairImagePreview
-              images={getImages(UploadFileType.AssignBefore)}
+              images={getImages(UploadFileType.AssignmentBefore)}
             />
           ),
         },
         {
           title: "Protection",
-          status: getStatus(UploadFileType.AssignProtection),
+          status: getStatus(UploadFileType.AssignmentProtection),
           subTitle: "รูปภาพการปกป้องงาน",
           description: (
             <RepairImagePreview
-              images={getImages(UploadFileType.AssignProtection)}
+              images={getImages(UploadFileType.AssignmentProtection)}
             />
           ),
         },
         {
           title: "Doing",
-          status: getStatus(UploadFileType.AssignDoing),
+          status: getStatus(UploadFileType.AssignmentInProgress),
           subTitle: "รูปภาพการดำเนินงาน",
           description: (
             <RepairImagePreview
-              images={getImages(UploadFileType.AssignDoing)}
+              images={getImages(UploadFileType.AssignmentInProgress)}
             />
           ),
         },
         {
           title: "Finished",
-          status: getStatus(UploadFileType.AssignFinish),
+          status: getStatus(UploadFileType.AssignmentCompleted),
           subTitle: "รูปภาพงานเสร็จสิ้น",
           description: (
             <RepairImagePreview
-              images={getImages(UploadFileType.AssignFinish)}
+              images={getImages(UploadFileType.AssignmentCompleted)}
             />
           ),
         },
-        ...(getImages(UploadFileType.CustomerSign).length > 0
+        ...(getImages(UploadFileType.Signature).length > 0
           ? ([
               {
                 title: "ลายเซ็นต์ลูกบ้าน",
-                status: getStatus(UploadFileType.CustomerSign),
+                status: getStatus(UploadFileType.Signature),
                 subTitle: "รูปภาพลายเซ็นต์ลูกบ้าน",
                 description: (
                   <RepairImagePreview
-                    images={getImages(UploadFileType.CustomerSign)}
+                    images={getImages(UploadFileType.Signature)}
                   />
                 ),
               },
             ] as StepProps[])
           : []),
-        ...(getImages(UploadFileType.AssignUploadFinish).length > 0
+        ...(getImages(UploadFileType.AssignmentUploadCompleted).length > 0
           ? ([
               {
                 title: "ไม่มีผู้รับงาน",
-                status: getStatus(UploadFileType.AssignUploadFinish),
+                status: getStatus(UploadFileType.AssignmentUploadCompleted),
                 subTitle: "รูปภาพการยืนยันงาน",
                 description: (
                   <RepairImagePreview
-                    images={getImages(UploadFileType.AssignUploadFinish)}
+                    images={getImages(UploadFileType.AssignmentUploadCompleted)}
                   />
                 ),
               },
