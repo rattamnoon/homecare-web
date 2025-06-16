@@ -107,14 +107,14 @@ export const RepairCreatePage = () => {
   const [createTask, { loading: createTaskLoading }] = useCreateTaskMutation({
     onCompleted: () => {
       notificationApi.success({
-        message: "สำเร็จ",
+        message: "สำเร็จ !!",
         description: "สร้างงานแจ้งซ่อมสำเร็จ",
       });
       router.push(Routes.Tasks);
     },
     onError: (error) => {
       notificationApi.error({
-        message: "เกิดข้อผิดพลาด",
+        message: "เกิดข้อผิดพลาด !!",
         description: error.message,
         duration: 5,
       });

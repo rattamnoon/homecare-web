@@ -44,7 +44,7 @@ export default function TasksTemplate({
         onCollapse={(value) => setCollapsed(value)}
       >
         <Menu
-          mode="vertical"
+          mode="inline"
           defaultOpenKeys={["repair"]}
           selectedKeys={[pathname]}
           style={{ height: "100%", borderRight: 0 }}

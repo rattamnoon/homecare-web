@@ -28,8 +28,8 @@ export const RepairPriorityDialog = ({
     useUpdateTaskDetailMutation({
       onCompleted: () => {
         notificationApi.success({
-          message: "สำเร็จ",
-          description: "ทำรายการสำเร็จแล้ว",
+          message: "สำเร็จ !!",
+          description: "บันทึกข้อมูลเรียบร้อย",
           duration: 3,
         });
         onCancel();
@@ -37,7 +37,7 @@ export const RepairPriorityDialog = ({
       },
       onError: (error) => {
         notificationApi.error({
-          message: "เกิดข้อผิดพลาด",
+          message: "เกิดข้อผิดพลาด !!",
           description: error.message,
           duration: 5,
         });

@@ -21,6 +21,7 @@ import {
   Tooltip,
 } from "antd";
 import dayjs from "dayjs";
+import { uniqBy } from "lodash-es";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { useMemo } from "react";
@@ -106,16 +107,19 @@ export const RepairFilter = () => {
   const { data: optionsData, loading: optionsLoading } = useTaskOptionsQuery();
 
   const statusesOptions = useMemo(
-    () => statusesData?.taskStatuses || [],
+    () => uniqBy(statusesData?.taskStatuses || [], "id"),
     [statusesData]
   );
   const projectsOptions = useMemo(
-    () => projectsData?.projects || [],
+    () => uniqBy(projectsData?.projects || [], "id"),
     [projectsData]
   );
-  const unitsOptions = useMemo(() => unitsData?.units || [], [unitsData]);
+  const unitsOptions = useMemo(
+    () => uniqBy(unitsData?.units || [], "id"),
+    [unitsData]
+  );
   const sourcesOptions = useMemo(
-    () => optionsData?.sources || [],
+    () => uniqBy(optionsData?.sources || [], "id"),
     [optionsData]
   );
 
