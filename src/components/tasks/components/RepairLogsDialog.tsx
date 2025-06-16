@@ -2,6 +2,7 @@ import { CustomModal } from "@/components/common/CustomModal";
 import { UploadFileType } from "@/gql/generated/graphql";
 import { TaskDetailFragment } from "@/gql/generated/tasks.generated";
 import styled from "@emotion/styled";
+import { List } from "antd";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 import { RepairImagePreview } from "./RepairImagePreview";
@@ -40,27 +41,54 @@ export const RepairLogsDialog = ({
       title="Logs"
       footer={null}
       destroyOnHidden
+      width={800}
     >
-      {items.map((item) => (
-        <Card key={item.id} color={item.type?.color}>
-          <div>
-            <div>สถานะ : {item.type?.nameTh}</div>
-            <div>วันที่ : {dayjs(item.checkInDate).format("DD/MM/YYYY")}</div>
-            <div>ช่วงเวลา : {item.checkInRangeTime?.nameTh}</div>
-            <div>หมายเหตุ : {item.remark}</div>
-            {item.images?.length > 0 && (
+      <List
+        rowKey="id"
+        dataSource={items}
+        size="small"
+        split={false}
+        grid={{
+          gutter: 8,
+          column: 1,
+        }}
+        pagination={{
+          pageSize: 5,
+          showSizeChanger: false,
+          showQuickJumper: false,
+          showTotal: (total, range) =>
+            `${range[0]}-${range[1]} จาก ${total} รายการ`,
+          align: "center",
+        }}
+        renderItem={(item) => (
+          <List.Item>
+            <Card key={item.id} color={item.type?.color}>
               <div>
-                <span>รูปภาพ : </span>
-                <RepairImagePreview
-                  images={item.images.filter(
-                    (image) => image.fileType === UploadFileType.Other
-                  )}
-                />
+                <div>สถานะ : {item.type?.nameTh}</div>
+                {item.checkInDate && (
+                  <div>
+                    วันที่ : {dayjs(item.checkInDate).format("DD/MM/YYYY")}
+                  </div>
+                )}
+                {item.checkInRangeTime && (
+                  <div>ช่วงเวลา : {item.checkInRangeTime?.nameTh}</div>
+                )}
+                <div>หมายเหตุ : {item.remark}</div>
+                {item.images?.length > 0 && (
+                  <div>
+                    <span>รูปภาพ : </span>
+                    <RepairImagePreview
+                      images={item.images.filter(
+                        (image) => image.fileType === UploadFileType.Other
+                      )}
+                    />
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </Card>
-      ))}
+            </Card>
+          </List.Item>
+        )}
+      />
     </CustomModal>
   );
 };

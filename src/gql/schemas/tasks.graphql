@@ -249,7 +249,10 @@ fragment TaskDetail on TaskDetail {
   calledDate
   assignedDate
   inprogressDate
-  reprocessedDate
+  reinprogressId
+  reinprogressCode
+  reinprogressDate
+  isReinprogress
   finishedDate
   closedDate
   isCSAT
@@ -334,5 +337,15 @@ mutation CreateTask(
 mutation UpdateTaskDetail($updateTaskDetailInput: UpdateTaskDetailInput!) {
   updateTaskDetail(updateTaskDetailInput: $updateTaskDetailInput) {
     ...TaskDetail
+  }
+}
+
+mutation CreateTaskDetailReportLog(
+  $createTaskDetailReportLogInput: CreateTaskDetailReportLogInput!
+) {
+  createTaskDetailReportLog(
+    createTaskDetailReportLogInput: $createTaskDetailReportLogInput
+  ) {
+    id
   }
 }

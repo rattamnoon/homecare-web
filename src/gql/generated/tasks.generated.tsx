@@ -502,7 +502,10 @@ export type TaskDetailFragment = {
   calledDate?: Date | null;
   assignedDate?: Date | null;
   inprogressDate?: Date | null;
-  reprocessedDate?: Date | null;
+  reinprogressId?: string | null;
+  reinprogressCode?: string | null;
+  reinprogressDate?: Date | null;
+  isReinprogress?: boolean | null;
   finishedDate?: Date | null;
   closedDate?: Date | null;
   isCSAT?: boolean | null;
@@ -1026,7 +1029,10 @@ export type TaskQuery = {
       calledDate?: Date | null;
       assignedDate?: Date | null;
       inprogressDate?: Date | null;
-      reprocessedDate?: Date | null;
+      reinprogressId?: string | null;
+      reinprogressCode?: string | null;
+      reinprogressDate?: Date | null;
+      isReinprogress?: boolean | null;
       finishedDate?: Date | null;
       closedDate?: Date | null;
       isCSAT?: boolean | null;
@@ -1776,7 +1782,10 @@ export type UpdateTaskDetailMutation = {
     calledDate?: Date | null;
     assignedDate?: Date | null;
     inprogressDate?: Date | null;
-    reprocessedDate?: Date | null;
+    reinprogressId?: string | null;
+    reinprogressCode?: string | null;
+    reinprogressDate?: Date | null;
+    isReinprogress?: boolean | null;
     finishedDate?: Date | null;
     closedDate?: Date | null;
     isCSAT?: boolean | null;
@@ -2255,6 +2264,15 @@ export type UpdateTaskDetailMutation = {
   };
 };
 
+export type CreateTaskDetailReportLogMutationVariables = Types.Exact<{
+  createTaskDetailReportLogInput: Types.CreateTaskDetailReportLogInput;
+}>;
+
+export type CreateTaskDetailReportLogMutation = {
+  __typename?: "Mutation";
+  createTaskDetailReportLog: { __typename?: "TaskDetailReportLog"; id: string };
+};
+
 export const TaskStatusFragmentDoc = gql`
   fragment TaskStatus on TaskStatusDto {
     id
@@ -2488,7 +2506,10 @@ export const TaskDetailFragmentDoc = gql`
     calledDate
     assignedDate
     inprogressDate
-    reprocessedDate
+    reinprogressId
+    reinprogressCode
+    reinprogressDate
+    isReinprogress
     finishedDate
     closedDate
     isCSAT
@@ -2911,3 +2932,58 @@ export type UpdateTaskDetailMutationOptions = Apollo.BaseMutationOptions<
   UpdateTaskDetailMutation,
   UpdateTaskDetailMutationVariables
 >;
+export const CreateTaskDetailReportLogDocument = gql`
+  mutation CreateTaskDetailReportLog(
+    $createTaskDetailReportLogInput: CreateTaskDetailReportLogInput!
+  ) {
+    createTaskDetailReportLog(
+      createTaskDetailReportLogInput: $createTaskDetailReportLogInput
+    ) {
+      id
+    }
+  }
+`;
+export type CreateTaskDetailReportLogMutationFn = Apollo.MutationFunction<
+  CreateTaskDetailReportLogMutation,
+  CreateTaskDetailReportLogMutationVariables
+>;
+
+/**
+ * __useCreateTaskDetailReportLogMutation__
+ *
+ * To run a mutation, you first call `useCreateTaskDetailReportLogMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTaskDetailReportLogMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTaskDetailReportLogMutation, { data, loading, error }] = useCreateTaskDetailReportLogMutation({
+ *   variables: {
+ *      createTaskDetailReportLogInput: // value for 'createTaskDetailReportLogInput'
+ *   },
+ * });
+ */
+export function useCreateTaskDetailReportLogMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateTaskDetailReportLogMutation,
+    CreateTaskDetailReportLogMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateTaskDetailReportLogMutation,
+    CreateTaskDetailReportLogMutationVariables
+  >(CreateTaskDetailReportLogDocument, options);
+}
+export type CreateTaskDetailReportLogMutationHookResult = ReturnType<
+  typeof useCreateTaskDetailReportLogMutation
+>;
+export type CreateTaskDetailReportLogMutationResult =
+  Apollo.MutationResult<CreateTaskDetailReportLogMutation>;
+export type CreateTaskDetailReportLogMutationOptions =
+  Apollo.BaseMutationOptions<
+    CreateTaskDetailReportLogMutation,
+    CreateTaskDetailReportLogMutationVariables
+  >;

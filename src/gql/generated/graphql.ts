@@ -92,11 +92,24 @@ export type CreateTaskDetailInput = {
   homecareStatus?: InputMaybe<TaskStatus>;
   inprogressDate?: InputMaybe<Scalars["Date"]["input"]>;
   isCSAT?: InputMaybe<Scalars["Boolean"]["input"]>;
+  isReinprogress?: InputMaybe<Scalars["Boolean"]["input"]>;
   priority?: Scalars["Int"]["input"];
-  reprocessedDate?: InputMaybe<Scalars["Date"]["input"]>;
+  reinprogressCode?: InputMaybe<Scalars["String"]["input"]>;
+  reinprogressDate?: InputMaybe<Scalars["Date"]["input"]>;
+  reinprogressId?: InputMaybe<Scalars["String"]["input"]>;
   slaId?: InputMaybe<Scalars["String"]["input"]>;
   status?: InputMaybe<TaskStatus>;
   subCategoryId?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type CreateTaskDetailReportLogInput = {
+  callbackDate?: InputMaybe<Scalars["Date"]["input"]>;
+  checkInDate?: InputMaybe<Scalars["Date"]["input"]>;
+  checkInRangeTime?: InputMaybe<Scalars["String"]["input"]>;
+  remark?: InputMaybe<Scalars["String"]["input"]>;
+  taskDetailAssignId?: InputMaybe<Scalars["String"]["input"]>;
+  taskDetailId?: InputMaybe<Scalars["String"]["input"]>;
+  type: TaskStatus;
 };
 
 export type CreateTaskInput = {
@@ -201,6 +214,7 @@ export type Master = {
   updatedAt: Scalars["Date"]["output"];
 };
 
+/** ประเภทของข้อมูลหลัก */
 export enum MasterType {
   Area = "AREA",
   Category = "CATEGORY",
@@ -219,6 +233,7 @@ export type Mutation = {
   createMaster: Master;
   createProject: Project;
   createTask: Task;
+  createTaskDetailReportLog: TaskDetailReportLog;
   createUploadFile: UploadFile;
   createUser: User;
   login: Auth;
@@ -255,6 +270,10 @@ export type MutationCreateProjectArgs = {
 export type MutationCreateTaskArgs = {
   createTaskDetailInput: Array<CreateTaskDetailInput>;
   createTaskInput: CreateTaskInput;
+};
+
+export type MutationCreateTaskDetailReportLogArgs = {
+  createTaskDetailReportLogInput: CreateTaskDetailReportLogInput;
 };
 
 export type MutationCreateUploadFileArgs = {
@@ -477,10 +496,13 @@ export type TaskDetail = {
   images: Array<UploadFile>;
   inprogressDate?: Maybe<Scalars["Date"]["output"]>;
   isCSAT?: Maybe<Scalars["Boolean"]["output"]>;
+  isReinprogress?: Maybe<Scalars["Boolean"]["output"]>;
   logs: Array<TaskDetail>;
   priority?: Maybe<TaskPriorityDto>;
+  reinprogressCode?: Maybe<Scalars["String"]["output"]>;
+  reinprogressDate?: Maybe<Scalars["Date"]["output"]>;
+  reinprogressId?: Maybe<Scalars["String"]["output"]>;
   reportLogs: Array<TaskDetailReportLog>;
-  reprocessedDate?: Maybe<Scalars["Date"]["output"]>;
   sla?: Maybe<Master>;
   slaId?: Maybe<Scalars["String"]["output"]>;
   status?: Maybe<TaskStatusDto>;
@@ -706,8 +728,11 @@ export type UpdateTaskDetailInput = {
   id: Scalars["ID"]["input"];
   inprogressDate?: InputMaybe<Scalars["Date"]["input"]>;
   isCSAT?: InputMaybe<Scalars["Boolean"]["input"]>;
+  isReinprogress?: InputMaybe<Scalars["Boolean"]["input"]>;
   priority?: InputMaybe<Scalars["Int"]["input"]>;
-  reprocessedDate?: InputMaybe<Scalars["Date"]["input"]>;
+  reinprogressCode?: InputMaybe<Scalars["String"]["input"]>;
+  reinprogressDate?: InputMaybe<Scalars["Date"]["input"]>;
+  reinprogressId?: InputMaybe<Scalars["String"]["input"]>;
   slaId?: InputMaybe<Scalars["String"]["input"]>;
   status?: InputMaybe<TaskStatus>;
   subCategoryId?: InputMaybe<Scalars["String"]["input"]>;
@@ -778,15 +803,19 @@ export type UploadFile = {
   updatedBy?: Maybe<User>;
 };
 
+/** ประเภทของไฟล์ที่อัพโหลด */
 export enum UploadFileType {
   AssignBefore = "ASSIGN_BEFORE",
   AssignDoing = "ASSIGN_DOING",
   AssignFinish = "ASSIGN_FINISH",
   AssignProtection = "ASSIGN_PROTECTION",
   AssignUploadFinish = "ASSIGN_UPLOAD_FINISH",
+  Central = "CENTRAL",
   Customer = "CUSTOMER",
   CustomerSign = "CUSTOMER_SIGN",
+  InsuranceExpand = "INSURANCE_EXPAND",
   Other = "OTHER",
+  Service = "SERVICE",
   Task = "TASK",
 }
 

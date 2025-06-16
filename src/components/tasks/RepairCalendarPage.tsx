@@ -12,13 +12,15 @@ import { useMemo, useState } from "react";
 dayjs.extend(weekday);
 
 export const RepairCalendarPage = () => {
+  const [pageSize, setPageSize] = useState(1000);
+  const [currentPage, setCurrentPage] = useState(1);
   const [currentDate, setCurrentDate] = useState<Dayjs>(dayjs());
 
   const { data, loading } = useTasksQuery({
     variables: {
       type: TaskType.Repair,
-      page: 1,
-      limit: 10,
+      page: currentPage,
+      limit: pageSize,
     },
   });
 
