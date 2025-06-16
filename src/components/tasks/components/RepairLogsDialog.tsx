@@ -75,7 +75,15 @@ export const RepairLogsDialog = ({
                 )}
                 <div>หมายเหตุ : {item.remark}</div>
                 {item.images?.length > 0 && (
-                  <div>
+                  <div
+                    style={{
+                      alignSelf: "flex-start",
+                      alignItems: "flex-start",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 4,
+                    }}
+                  >
                     <span>รูปภาพ : </span>
                     <RepairImagePreview
                       images={item.images.filter(

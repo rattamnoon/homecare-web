@@ -1,7 +1,9 @@
 import { CustomModal } from "@/components/common/CustomModal";
 import {
   CreateTaskDetailReportLogInput,
+  CreateUploadFileInput,
   TaskStatus,
+  UploadFileType,
 } from "@/gql/generated/graphql";
 import { useTaskOptionsQuery } from "@/gql/generated/option.generated";
 import {
@@ -9,9 +11,11 @@ import {
   TaskDocument,
   useCreateTaskDetailReportLogMutation,
 } from "@/gql/generated/tasks.generated";
-import { faSave } from "@fortawesome/pro-regular-svg-icons";
+import { useFileUpload } from "@/hooks/useFileUpload";
+import { faSave, faUpload } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  Button,
   DatePicker,
   Flex,
   Form,
@@ -19,6 +23,8 @@ import {
   notification,
   Select,
   Typography,
+  Upload,
+  UploadFile,
 } from "antd";
 import dayjs from "dayjs";
 import { useMemo } from "react";
@@ -41,6 +47,7 @@ export const RepairWaitingConstructionDialog = ({
     notification.useNotification();
   const [form] = Form.useForm();
   const { data: taskOptions } = useTaskOptionsQuery();
+  const uploadFile = useFileUpload("file", "waiting-construction");
 
   const [
     createTaskDetailReportLog,
@@ -120,9 +127,26 @@ export const RepairWaitingConstructionDialog = ({
                 type: TaskStatus.WaitingConstruction,
               };
 
+            let createUploadFileInput: CreateUploadFileInput[] = [];
+
+            if (values?.images?.length > 0) {
+              createUploadFileInput = values.images.map(
+                (image: UploadFile) => ({
+                  fileType: UploadFileType.Other,
+                  fileId: image.response?.fileId,
+                  fileName: image.response?.fileName,
+                  fileFolder: image.response?.fileFolder,
+                  filePath: image.response?.filePath,
+                  fileBucket: image.response?.fileBucket,
+                  fileExtension: image.response?.fileExtension,
+                })
+              );
+            }
+
             await createTaskDetailReportLog({
               variables: {
                 createTaskDetailReportLogInput,
+                createUploadFileInput,
               },
             });
           }}
@@ -184,6 +208,28 @@ export const RepairWaitingConstructionDialog = ({
               rows={4}
               style={{ width: "100%" }}
             />
+          </Form.Item>
+          <Form.Item
+            label="รูปภาพ"
+            name="images"
+            getValueFromEvent={(event) => {
+              if (Array.isArray(event)) {
+                return event;
+              }
+
+              return event.fileList;
+            }}
+          >
+            <Upload
+              {...uploadFile}
+              multiple
+              listType="picture"
+              accept="image/*"
+            >
+              <Button icon={<FontAwesomeIcon icon={faUpload} />}>
+                อัพโหลดรูปภาพ
+              </Button>
+            </Upload>
           </Form.Item>
         </Form>
       </CustomModal>

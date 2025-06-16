@@ -1,6 +1,13 @@
 import { CustomModal } from "@/components/common/CustomModal";
-import { TaskStatus } from "@/gql/generated/graphql";
-import { TaskDetailFragment } from "@/gql/generated/tasks.generated";
+import {
+  CreateTaskDetailReportLogInput,
+  TaskStatus,
+} from "@/gql/generated/graphql";
+import {
+  TaskDetailFragment,
+  TaskDocument,
+  useCreateTaskDetailReportLogMutation,
+} from "@/gql/generated/tasks.generated";
 import { faCheck, faSave, faXmark } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,6 +17,7 @@ import {
   Flex,
   Form,
   Input,
+  notification,
   Row,
   Space,
   Tag,
@@ -28,68 +36,131 @@ const { Text } = Typography;
 const RepairApprovePlanDialog = ({
   open,
   onCancel,
-  onOk,
   approveLabel,
   taskDetail,
+  taskStatus,
 }: {
   open: boolean;
   onCancel: () => void;
-  onOk: () => void;
   approveLabel: string;
   taskDetail: TaskDetailFragment;
+  taskStatus?: TaskStatus;
 }) => {
   const [form] = Form.useForm();
+
+  const [notificationApi, notificationContextHolder] =
+    notification.useNotification();
+
+  const [
+    createTaskDetailReportLog,
+    { loading: createTaskDetailReportLogLoading },
+  ] = useCreateTaskDetailReportLogMutation({
+    onCompleted: () => {
+      notificationApi.success({
+        message: "สำเร็จ !!",
+        description: "บันทึกข้อมูลเรียบร้อย",
+        duration: 3,
+      });
+      onCancel();
+    },
+    onError: (error) => {
+      notificationApi.error({
+        message: "เกิดข้อผิดพลาด !!",
+        description: error.message,
+        duration: 5,
+      });
+    },
+    refetchQueries: [
+      {
+        query: TaskDocument,
+        variables: { id: taskDetail.id },
+      },
+    ],
+  });
 
   const reportLogs = useMemo(() => {
     return taskDetail.reportLogs?.[0];
   }, [taskDetail]);
 
   return (
-    <CustomModal
-      title={approveLabel}
-      open={open}
-      onCancel={onCancel}
-      onOk={onOk}
-      okText="บันทึก"
-      cancelText="ยกเลิก"
-      okButtonProps={{
-        icon: <FontAwesomeIcon icon={faSave} />,
-      }}
-      destroyOnHidden
-    >
-      <Flex vertical gap={16}>
-        <Descriptions bordered size="small" column={1}>
-          <Descriptions.Item label="สถานะ">
-            <Tag color={reportLogs?.type?.color}>
-              {reportLogs?.type?.nameEn}
-            </Tag>
-          </Descriptions.Item>
-          <Descriptions.Item label="วันที่และเวลา">
-            {dayjs(reportLogs?.createdAt).format("DD/MM/YYYY HH:mm")}
-          </Descriptions.Item>
-          <Descriptions.Item label="หมายเหตุ">
-            {reportLogs?.remark}
-          </Descriptions.Item>
-        </Descriptions>
-        <Form form={form} layout="vertical" preserve={false}>
-          <Form.Item
-            label="หมายเหตุ"
-            name="remark"
-            required={false}
-            rules={[{ required: true, message: "กรุณากรอกหมายเหตุ" }]}
+    <>
+      {notificationContextHolder}
+      <CustomModal
+        title={approveLabel}
+        open={open}
+        onCancel={onCancel}
+        onOk={() => {
+          form.submit();
+        }}
+        okText="บันทึก"
+        cancelText="ยกเลิก"
+        okButtonProps={{
+          icon: <FontAwesomeIcon icon={faSave} />,
+        }}
+        destroyOnHidden
+        confirmLoading={createTaskDetailReportLogLoading}
+      >
+        <Flex vertical gap={16}>
+          <Descriptions bordered size="small" column={1}>
+            <Descriptions.Item label="สถานะ">
+              <Tag color={reportLogs?.type?.color}>
+                {reportLogs?.type?.nameEn}
+              </Tag>
+            </Descriptions.Item>
+            <Descriptions.Item label="วันที่และเวลา">
+              {dayjs(reportLogs?.createdAt).format("DD/MM/YYYY HH:mm")}
+            </Descriptions.Item>
+            <Descriptions.Item label="หมายเหตุ">
+              {reportLogs?.remark}
+            </Descriptions.Item>
+          </Descriptions>
+          <Form
+            form={form}
+            layout="vertical"
+            preserve={false}
+            onFinish={async (values) => {
+              if (!taskStatus) {
+                return;
+              }
+              const hasAssign = taskDetail.assigns?.length > 0;
+
+              if (hasAssign) {
+                console.log("has assign");
+              } else {
+                const createTaskDetailReportLogInput: CreateTaskDetailReportLogInput =
+                  {
+                    taskDetailId: taskDetail.id,
+                    type: taskStatus,
+                    remark: values.remark,
+                  };
+
+                await createTaskDetailReportLog({
+                  variables: {
+                    createTaskDetailReportLogInput,
+                  },
+                });
+              }
+            }}
           >
-            <Input.TextArea
-              rows={4}
-              placeholder="กรุณากรอกหมายเหตุ"
-              translate="no"
-              allowClear
-              maxLength={500}
-              showCount
-            />
-          </Form.Item>
-        </Form>
-      </Flex>
-    </CustomModal>
+            <Form.Item
+              label="หมายเหตุ"
+              name="remark"
+              required={false}
+              rules={[{ required: true, message: "กรุณากรอกหมายเหตุ" }]}
+            >
+              <Input.TextArea
+                rows={4}
+                placeholder="กรุณากรอกหมายเหตุ"
+                translate="no"
+                allowClear
+                maxLength={500}
+                showCount
+              />
+            </Form.Item>
+          </Form>
+        </Flex>
+      </CustomModal>
+    </>
   );
 };
 
@@ -173,9 +244,9 @@ export const RepairApprovePlan = ({ taskDetail }: RepairApprovePlanProps) => {
       <RepairApprovePlanDialog
         open={openApproveDialog}
         onCancel={() => setOpenApproveDialog(false)}
-        onOk={handleApprove}
         approveLabel={approveLabel}
         taskDetail={taskDetail}
+        taskStatus={taskStatus}
       />
     </div>
   );

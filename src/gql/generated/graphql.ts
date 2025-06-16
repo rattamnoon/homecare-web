@@ -234,6 +234,7 @@ export type Mutation = {
   createProject: Project;
   createTask: Task;
   createTaskDetailReportLog: TaskDetailReportLog;
+  createTaskDetailReportLogWithAssign: TaskDetailReportLog;
   createUploadFile: UploadFile;
   createUser: User;
   login: Auth;
@@ -274,6 +275,12 @@ export type MutationCreateTaskArgs = {
 
 export type MutationCreateTaskDetailReportLogArgs = {
   createTaskDetailReportLogInput: CreateTaskDetailReportLogInput;
+  createUploadFileInput?: InputMaybe<Array<CreateUploadFileInput>>;
+};
+
+export type MutationCreateTaskDetailReportLogWithAssignArgs = {
+  createTaskDetailReportLogInput: CreateTaskDetailReportLogInput;
+  createUploadFileInput?: InputMaybe<Array<CreateUploadFileInput>>;
 };
 
 export type MutationCreateUploadFileArgs = {

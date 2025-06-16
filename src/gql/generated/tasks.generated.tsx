@@ -2266,6 +2266,9 @@ export type UpdateTaskDetailMutation = {
 
 export type CreateTaskDetailReportLogMutationVariables = Types.Exact<{
   createTaskDetailReportLogInput: Types.CreateTaskDetailReportLogInput;
+  createUploadFileInput?: Types.InputMaybe<
+    Array<Types.CreateUploadFileInput> | Types.CreateUploadFileInput
+  >;
 }>;
 
 export type CreateTaskDetailReportLogMutation = {
@@ -2935,9 +2938,11 @@ export type UpdateTaskDetailMutationOptions = Apollo.BaseMutationOptions<
 export const CreateTaskDetailReportLogDocument = gql`
   mutation CreateTaskDetailReportLog(
     $createTaskDetailReportLogInput: CreateTaskDetailReportLogInput!
+    $createUploadFileInput: [CreateUploadFileInput!]
   ) {
     createTaskDetailReportLog(
       createTaskDetailReportLogInput: $createTaskDetailReportLogInput
+      createUploadFileInput: $createUploadFileInput
     ) {
       id
     }
@@ -2962,6 +2967,7 @@ export type CreateTaskDetailReportLogMutationFn = Apollo.MutationFunction<
  * const [createTaskDetailReportLogMutation, { data, loading, error }] = useCreateTaskDetailReportLogMutation({
  *   variables: {
  *      createTaskDetailReportLogInput: // value for 'createTaskDetailReportLogInput'
+ *      createUploadFileInput: // value for 'createUploadFileInput'
  *   },
  * });
  */

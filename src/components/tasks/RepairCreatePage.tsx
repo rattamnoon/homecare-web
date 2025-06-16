@@ -17,6 +17,7 @@ import {
   useUnitsQuery,
 } from "@/gql/generated/project.generated";
 import { useCreateTaskMutation } from "@/gql/generated/tasks.generated";
+import { useFileUpload } from "@/hooks/useFileUpload";
 import {
   faPlus,
   faSave,
@@ -45,7 +46,6 @@ import dayjs from "dayjs";
 import { useRouter } from "nextjs-toploader/app";
 import { useMemo } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { v7 as uuidv7 } from "uuid";
 import { z } from "zod";
 
 const schema = z.object({
@@ -82,6 +82,8 @@ export const RepairCreatePage = () => {
       taskDetails: [{}],
     },
   });
+
+  const uploadFile = useFileUpload("file", "task");
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -540,40 +542,10 @@ export const RepairCreatePage = () => {
                               >
                                 <Upload
                                   {...field}
-                                  name="file"
+                                  {...uploadFile}
                                   multiple
-                                  method="POST"
-                                  action={`${process.env.NEXT_PUBLIC_API_URL}/upload`}
-                                  data={(file) => {
-                                    const mimetype = file.type?.split("/")[1];
-                                    const fileId = uuidv7();
-                                    const fileName = `${fileId}.${mimetype}`;
-
-                                    return {
-                                      fileFolder: "task",
-                                      fileId,
-                                      fileName,
-                                    };
-                                  }}
                                   onChange={(info) => {
                                     field.onChange(info.fileList);
-                                  }}
-                                  onPreview={async (file) => {
-                                    let src = file.url as string;
-                                    if (!src) {
-                                      src = await new Promise((resolve) => {
-                                        const reader = new FileReader();
-                                        reader.readAsDataURL(
-                                          file.originFileObj as File
-                                        );
-                                        reader.onload = () =>
-                                          resolve(reader.result as string);
-                                      });
-                                    }
-                                    const image = new Image();
-                                    image.src = src;
-                                    const imgWindow = window.open(src);
-                                    imgWindow?.document.write(image.outerHTML);
                                   }}
                                   fileList={
                                     field.value as unknown as UploadFile[]

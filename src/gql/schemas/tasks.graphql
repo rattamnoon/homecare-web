@@ -342,9 +342,11 @@ mutation UpdateTaskDetail($updateTaskDetailInput: UpdateTaskDetailInput!) {
 
 mutation CreateTaskDetailReportLog(
   $createTaskDetailReportLogInput: CreateTaskDetailReportLogInput!
+  $createUploadFileInput: [CreateUploadFileInput!]
 ) {
   createTaskDetailReportLog(
     createTaskDetailReportLogInput: $createTaskDetailReportLogInput
+    createUploadFileInput: $createUploadFileInput
   ) {
     id
   }

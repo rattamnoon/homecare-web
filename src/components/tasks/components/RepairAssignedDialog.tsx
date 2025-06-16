@@ -55,6 +55,7 @@ export const RepairAssignedDialog = ({
   const { data: usersData, loading: usersLoading } = useAllActiveUsersQuery({
     skip: !open,
   });
+
   const [updateTaskDetail, { loading: updateTaskDetailLoading }] =
     useUpdateTaskDetailMutation({
       onCompleted: () => {
