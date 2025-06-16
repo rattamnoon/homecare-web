@@ -7,6 +7,7 @@ import {
   TaskDetailFragment,
   TaskDocument,
   useCreateTaskDetailReportLogMutation,
+  useCreateTaskDetailReportLogWithAssignMutation,
 } from "@/gql/generated/tasks.generated";
 import { faCheck, faSave, faXmark } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -50,6 +51,33 @@ const RepairApprovePlanDialog = ({
 
   const [notificationApi, notificationContextHolder] =
     notification.useNotification();
+
+  const [
+    createTaskDetailReportLogWithAssign,
+    { loading: createTaskDetailReportLogWithAssignLoading },
+  ] = useCreateTaskDetailReportLogWithAssignMutation({
+    onCompleted: () => {
+      notificationApi.success({
+        message: "สำเร็จ !!",
+        description: "บันทึกข้อมูลเรียบร้อย",
+        duration: 3,
+      });
+      onCancel();
+    },
+    onError: (error) => {
+      notificationApi.error({
+        message: "เกิดข้อผิดพลาด !!",
+        description: error.message,
+        duration: 5,
+      });
+    },
+    refetchQueries: [
+      {
+        query: TaskDocument,
+        variables: { id: taskDetail.id },
+      },
+    ],
+  });
 
   const [
     createTaskDetailReportLog,
@@ -98,7 +126,10 @@ const RepairApprovePlanDialog = ({
           icon: <FontAwesomeIcon icon={faSave} />,
         }}
         destroyOnHidden
-        confirmLoading={createTaskDetailReportLogLoading}
+        confirmLoading={
+          createTaskDetailReportLogWithAssignLoading ||
+          createTaskDetailReportLogLoading
+        }
       >
         <Flex vertical gap={16}>
           <Descriptions bordered size="small" column={1}>
@@ -125,11 +156,26 @@ const RepairApprovePlanDialog = ({
               const hasAssign = taskDetail.assigns?.length > 0;
 
               if (hasAssign) {
-                console.log("has assign");
-              } else {
+                const taskDetailId = taskDetail.id;
+                const taskDetailAssignId = taskDetail.assigns?.[0]?.id;
                 const createTaskDetailReportLogInput: CreateTaskDetailReportLogInput =
                   {
-                    taskDetailId: taskDetail.id,
+                    taskDetailId,
+                    taskDetailAssignId,
+                    type: taskStatus,
+                    remark: values.remark,
+                  };
+
+                await createTaskDetailReportLogWithAssign({
+                  variables: {
+                    createTaskDetailReportLogInput,
+                  },
+                });
+              } else {
+                const taskDetailId = taskDetail.id;
+                const createTaskDetailReportLogInput: CreateTaskDetailReportLogInput =
+                  {
+                    taskDetailId,
                     type: taskStatus,
                     remark: values.remark,
                   };

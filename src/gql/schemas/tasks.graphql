@@ -351,3 +351,15 @@ mutation CreateTaskDetailReportLog(
     id
   }
 }
+
+mutation CreateTaskDetailReportLogWithAssign(
+  $createTaskDetailReportLogInput: CreateTaskDetailReportLogInput!
+  $createUploadFileInput: [CreateUploadFileInput!]
+) {
+  createTaskDetailReportLogWithAssign(
+    createTaskDetailReportLogInput: $createTaskDetailReportLogInput
+    createUploadFileInput: $createUploadFileInput
+  ) {
+    id
+  }
+}

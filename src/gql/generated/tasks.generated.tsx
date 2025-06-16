@@ -2276,6 +2276,21 @@ export type CreateTaskDetailReportLogMutation = {
   createTaskDetailReportLog: { __typename?: "TaskDetailReportLog"; id: string };
 };
 
+export type CreateTaskDetailReportLogWithAssignMutationVariables = Types.Exact<{
+  createTaskDetailReportLogInput: Types.CreateTaskDetailReportLogInput;
+  createUploadFileInput?: Types.InputMaybe<
+    Array<Types.CreateUploadFileInput> | Types.CreateUploadFileInput
+  >;
+}>;
+
+export type CreateTaskDetailReportLogWithAssignMutation = {
+  __typename?: "Mutation";
+  createTaskDetailReportLogWithAssign: {
+    __typename?: "TaskDetailReportLog";
+    id: string;
+  };
+};
+
 export const TaskStatusFragmentDoc = gql`
   fragment TaskStatus on TaskStatusDto {
     id
@@ -2992,4 +3007,63 @@ export type CreateTaskDetailReportLogMutationOptions =
   Apollo.BaseMutationOptions<
     CreateTaskDetailReportLogMutation,
     CreateTaskDetailReportLogMutationVariables
+  >;
+export const CreateTaskDetailReportLogWithAssignDocument = gql`
+  mutation CreateTaskDetailReportLogWithAssign(
+    $createTaskDetailReportLogInput: CreateTaskDetailReportLogInput!
+    $createUploadFileInput: [CreateUploadFileInput!]
+  ) {
+    createTaskDetailReportLogWithAssign(
+      createTaskDetailReportLogInput: $createTaskDetailReportLogInput
+      createUploadFileInput: $createUploadFileInput
+    ) {
+      id
+    }
+  }
+`;
+export type CreateTaskDetailReportLogWithAssignMutationFn =
+  Apollo.MutationFunction<
+    CreateTaskDetailReportLogWithAssignMutation,
+    CreateTaskDetailReportLogWithAssignMutationVariables
+  >;
+
+/**
+ * __useCreateTaskDetailReportLogWithAssignMutation__
+ *
+ * To run a mutation, you first call `useCreateTaskDetailReportLogWithAssignMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTaskDetailReportLogWithAssignMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTaskDetailReportLogWithAssignMutation, { data, loading, error }] = useCreateTaskDetailReportLogWithAssignMutation({
+ *   variables: {
+ *      createTaskDetailReportLogInput: // value for 'createTaskDetailReportLogInput'
+ *      createUploadFileInput: // value for 'createUploadFileInput'
+ *   },
+ * });
+ */
+export function useCreateTaskDetailReportLogWithAssignMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateTaskDetailReportLogWithAssignMutation,
+    CreateTaskDetailReportLogWithAssignMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateTaskDetailReportLogWithAssignMutation,
+    CreateTaskDetailReportLogWithAssignMutationVariables
+  >(CreateTaskDetailReportLogWithAssignDocument, options);
+}
+export type CreateTaskDetailReportLogWithAssignMutationHookResult = ReturnType<
+  typeof useCreateTaskDetailReportLogWithAssignMutation
+>;
+export type CreateTaskDetailReportLogWithAssignMutationResult =
+  Apollo.MutationResult<CreateTaskDetailReportLogWithAssignMutation>;
+export type CreateTaskDetailReportLogWithAssignMutationOptions =
+  Apollo.BaseMutationOptions<
+    CreateTaskDetailReportLogWithAssignMutation,
+    CreateTaskDetailReportLogWithAssignMutationVariables
   >;
