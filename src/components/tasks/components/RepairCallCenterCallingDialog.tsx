@@ -58,7 +58,12 @@ export const RepairCallCenterCallingDialog = ({
           required={false}
           rules={[{ required: true, message: "กรุณาระบุความคิดเห็น" }]}
         >
-          <Input.TextArea rows={4} placeholder="ความคิดเห็น" />
+          <Input.TextArea
+            rows={4}
+            placeholder="ความคิดเห็น"
+            maxLength={255}
+            showCount
+          />
         </Form.Item>
       </Form>
     </CustomModal>
