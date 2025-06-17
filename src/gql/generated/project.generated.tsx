@@ -16,6 +16,8 @@ export type ProjectFragment = {
   id: string;
   nameTh: string;
   nameEn: string;
+  a10Date?: Date | null;
+  insuranceDate?: Date | null;
 };
 
 export type ProjectsQueryVariables = Types.Exact<{ [key: string]: never }>;
@@ -27,6 +29,8 @@ export type ProjectsQuery = {
     id: string;
     nameTh: string;
     nameEn: string;
+    a10Date?: Date | null;
+    insuranceDate?: Date | null;
   }>;
 };
 
@@ -58,6 +62,8 @@ export const ProjectFragmentDoc = gql`
     id
     nameTh
     nameEn
+    a10Date
+    insuranceDate
   }
 `;
 export const ProjectsDocument = gql`

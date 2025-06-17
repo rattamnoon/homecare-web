@@ -440,7 +440,11 @@ export type MutationUpdateUserArgs = {
 
 export type Project = {
   __typename?: "Project";
+  /** วันที่จดทะเบียนนิติฯ */
+  a10Date?: Maybe<Scalars["Date"]["output"]>;
   id: Scalars["String"]["output"];
+  /** วันที่ประกันนิติฯ */
+  insuranceDate?: Maybe<Scalars["Date"]["output"]>;
   nameEn: Scalars["String"]["output"];
   nameTh: Scalars["String"]["output"];
   units: Array<Unit>;

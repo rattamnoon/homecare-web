@@ -106,6 +106,17 @@ export const SystemInsuranceExpandPage = () => {
                 }),
               },
               {
+                title: "วันหมดประกันโครงการ",
+                dataIndex: "insuranceDate",
+                key: "insuranceDate",
+                align: "center",
+                width: 150,
+                render: (_, record) =>
+                  record.project?.insuranceDate
+                    ? dayjs(record.project?.insuranceDate).format("DD/MM/YYYY")
+                    : "-",
+              },
+              {
                 title: "วันประกันเดิม",
                 dataIndex: "insuranceDateDefault",
                 key: "insuranceDateDefault",

@@ -25,6 +25,8 @@ export type InsuranceExtensionFragment = {
     id: string;
     nameTh: string;
     nameEn: string;
+    a10Date?: Date | null;
+    insuranceDate?: Date | null;
   } | null;
   unit?: {
     __typename?: "Unit";
@@ -128,6 +130,8 @@ export type InsuranceExtensionsQuery = {
         id: string;
         nameTh: string;
         nameEn: string;
+        a10Date?: Date | null;
+        insuranceDate?: Date | null;
       } | null;
       unit?: {
         __typename?: "Unit";
