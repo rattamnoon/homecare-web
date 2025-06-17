@@ -178,7 +178,7 @@ export const RepairAssignedDialog = ({
           <Form
             form={form}
             preserve={false}
-            labelCol={{ span: 8 }}
+            layout="vertical"
             initialValues={{
               parentId: taskDetail?.sla?.parent?.id,
               slaId: taskDetail?.slaId,

@@ -16,7 +16,9 @@ export type CallingFragment = {
   taskDetail?: { __typename?: "TaskDetail"; id: string; code: string } | null;
 };
 
-export type CallingsQueryVariables = Types.Exact<{ [key: string]: never }>;
+export type CallingsQueryVariables = Types.Exact<{
+  taskDetailId?: Types.InputMaybe<Types.Scalars["String"]["input"]>;
+}>;
 
 export type CallingsQuery = {
   __typename?: "Query";
@@ -51,8 +53,8 @@ export const CallingFragmentDoc = gql`
   }
 `;
 export const CallingsDocument = gql`
-  query Callings {
-    callings {
+  query Callings($taskDetailId: String) {
+    callings(taskDetailId: $taskDetailId) {
       ...Calling
     }
   }
@@ -71,6 +73,7 @@ export const CallingsDocument = gql`
  * @example
  * const { data, loading, error } = useCallingsQuery({
  *   variables: {
+ *      taskDetailId: // value for 'taskDetailId'
  *   },
  * });
  */

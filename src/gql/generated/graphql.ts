@@ -424,6 +424,10 @@ export type QueryCallingArgs = {
   id: Scalars["ID"]["input"];
 };
 
+export type QueryCallingsArgs = {
+  taskDetailId?: InputMaybe<Scalars["String"]["input"]>;
+};
+
 export type QueryCsatArgs = {
   id: Scalars["ID"]["input"];
 };

@@ -135,12 +135,7 @@ export const RepairEvaluationDialog = ({
         destroyOnHidden
       >
         <Skeleton loading={mastersLoading}>
-          <Form
-            layout="horizontal"
-            preserve={false}
-            labelCol={{ span: 10 }}
-            wrapperCol={{ span: 14 }}
-          >
+          <Form layout="vertical" preserve={false}>
             {fields.map((field, index) => (
               <Controller
                 key={field.id}

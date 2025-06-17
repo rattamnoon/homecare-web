@@ -107,7 +107,6 @@ export const RepairPriorityDialog = ({
             }}
           >
             <Form.Item
-              label="Priority"
               name="priority"
               required={false}
               rules={[{ required: true, message: "กรุณาเลือกความสำคัญ" }]}

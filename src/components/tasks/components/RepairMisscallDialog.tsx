@@ -109,8 +109,7 @@ export const RepairMisscallDialog = ({
       >
         <Form
           form={form}
-          layout="horizontal"
-          labelCol={{ span: 8 }}
+          layout="vertical"
           preserve={false}
           onFinish={async (values) => {
             const createTaskDetailReportLogInput: CreateTaskDetailReportLogInput =

@@ -13,8 +13,8 @@ fragment Calling on Calling {
   deletedAt
 }
 
-query Callings {
-  callings {
+query Callings($taskDetailId: String) {
+  callings(taskDetailId: $taskDetailId) {
     ...Calling
   }
 }

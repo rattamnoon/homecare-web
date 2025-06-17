@@ -6,7 +6,10 @@ import {
   useProjectsQuery,
   useUnitsQuery,
 } from "@/gql/generated/project.generated";
-import { useTaskDetailsQuery } from "@/gql/generated/tasks.generated";
+import {
+  TaskDetailFragment,
+  useTaskDetailsQuery,
+} from "@/gql/generated/tasks.generated";
 import { useCreateSearchParams } from "@/hooks/useCreateSearchParams";
 import { getTablePaginationProps } from "@/utils/utils";
 import {
@@ -32,16 +35,16 @@ import {
   Table,
   Tag,
   theme,
-  Typography,
+  Tooltip,
 } from "antd";
 import dayjs from "dayjs";
 import { uniqBy } from "lodash-es";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { LayoutWithBreadcrumb } from "../layout/LayoutWithBreadcrumb";
-
-const { Title } = Typography;
+import { RepairClosedDialog } from "./components/RepairClosedDialog";
+import { RepairEvaluationDialog } from "./components/RepairEvaluationDialog";
 
 const useRepairCallCenterFilter = () => {
   const searchParams = useSearchParams();
@@ -269,6 +272,13 @@ const RepairCallCenterFilter = () => {
 
 export const RepairCallCenter = () => {
   const router = useRouter();
+  const [evaluationDialogOpen, setEvaluationDialogOpen] = useState(false);
+  const [evaluationDialogTaskDetail, setEvaluationDialogTaskDetail] =
+    useState<TaskDetailFragment | null>(null);
+  const [closedDialogOpen, setClosedDialogOpen] = useState(false);
+  const [closedDialogTaskDetail, setClosedDialogTaskDetail] =
+    useState<TaskDetailFragment | null>(null);
+
   const {
     searchText,
     projectId,
@@ -283,7 +293,7 @@ export const RepairCallCenter = () => {
     token: { colorPrimary },
   } = theme.useToken();
 
-  const { data, loading } = useTaskDetailsQuery({
+  const { data, loading, refetch } = useTaskDetailsQuery({
     variables: {
       type: TaskType.Repair,
       statuses: [TaskStatus.Finished],
@@ -298,6 +308,7 @@ export const RepairCallCenter = () => {
       ),
       isCall: isCall === "all" ? undefined : isCall === "has" ? true : false,
     },
+    fetchPolicy: "cache-and-network",
   });
 
   const tasksDetails = useMemo(() => data?.taskDetails, [data]);
@@ -339,56 +350,51 @@ export const RepairCallCenter = () => {
                 fixed: "left",
                 render: (_, record) => {
                   return (
-                    <Dropdown
-                      trigger={["click"]}
-                      menu={{
-                        items: [
-                          {
-                            label: "ประเมิน",
-                            key: "evaluate",
-                            icon: <FontAwesomeIcon icon={faStar} />,
-                          },
-                          {
-                            label: "ปิดเศส",
-                            key: "close",
-                            icon: <FontAwesomeIcon icon={faClose} />,
-                          },
-                          {
-                            label: "รายละเอียดการโทร",
-                            key: "call",
-                            icon: <FontAwesomeIcon icon={faPhoneArrowUp} />,
-                          },
-                          {
-                            label: "Re-inprogress",
-                            key: "re-inprogress",
-                            icon: <FontAwesomeIcon icon={faRotateLeft} />,
-                          },
-                        ],
-                      }}
-                    >
-                      <Button
-                        type="link"
-                        size="small"
-                        icon={<FontAwesomeIcon icon={faEllipsis} />}
-                      />
-                    </Dropdown>
+                    <Tooltip title="จัดการงาน">
+                      <Dropdown
+                        trigger={["click"]}
+                        menu={{
+                          items: [
+                            {
+                              label: "ประเมิน",
+                              key: "evaluate",
+                              icon: <FontAwesomeIcon icon={faStar} />,
+                              onClick: () => {
+                                setEvaluationDialogTaskDetail(record);
+                                setEvaluationDialogOpen(true);
+                              },
+                            },
+                            {
+                              label: "ปิดเศส",
+                              key: "close",
+                              icon: <FontAwesomeIcon icon={faClose} />,
+                              onClick: () => {
+                                setClosedDialogTaskDetail(record);
+                                setClosedDialogOpen(true);
+                              },
+                            },
+                            {
+                              label: "โทรติดต่อลูกบ้าน",
+                              key: "call",
+                              icon: <FontAwesomeIcon icon={faPhoneArrowUp} />,
+                            },
+                            {
+                              label: "Re-inprogress",
+                              key: "re-inprogress",
+                              icon: <FontAwesomeIcon icon={faRotateLeft} />,
+                            },
+                          ],
+                        }}
+                      >
+                        <Button
+                          type="link"
+                          size="small"
+                          icon={<FontAwesomeIcon icon={faEllipsis} />}
+                        />
+                      </Dropdown>
+                    </Tooltip>
                   );
                 },
-              },
-              {
-                title: "จำนวนครั้งที่โทร",
-                dataIndex: "callCount",
-                key: "callCount",
-                align: "center",
-                width: 150,
-                render: (_, record) => {
-                  return record.callings?.length || 0;
-                },
-                onCell: () => ({
-                  style: {
-                    textAlign: "center",
-                  },
-                }),
               },
               {
                 title: "รหัสงาน",
@@ -402,6 +408,21 @@ export const RepairCallCenter = () => {
                     textAlign: "center",
                     fontWeight: "bold",
                     color: colorPrimary,
+                  },
+                }),
+              },
+              {
+                title: "โทรครั้งที่",
+                dataIndex: "callCount",
+                key: "callCount",
+                align: "center",
+                width: 100,
+                render: (_, record) => {
+                  return record.callings?.length || 0;
+                },
+                onCell: () => ({
+                  style: {
+                    textAlign: "center",
                   },
                 }),
               },
@@ -564,6 +585,22 @@ export const RepairCallCenter = () => {
           />
         </Col>
       </Row>
+      <RepairEvaluationDialog
+        open={evaluationDialogOpen}
+        onCancel={() => {
+          setEvaluationDialogOpen(false);
+          refetch();
+        }}
+        taskDetail={evaluationDialogTaskDetail}
+      />
+      <RepairClosedDialog
+        open={closedDialogOpen}
+        onCancel={() => {
+          setClosedDialogOpen(false);
+          refetch();
+        }}
+        taskDetail={closedDialogTaskDetail}
+      />
     </LayoutWithBreadcrumb>
   );
 };
