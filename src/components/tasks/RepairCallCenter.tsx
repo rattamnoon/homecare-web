@@ -387,7 +387,6 @@ export const RepairCallCenter = () => {
                 onCell: () => ({
                   style: {
                     textAlign: "center",
-                    fontWeight: "bold",
                   },
                 }),
               },
