@@ -18,3 +18,9 @@ query Callings($taskDetailId: String) {
     ...Calling
   }
 }
+
+mutation CreateCalling($createCallingInput: CreateCallingInput!) {
+  createCalling(createCallingInput: $createCallingInput) {
+    ...Calling
+  }
+}

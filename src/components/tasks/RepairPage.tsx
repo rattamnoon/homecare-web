@@ -34,7 +34,7 @@ export const RepairPage = () => {
   const {
     token: { colorPrimary },
   } = theme.useToken();
-  const { data, loading, error } = useTasksQuery({
+  const { data, loading } = useTasksQuery({
     variables: {
       type: TaskType.Repair,
       page: currentPage,
@@ -47,6 +47,7 @@ export const RepairPage = () => {
       checkInDate: checkInDate as string[],
       createdAt: createdAt as string[],
     },
+    fetchPolicy: "cache-and-network",
   });
 
   const tasks = useMemo(() => data?.tasks, [data]);

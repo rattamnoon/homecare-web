@@ -36,6 +36,26 @@ export type CallingsQuery = {
   }>;
 };
 
+export type CreateCallingMutationVariables = Types.Exact<{
+  createCallingInput: Types.CreateCallingInput;
+}>;
+
+export type CreateCallingMutation = {
+  __typename?: "Mutation";
+  createCalling: {
+    __typename?: "Calling";
+    id: string;
+    taskDetailId: string;
+    callDate: Date;
+    callOrder: number;
+    callComment?: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+    taskDetail?: { __typename?: "TaskDetail"; id: string; code: string } | null;
+  };
+};
+
 export const CallingFragmentDoc = gql`
   fragment Calling on Calling {
     id
@@ -122,4 +142,55 @@ export type CallingsSuspenseQueryHookResult = ReturnType<
 export type CallingsQueryResult = Apollo.QueryResult<
   CallingsQuery,
   CallingsQueryVariables
+>;
+export const CreateCallingDocument = gql`
+  mutation CreateCalling($createCallingInput: CreateCallingInput!) {
+    createCalling(createCallingInput: $createCallingInput) {
+      ...Calling
+    }
+  }
+  ${CallingFragmentDoc}
+`;
+export type CreateCallingMutationFn = Apollo.MutationFunction<
+  CreateCallingMutation,
+  CreateCallingMutationVariables
+>;
+
+/**
+ * __useCreateCallingMutation__
+ *
+ * To run a mutation, you first call `useCreateCallingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCallingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCallingMutation, { data, loading, error }] = useCreateCallingMutation({
+ *   variables: {
+ *      createCallingInput: // value for 'createCallingInput'
+ *   },
+ * });
+ */
+export function useCreateCallingMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateCallingMutation,
+    CreateCallingMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateCallingMutation,
+    CreateCallingMutationVariables
+  >(CreateCallingDocument, options);
+}
+export type CreateCallingMutationHookResult = ReturnType<
+  typeof useCreateCallingMutation
+>;
+export type CreateCallingMutationResult =
+  Apollo.MutationResult<CreateCallingMutation>;
+export type CreateCallingMutationOptions = Apollo.BaseMutationOptions<
+  CreateCallingMutation,
+  CreateCallingMutationVariables
 >;
