@@ -6,6 +6,7 @@ import { getTablePaginationProps } from "@/utils/utils";
 import {
   faEdit,
   faEllipsis,
+  faExpand,
   faFilePdf,
   faTrash,
 } from "@fortawesome/pro-regular-svg-icons";
@@ -49,7 +50,18 @@ export const SystemInsuranceExpandPage = () => {
     <LayoutWithBreadcrumb breadcrumb={[{ title: "ขยายวันประกัน" }]}>
       <Row gutter={[16, 16]}>
         <Col span={24}>
-          <SearchFilter route="SystemInsuranceExpand" isProject isUnit />
+          <Flex justify="space-between">
+            <div style={{ width: "100%" }}>
+              <SearchFilter route="SystemInsuranceExpand" isProject isUnit />
+            </div>
+            <Button
+              variant="solid"
+              color="primary"
+              icon={<FontAwesomeIcon icon={faExpand} />}
+            >
+              ขยายวันประกันทั้งโครงการ
+            </Button>
+          </Flex>
         </Col>
         <Col span={24}>
           <Table
@@ -66,7 +78,7 @@ export const SystemInsuranceExpandPage = () => {
               showQuickJumper: true,
               showSizeChanger: true,
               pageSizeOptions: ["10", "20", "30", "40", "50"],
-              onShowSizeChange: (page, size) => {
+              onShowSizeChange: (_, size) => {
                 handleSearch("pageSize", size);
               },
             }}
@@ -155,17 +167,21 @@ export const SystemInsuranceExpandPage = () => {
                 key: "createdBy",
                 align: "center",
                 width: 150,
-                render: (_, record) => (
-                  <Flex vertical align="start">
-                    <Text>
-                      {record.createdBy?.firstName} {record.createdBy?.lastName}
-                    </Text>
-                    <Text type="secondary" style={{ fontSize: 12 }}>
-                      {record.updatedAt &&
-                        dayjs(record.createdAt).format("DD/MM/YYYY HH:mm")}
-                    </Text>
-                  </Flex>
-                ),
+                render: (_, record) =>
+                  record.createdBy ? (
+                    <Flex vertical align="start">
+                      <Text>
+                        {record.createdBy?.firstName}{" "}
+                        {record.createdBy?.lastName}
+                      </Text>
+                      <Text type="secondary" style={{ fontSize: 12 }}>
+                        {record.updatedAt &&
+                          dayjs(record.createdAt).format("DD/MM/YYYY HH:mm")}
+                      </Text>
+                    </Flex>
+                  ) : (
+                    "-"
+                  ),
               },
               {
                 title: "อัพเดตโดย",
@@ -173,17 +189,21 @@ export const SystemInsuranceExpandPage = () => {
                 key: "updatedBy",
                 align: "center",
                 width: 150,
-                render: (_, record) => (
-                  <Flex vertical align="start">
-                    <Text>
-                      {record.updatedBy?.firstName} {record.updatedBy?.lastName}
-                    </Text>
-                    <Text type="secondary" style={{ fontSize: 12 }}>
-                      {record.updatedAt &&
-                        dayjs(record.updatedAt).format("DD/MM/YYYY HH:mm")}
-                    </Text>
-                  </Flex>
-                ),
+                render: (_, record) =>
+                  record.updatedBy ? (
+                    <Flex vertical align="start">
+                      <Text>
+                        {record.updatedBy?.firstName}{" "}
+                        {record.updatedBy?.lastName}
+                      </Text>
+                      <Text type="secondary" style={{ fontSize: 12 }}>
+                        {record.updatedAt &&
+                          dayjs(record.updatedAt).format("DD/MM/YYYY HH:mm")}
+                      </Text>
+                    </Flex>
+                  ) : (
+                    "-"
+                  ),
               },
               {
                 title: "Action",
@@ -212,6 +232,7 @@ export const SystemInsuranceExpandPage = () => {
                           {
                             label: "ดาวน์โหลดเอกสารการขยายประกัน",
                             key: "download",
+                            disabled: record.files.length === 0,
                             children: record.files.map((file) => ({
                               label: file.fileName,
                               key: file.id,
