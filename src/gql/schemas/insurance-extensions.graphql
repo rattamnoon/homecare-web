@@ -28,21 +28,15 @@ fragment InsuranceExtension on InsuranceExtension {
 }
 
 query InsuranceExtensions(
-  $insuranceDateDefault: [String!]
-  $insuranceDateExpand: [String!]
   $limit: Int!
   $page: Int!
   $projectId: String
-  $searchText: String
   $unitIds: [String!]
 ) {
   insuranceExtensions(
-    insuranceDateDefault: $insuranceDateDefault
-    insuranceDateExpand: $insuranceDateExpand
     limit: $limit
     page: $page
     projectId: $projectId
-    searchText: $searchText
     unitIds: $unitIds
   ) {
     meta {

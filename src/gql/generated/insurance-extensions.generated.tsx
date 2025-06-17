@@ -82,16 +82,9 @@ export type InsuranceExtensionFragment = {
 };
 
 export type InsuranceExtensionsQueryVariables = Types.Exact<{
-  insuranceDateDefault?: Types.InputMaybe<
-    Array<Types.Scalars["String"]["input"]> | Types.Scalars["String"]["input"]
-  >;
-  insuranceDateExpand?: Types.InputMaybe<
-    Array<Types.Scalars["String"]["input"]> | Types.Scalars["String"]["input"]
-  >;
   limit: Types.Scalars["Int"]["input"];
   page: Types.Scalars["Int"]["input"];
   projectId?: Types.InputMaybe<Types.Scalars["String"]["input"]>;
-  searchText?: Types.InputMaybe<Types.Scalars["String"]["input"]>;
   unitIds?: Types.InputMaybe<
     Array<Types.Scalars["String"]["input"]> | Types.Scalars["String"]["input"]
   >;
@@ -225,21 +218,15 @@ export const InsuranceExtensionFragmentDoc = gql`
 `;
 export const InsuranceExtensionsDocument = gql`
   query InsuranceExtensions(
-    $insuranceDateDefault: [String!]
-    $insuranceDateExpand: [String!]
     $limit: Int!
     $page: Int!
     $projectId: String
-    $searchText: String
     $unitIds: [String!]
   ) {
     insuranceExtensions(
-      insuranceDateDefault: $insuranceDateDefault
-      insuranceDateExpand: $insuranceDateExpand
       limit: $limit
       page: $page
       projectId: $projectId
-      searchText: $searchText
       unitIds: $unitIds
     ) {
       meta {
@@ -270,12 +257,9 @@ export const InsuranceExtensionsDocument = gql`
  * @example
  * const { data, loading, error } = useInsuranceExtensionsQuery({
  *   variables: {
- *      insuranceDateDefault: // value for 'insuranceDateDefault'
- *      insuranceDateExpand: // value for 'insuranceDateExpand'
  *      limit: // value for 'limit'
  *      page: // value for 'page'
  *      projectId: // value for 'projectId'
- *      searchText: // value for 'searchText'
  *      unitIds: // value for 'unitIds'
  *   },
  * });

@@ -501,12 +501,9 @@ export type QueryInsuranceExtensionArgs = {
 };
 
 export type QueryInsuranceExtensionsArgs = {
-  insuranceDateDefault?: InputMaybe<Array<Scalars["String"]["input"]>>;
-  insuranceDateExpand?: InputMaybe<Array<Scalars["String"]["input"]>>;
   limit?: Scalars["Int"]["input"];
   page?: Scalars["Int"]["input"];
   projectId?: InputMaybe<Scalars["String"]["input"]>;
-  searchText?: InputMaybe<Scalars["String"]["input"]>;
   unitIds?: InputMaybe<Array<Scalars["String"]["input"]>>;
 };
 
