@@ -47,7 +47,6 @@ export const RepairPage = () => {
       checkInDate: checkInDate as string[],
       createdAt: createdAt as string[],
     },
-    fetchPolicy: "cache-and-network",
   });
 
   const tasks = useMemo(() => data?.tasks, [data]);

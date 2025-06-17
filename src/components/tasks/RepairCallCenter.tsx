@@ -103,7 +103,6 @@ export const RepairCallCenter = () => {
 
   const { data, loading } = useTaskDetailsQuery({
     variables,
-    fetchPolicy: "cache-and-network",
   });
 
   const tasksDetails = useMemo(() => data?.taskDetails, [data]);
