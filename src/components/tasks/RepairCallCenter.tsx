@@ -10,6 +10,7 @@ import {
 import {
   TaskDetailFragment,
   TaskDetailsDocument,
+  useCreateTaskDetailReinprogressMutation,
   useTaskDetailsQuery,
   useUpdateTaskDetailMutation,
 } from "@/gql/generated/tasks.generated";
@@ -28,6 +29,7 @@ import {
   Button,
   Col,
   Dropdown,
+  Modal,
   notification,
   Row,
   Table,
@@ -52,6 +54,7 @@ import { RepairEvaluationDialog } from "./components/RepairEvaluationDialog";
 export const RepairCallCenter = () => {
   const [notificationApi, notificationContextHolder] =
     notification.useNotification();
+  const [modalApi, modalContextHolder] = Modal.useModal();
   const [evaluationDialogOpen, setEvaluationDialogOpen] = useState(false);
   const [closedDialogOpen, setClosedDialogOpen] = useState(false);
   const [callCenterCallingDialogOpen, setCallCenterCallingDialogOpen] =
@@ -186,8 +189,35 @@ export const RepairCallCenter = () => {
       ],
     });
 
+  const [
+    createTaskDetailReinprogress,
+    { loading: createTaskDetailReinprogressLoading },
+  ] = useCreateTaskDetailReinprogressMutation({
+    onCompleted: () => {
+      notificationApi.success({
+        message: "สำเร็จ !!",
+        description: "บันทึกข้อมูลเรียบร้อย",
+        duration: 3,
+      });
+    },
+    onError: (error) => {
+      notificationApi.error({
+        message: "เกิดข้อผิดพลาด !!",
+        description: error.message,
+        duration: 5,
+      });
+    },
+    refetchQueries: [
+      {
+        query: TaskDetailsDocument,
+        variables,
+      },
+    ],
+  });
+
   return (
     <LayoutWithBreadcrumb>
+      {modalContextHolder}
       {notificationContextHolder}
       <Row gutter={[16, 16]}>
         <Col span={24}>
@@ -276,6 +306,22 @@ export const RepairCallCenter = () => {
                               label: "Re-inprogress",
                               key: "re-inprogress",
                               icon: <FontAwesomeIcon icon={faRotateLeft} />,
+                              onClick: async () => {
+                                await modalApi.confirm({
+                                  title: "คุณต้องการ Re-inprogress งานหรือไม่",
+                                  content:
+                                    "ถ้าต้องการ Re-inprogress งาน กรุณากดปุ่มตกลง หากไม่ต้องการ กรุณากดปุ่มยกเลิก",
+                                  okText: "ตกลง",
+                                  cancelText: "ยกเลิก",
+                                  onOk: async () => {
+                                    await createTaskDetailReinprogress({
+                                      variables: {
+                                        taskDetailId: record.id,
+                                      },
+                                    });
+                                  },
+                                });
+                              },
                             },
                           ],
                         }}

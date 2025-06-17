@@ -257,6 +257,7 @@ export type Mutation = {
   createMaster: Master;
   createProject: Project;
   createTask: Task;
+  createTaskDetailReinprogress: TaskDetail;
   createTaskDetailReportLog: TaskDetailReportLog;
   createTaskDetailReportLogWithAssign: TaskDetailReportLog;
   createUploadFile: UploadFile;
@@ -301,6 +302,10 @@ export type MutationCreateProjectArgs = {
 export type MutationCreateTaskArgs = {
   createTaskDetailInput: Array<CreateTaskDetailInput>;
   createTaskInput: CreateTaskInput;
+};
+
+export type MutationCreateTaskDetailReinprogressArgs = {
+  taskDetailId: Scalars["String"]["input"];
 };
 
 export type MutationCreateTaskDetailReportLogArgs = {
