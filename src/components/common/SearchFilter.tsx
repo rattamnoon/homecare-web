@@ -55,26 +55,37 @@ export const useSearchFilter = (route: keyof typeof Routes) => {
   const pageSize = Number(searchParams.get("pageSize")) || 10;
 
   const handleSearch = useCallback(
-    (key: string, value: string | string[] | number) => {
-      const stringValue = Array.isArray(value)
-        ? value.join(",")
-        : typeof value === "number"
-        ? value.toString()
-        : value;
+    (params: { key: string; value: string | string[] | number }[]) => {
+      const queryParams = params.reduce((acc, param) => {
+        const stringValue = Array.isArray(param.value)
+          ? param.value.join(",")
+          : typeof param.value === "number"
+          ? param.value.toString()
+          : param.value;
+        acc[param.key] = stringValue;
+        return acc;
+      }, {} as Record<string, string>);
 
-      const queryParams = {
-        [key]: stringValue,
-        ...(key !== "currentPage" && { currentPage: "1" }),
-        ...(key !== "pageSize" && { pageSize: "10" }),
-      };
+      // ถ้าการค้นหาไม่ใช่ currentPage หรือ pageSize ให้ reset pagination
+      const isSearchingPagination = params.some(
+        (param) => param.key === "currentPage" || param.key === "pageSize"
+      );
 
-      const queryString = createQueryString(queryParams);
+      if (!isSearchingPagination) {
+        queryParams.currentPage = "1";
+        queryParams.pageSize = "10";
+      }
+
+      const queryString = createQueryString({
+        ...queryParams,
+      });
       router.push(`${Routes[route]}?${queryString}`, {
         scroll: false,
       });
     },
     [createQueryString, router, route]
   );
+
   return {
     searchText,
     statuses,
@@ -183,7 +194,7 @@ export const SearchFilter = ({
                 allowClear
                 defaultValue={searchText}
                 onChange={(e) => {
-                  handleSearch("searchText", e.target.value);
+                  handleSearch([{ key: "searchText", value: e.target.value }]);
                 }}
                 style={{ width: 325 }}
               />
@@ -222,7 +233,7 @@ export const SearchFilter = ({
                   loading={statusesLoading}
                   defaultValue={statuses}
                   onChange={(value) => {
-                    handleSearch("statuses", value.join(","));
+                    handleSearch([{ key: "statuses", value: value.join(",") }]);
                   }}
                   options={statusesOptions?.map((status) => ({
                     label: status.nameEn,
@@ -257,7 +268,7 @@ export const SearchFilter = ({
                   loading={projectsLoading}
                   defaultValue={projectId}
                   onChange={(value) => {
-                    handleSearch("projectId", value);
+                    handleSearch([{ key: "projectId", value }]);
                   }}
                   options={projectsOptions?.map((project) => ({
                     label: `${project.id} - ${project.nameTh}`,
@@ -280,7 +291,7 @@ export const SearchFilter = ({
                   loading={unitsLoading}
                   defaultValue={unitIds}
                   onChange={(value) => {
-                    handleSearch("unitIds", value.join(","));
+                    handleSearch([{ key: "unitIds", value: value.join(",") }]);
                   }}
                   options={unitsOptions?.map((unit) => ({
                     label: `${unit.unitNumber} (${unit.houseNumber})`,
@@ -314,15 +325,17 @@ export const SearchFilter = ({
                   ]}
                   onChange={(value) => {
                     if (value) {
-                      handleSearch(
-                        "finishedDate",
-                        value
-                          .map((date) => date?.format("YYYY-MM-DD"))
-                          .filter(Boolean)
-                          .join(",")
-                      );
+                      handleSearch([
+                        {
+                          key: "finishedDate",
+                          value: value
+                            .map((date) => date?.format("YYYY-MM-DD"))
+                            .filter(Boolean)
+                            .join(","),
+                        },
+                      ]);
                     } else {
-                      handleSearch("checkInDate", "");
+                      handleSearch([{ key: "finishedDate", value: "" }]);
                     }
                   }}
                   style={{ width: "100%" }}
@@ -346,7 +359,7 @@ export const SearchFilter = ({
                   allowClear={false}
                   defaultValue={isCall}
                   onChange={(value) => {
-                    handleSearch("isCall", value);
+                    handleSearch([{ key: "isCall", value }]);
                   }}
                   options={[
                     { label: "ทั้งหมด", value: "all" },
@@ -374,7 +387,7 @@ export const SearchFilter = ({
                   loading={optionsLoading}
                   defaultValue={sources}
                   onChange={(value) => {
-                    handleSearch("sources", value.join(","));
+                    handleSearch([{ key: "sources", value: value.join(",") }]);
                   }}
                   options={sourcesOptions?.map((source) => ({
                     label: source.nameTh,
@@ -404,15 +417,17 @@ export const SearchFilter = ({
                   ]}
                   onChange={(value) => {
                     if (value) {
-                      handleSearch(
-                        "checkInDate",
-                        value
-                          .map((date) => date?.format("YYYY-MM-DD"))
-                          .filter(Boolean)
-                          .join(",")
-                      );
+                      handleSearch([
+                        {
+                          key: "checkInDate",
+                          value: value
+                            .map((date) => date?.format("YYYY-MM-DD"))
+                            .filter(Boolean)
+                            .join(","),
+                        },
+                      ]);
                     } else {
-                      handleSearch("checkInDate", "");
+                      handleSearch([{ key: "checkInDate", value: "" }]);
                     }
                   }}
                   style={{ width: "100%" }}
@@ -440,14 +455,17 @@ export const SearchFilter = ({
                   ]}
                   onChange={(value) => {
                     if (value) {
-                      handleSearch(
-                        "createdAt",
-                        value
-                          .map((date) => date?.format("YYYY-MM-DD"))
-                          .join(",")
-                      );
+                      handleSearch([
+                        {
+                          key: "createdAt",
+                          value: value
+                            .map((date) => date?.format("YYYY-MM-DD"))
+                            .filter(Boolean)
+                            .join(","),
+                        },
+                      ]);
                     } else {
-                      handleSearch("createdAt", "");
+                      handleSearch([{ key: "createdAt", value: "" }]);
                     }
                   }}
                   style={{ width: "100%" }}

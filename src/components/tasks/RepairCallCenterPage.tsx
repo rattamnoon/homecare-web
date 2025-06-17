@@ -235,15 +235,15 @@ export const RepairCallCenterPage = () => {
             pagination={{
               position: ["bottomCenter"],
               ...getTablePaginationProps(meta),
-              onChange: (page) => {
-                handleSearch("currentPage", page);
+              onChange: (page, pageSize) => {
+                handleSearch([
+                  { key: "currentPage", value: page },
+                  { key: "pageSize", value: pageSize },
+                ]);
               },
               showQuickJumper: true,
               showSizeChanger: true,
               pageSizeOptions: ["10", "20", "30", "40", "50"],
-              onShowSizeChange: (page, size) => {
-                handleSearch("pageSize", size);
-              },
             }}
             columns={[
               {
