@@ -64,7 +64,7 @@ export default function TasksTemplate({
                 },
                 {
                   key: Routes.TasksRepairCalendar,
-                  label: "ปฏิทินงานแจ้งซ่อม",
+                  label: "ปฏิทิน",
                   icon: <FontAwesomeIcon icon={faCalendarDays} />,
                   onClick: () => router.push(Routes.TasksRepairCalendar),
                 },
