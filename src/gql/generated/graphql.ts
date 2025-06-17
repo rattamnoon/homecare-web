@@ -36,6 +36,29 @@ export type Auth = {
   user: User;
 };
 
+export type Calling = {
+  __typename?: "Calling";
+  callComment?: Maybe<Scalars["String"]["output"]>;
+  callDate: Scalars["Date"]["output"];
+  callOrder: Scalars["Int"]["output"];
+  createdAt: Scalars["Date"]["output"];
+  createdBy?: Maybe<User>;
+  deletedAt?: Maybe<Scalars["Date"]["output"]>;
+  deletedBy?: Maybe<User>;
+  id: Scalars["ID"]["output"];
+  taskDetail?: Maybe<TaskDetail>;
+  taskDetailId: Scalars["String"]["output"];
+  updatedAt: Scalars["Date"]["output"];
+  updatedBy?: Maybe<User>;
+};
+
+export type CreateCallingInput = {
+  callComment?: InputMaybe<Scalars["String"]["input"]>;
+  callDate?: InputMaybe<Scalars["Date"]["input"]>;
+  callOrder?: InputMaybe<Scalars["Int"]["input"]>;
+  taskDetailId?: InputMaybe<Scalars["String"]["input"]>;
+};
+
 export type CreateCsatInput = {
   comment?: InputMaybe<Scalars["String"]["input"]>;
   questionId?: InputMaybe<Scalars["String"]["input"]>;
@@ -228,6 +251,7 @@ export enum MasterType {
 
 export type Mutation = {
   __typename?: "Mutation";
+  createCalling: Calling;
   createCsat: Array<Csat>;
   createLegacyMigration: LegacyMigration;
   createMaster: Master;
@@ -239,12 +263,14 @@ export type Mutation = {
   createUser: User;
   login: Auth;
   refreshToken?: Maybe<Auth>;
+  removeCalling: Scalars["Boolean"]["output"];
   removeCsat: Csat;
   removeMaster: Scalars["Boolean"]["output"];
   removeProject: Scalars["Boolean"]["output"];
   removeTask: Scalars["Boolean"]["output"];
   removeUploadFile: Scalars["Boolean"]["output"];
   removeUser: Scalars["Boolean"]["output"];
+  updateCalling: Calling;
   updateCsat: Csat;
   updateMaster: Master;
   updateProject: Project;
@@ -252,6 +278,10 @@ export type Mutation = {
   updateTaskDetail: TaskDetail;
   updateUploadFile: UploadFile;
   updateUser: User;
+};
+
+export type MutationCreateCallingArgs = {
+  createCallingInput: CreateCallingInput;
 };
 
 export type MutationCreateCsatArgs = {
@@ -296,6 +326,10 @@ export type MutationLoginArgs = {
   username: Scalars["String"]["input"];
 };
 
+export type MutationRemoveCallingArgs = {
+  id: Scalars["ID"]["input"];
+};
+
 export type MutationRemoveCsatArgs = {
   id: Scalars["ID"]["input"];
 };
@@ -318,6 +352,10 @@ export type MutationRemoveUploadFileArgs = {
 
 export type MutationRemoveUserArgs = {
   id: Scalars["ID"]["input"];
+};
+
+export type MutationUpdateCallingArgs = {
+  updateCallingInput: UpdateCallingInput;
 };
 
 export type MutationUpdateCsatArgs = {
@@ -359,6 +397,8 @@ export type Project = {
 export type Query = {
   __typename?: "Query";
   allActiveUsers: Array<User>;
+  calling: Calling;
+  callings: Array<Calling>;
   csat: Csat;
   csats: Array<Csat>;
   master: Master;
@@ -378,6 +418,10 @@ export type Query = {
   uploadFiles: Array<UploadFile>;
   user: User;
   users: UserPaginate;
+};
+
+export type QueryCallingArgs = {
+  id: Scalars["ID"]["input"];
 };
 
 export type QueryCsatArgs = {
@@ -493,6 +537,7 @@ export type TaskDetail = {
   assignedDate?: Maybe<Scalars["Date"]["output"]>;
   assigns: Array<TaskDetailAssign>;
   calledDate?: Maybe<Scalars["Date"]["output"]>;
+  callings: Array<Calling>;
   category?: Maybe<Master>;
   categoryId?: Maybe<Scalars["String"]["output"]>;
   cause?: Maybe<Master>;
@@ -693,6 +738,14 @@ export type Unit = {
   projectId: Scalars["String"]["output"];
   unitNumber?: Maybe<Scalars["String"]["output"]>;
   updatedAt: Scalars["Date"]["output"];
+};
+
+export type UpdateCallingInput = {
+  callComment?: InputMaybe<Scalars["String"]["input"]>;
+  callDate?: InputMaybe<Scalars["Date"]["input"]>;
+  callOrder?: InputMaybe<Scalars["Int"]["input"]>;
+  id: Scalars["ID"]["input"];
+  taskDetailId?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type UpdateCsatInput = {

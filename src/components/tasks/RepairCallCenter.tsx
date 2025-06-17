@@ -376,6 +376,22 @@ export const RepairCallCenter = () => {
                 },
               },
               {
+                title: "จำนวนครั้งที่โทร",
+                dataIndex: "callCount",
+                key: "callCount",
+                align: "center",
+                width: 150,
+                render: (_, record) => {
+                  return record.callings?.length || 0;
+                },
+                onCell: () => ({
+                  style: {
+                    textAlign: "center",
+                    fontWeight: "bold",
+                  },
+                }),
+              },
+              {
                 title: "รหัสงาน",
                 dataIndex: "code",
                 key: "code",

@@ -1,0 +1,20 @@
+fragment Calling on Calling {
+  id
+  taskDetailId
+  taskDetail {
+    id
+    code
+  }
+  callDate
+  callOrder
+  callComment
+  createdAt
+  updatedAt
+  deletedAt
+}
+
+query Callings {
+  callings {
+    ...Calling
+  }
+}

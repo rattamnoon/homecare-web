@@ -7,6 +7,7 @@ import {
   IPaginateLinksFragmentDoc,
 } from "./paginate.generated";
 import { UserFragmentDoc } from "./user.generated";
+import { CallingFragmentDoc } from "./callings.generated";
 import * as Apollo from "@apollo/client";
 const defaultOptions = {} as const;
 export type TaskStatusFragment = {
@@ -998,6 +999,18 @@ export type TaskDetailFragment = {
       deletedAt?: Date | null;
     }>;
   }>;
+  callings: Array<{
+    __typename?: "Calling";
+    id: string;
+    taskDetailId: string;
+    callDate: Date;
+    callOrder: number;
+    callComment?: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+    taskDetail?: { __typename?: "TaskDetail"; id: string; code: string } | null;
+  }>;
 };
 
 export type TaskQueryVariables = Types.Exact<{
@@ -1541,6 +1554,22 @@ export type TaskQuery = {
           updatedAt: Date;
           deletedAt?: Date | null;
         }>;
+      }>;
+      callings: Array<{
+        __typename?: "Calling";
+        id: string;
+        taskDetailId: string;
+        callDate: Date;
+        callOrder: number;
+        callComment?: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+        taskDetail?: {
+          __typename?: "TaskDetail";
+          id: string;
+          code: string;
+        } | null;
       }>;
     }>;
     status: {
@@ -2312,6 +2341,22 @@ export type UpdateTaskDetailMutation = {
         deletedAt?: Date | null;
       }>;
     }>;
+    callings: Array<{
+      __typename?: "Calling";
+      id: string;
+      taskDetailId: string;
+      callDate: Date;
+      callOrder: number;
+      callComment?: string | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+      taskDetail?: {
+        __typename?: "TaskDetail";
+        id: string;
+        code: string;
+      } | null;
+    }>;
   };
 };
 
@@ -2897,6 +2942,22 @@ export type TaskDetailsQuery = {
           deletedAt?: Date | null;
         }>;
       }>;
+      callings: Array<{
+        __typename?: "Calling";
+        id: string;
+        taskDetailId: string;
+        callDate: Date;
+        callOrder: number;
+        callComment?: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+        taskDetail?: {
+          __typename?: "TaskDetail";
+          id: string;
+          code: string;
+        } | null;
+      }>;
     }>;
   };
 };
@@ -3205,6 +3266,9 @@ export const TaskDetailFragmentDoc = gql`
     reportLogs {
       ...TaskDetailReportLog
     }
+    callings {
+      ...Calling
+    }
   }
   ${TaskStatusFragmentDoc}
   ${TaskRangeTimeFragmentDoc}
@@ -3214,6 +3278,7 @@ export const TaskDetailFragmentDoc = gql`
   ${UserFragmentDoc}
   ${TaskDetailAssignFragmentDoc}
   ${TaskDetailReportLogFragmentDoc}
+  ${CallingFragmentDoc}
 `;
 export const TasksDocument = gql`
   query Tasks(
