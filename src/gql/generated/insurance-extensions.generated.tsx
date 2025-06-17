@@ -13,20 +13,21 @@ const defaultOptions = {} as const;
 export type InsuranceExtensionFragment = {
   __typename?: "InsuranceExtension";
   id: string;
-  insuranceDateDefault: Date;
+  insuranceDateDefault?: Date | null;
   insuranceDateExpand?: Date | null;
   projectId: string;
+  transferDate?: Date | null;
   unitId: string;
-  updatedAt: Date;
-  createdAt: Date;
+  updatedAt?: Date | null;
+  createdAt?: Date | null;
   deletedAt?: Date | null;
   project?: {
     __typename?: "Project";
+    a10Date?: Date | null;
+    insuranceDate?: Date | null;
     id: string;
     nameTh: string;
     nameEn: string;
-    a10Date?: Date | null;
-    insuranceDate?: Date | null;
   } | null;
   unit?: {
     __typename?: "Unit";
@@ -118,20 +119,21 @@ export type InsuranceExtensionsQuery = {
     items: Array<{
       __typename?: "InsuranceExtension";
       id: string;
-      insuranceDateDefault: Date;
+      insuranceDateDefault?: Date | null;
       insuranceDateExpand?: Date | null;
       projectId: string;
+      transferDate?: Date | null;
       unitId: string;
-      updatedAt: Date;
-      createdAt: Date;
+      updatedAt?: Date | null;
+      createdAt?: Date | null;
       deletedAt?: Date | null;
       project?: {
         __typename?: "Project";
+        a10Date?: Date | null;
+        insuranceDate?: Date | null;
         id: string;
         nameTh: string;
         nameEn: string;
-        a10Date?: Date | null;
-        insuranceDate?: Date | null;
       } | null;
       unit?: {
         __typename?: "Unit";
@@ -193,8 +195,11 @@ export const InsuranceExtensionFragmentDoc = gql`
     insuranceDateDefault
     insuranceDateExpand
     projectId
+    transferDate
     project {
       ...Project
+      a10Date
+      insuranceDate
     }
     unitId
     unit {

@@ -117,6 +117,17 @@ export const SystemInsuranceExpandPage = () => {
                     : "-",
               },
               {
+                title: "วันโอนกรรมสิทธิ์",
+                dataIndex: "transferDate",
+                key: "transferDate",
+                align: "center",
+                width: 150,
+                render: (_, record) =>
+                  record.transferDate
+                    ? dayjs(record.transferDate).format("DD/MM/YYYY")
+                    : "-",
+              },
+              {
                 title: "วันประกันเดิม",
                 dataIndex: "insuranceDateDefault",
                 key: "insuranceDateDefault",
@@ -150,7 +161,8 @@ export const SystemInsuranceExpandPage = () => {
                       {record.createdBy?.firstName} {record.createdBy?.lastName}
                     </Text>
                     <Text type="secondary" style={{ fontSize: 12 }}>
-                      {dayjs(record.createdAt).format("DD/MM/YYYY HH:mm")}
+                      {record.updatedAt &&
+                        dayjs(record.createdAt).format("DD/MM/YYYY HH:mm")}
                     </Text>
                   </Flex>
                 ),
@@ -167,7 +179,8 @@ export const SystemInsuranceExpandPage = () => {
                       {record.updatedBy?.firstName} {record.updatedBy?.lastName}
                     </Text>
                     <Text type="secondary" style={{ fontSize: 12 }}>
-                      {dayjs(record.updatedAt).format("DD/MM/YYYY HH:mm")}
+                      {record.updatedAt &&
+                        dayjs(record.updatedAt).format("DD/MM/YYYY HH:mm")}
                     </Text>
                   </Flex>
                 ),

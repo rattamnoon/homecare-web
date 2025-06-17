@@ -3,8 +3,11 @@ fragment InsuranceExtension on InsuranceExtension {
   insuranceDateDefault
   insuranceDateExpand
   projectId
+  transferDate
   project {
     ...Project
+    a10Date
+    insuranceDate
   }
   unitId
   unit {

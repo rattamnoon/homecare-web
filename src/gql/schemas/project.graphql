@@ -9,8 +9,6 @@ fragment Project on Project {
   id
   nameTh
   nameEn
-  a10Date
-  insuranceDate
 }
 
 query Projects {

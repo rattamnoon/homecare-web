@@ -68,10 +68,13 @@ export type CreateCsatInput = {
 };
 
 export type CreateInsuranceExtensionInput = {
+  houseNumber?: InputMaybe<Scalars["String"]["input"]>;
   insuranceDateDefault?: InputMaybe<Scalars["Date"]["input"]>;
   insuranceDateExpand?: InputMaybe<Scalars["Date"]["input"]>;
   projectId?: InputMaybe<Scalars["String"]["input"]>;
+  transferDate?: InputMaybe<Scalars["Date"]["input"]>;
   unitId?: InputMaybe<Scalars["String"]["input"]>;
+  unitNumber?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type CreateMasterInput = {
@@ -215,19 +218,22 @@ export type IPaginateMeta = {
 
 export type InsuranceExtension = {
   __typename?: "InsuranceExtension";
-  createdAt: Scalars["Date"]["output"];
+  createdAt?: Maybe<Scalars["Date"]["output"]>;
   createdBy?: Maybe<User>;
   deletedAt?: Maybe<Scalars["Date"]["output"]>;
   deletedBy?: Maybe<User>;
   files: Array<UploadFile>;
+  houseNumber: Scalars["String"]["output"];
   id: Scalars["ID"]["output"];
-  insuranceDateDefault: Scalars["Date"]["output"];
+  insuranceDateDefault?: Maybe<Scalars["Date"]["output"]>;
   insuranceDateExpand?: Maybe<Scalars["Date"]["output"]>;
   project?: Maybe<Project>;
   projectId: Scalars["String"]["output"];
+  transferDate?: Maybe<Scalars["Date"]["output"]>;
   unit?: Maybe<Unit>;
   unitId: Scalars["String"]["output"];
-  updatedAt: Scalars["Date"]["output"];
+  unitNumber: Scalars["String"]["output"];
+  updatedAt?: Maybe<Scalars["Date"]["output"]>;
   updatedBy?: Maybe<User>;
 };
 
@@ -812,6 +818,7 @@ export type Unit = {
   id: Scalars["String"]["output"];
   project: Project;
   projectId: Scalars["String"]["output"];
+  transferDate?: Maybe<Scalars["Date"]["output"]>;
   unitNumber?: Maybe<Scalars["String"]["output"]>;
   updatedAt: Scalars["Date"]["output"];
 };
@@ -834,11 +841,14 @@ export type UpdateCsatInput = {
 };
 
 export type UpdateInsuranceExtensionInput = {
+  houseNumber?: InputMaybe<Scalars["String"]["input"]>;
   id: Scalars["ID"]["input"];
   insuranceDateDefault?: InputMaybe<Scalars["Date"]["input"]>;
   insuranceDateExpand?: InputMaybe<Scalars["Date"]["input"]>;
   projectId?: InputMaybe<Scalars["String"]["input"]>;
+  transferDate?: InputMaybe<Scalars["Date"]["input"]>;
   unitId?: InputMaybe<Scalars["String"]["input"]>;
+  unitNumber?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type UpdateMasterInput = {
