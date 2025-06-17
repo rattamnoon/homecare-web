@@ -357,7 +357,7 @@ export const RepairCreatePage = () => {
                         field.onChange(dayjs(value).toDate());
                       }}
                       placeholder="วันที่เข้าตรวจสอบ"
-                      format="YYYY-MM-DD"
+                      format="DD/MM/YYYY"
                       style={{ width: "100%" }}
                       disabledDate={(current) => {
                         return current && current < dayjs().startOf("day");

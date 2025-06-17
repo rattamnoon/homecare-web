@@ -193,7 +193,7 @@ export const RepairCallCenterFilter = () => {
                 <DatePicker.RangePicker
                   placeholder={["เริ่มต้น", "สิ้นสุด"]}
                   allowClear
-                  format="YYYY-MM-DD"
+                  format="DD/MM/YYYY"
                   defaultValue={[
                     finishedDate[0]
                       ? dayjs(finishedDate[0], "YYYY-MM-DD")

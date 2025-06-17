@@ -278,7 +278,7 @@ export const RepairFilter = () => {
                 <DatePicker.RangePicker
                   placeholder={["เริ่มต้น", "สิ้นสุด"]}
                   allowClear
-                  format="YYYY-MM-DD"
+                  format="DD/MM/YYYY"
                   defaultValue={[
                     checkInDate[0] ? dayjs(checkInDate[0], "YYYY-MM-DD") : null,
                     checkInDate[1] ? dayjs(checkInDate[1], "YYYY-MM-DD") : null,
@@ -310,7 +310,7 @@ export const RepairFilter = () => {
                 <DatePicker.RangePicker
                   placeholder={["เริ่มต้น", "สิ้นสุด"]}
                   allowClear
-                  format="YYYY-MM-DD"
+                  format="DD/MM/YYYY"
                   defaultValue={[
                     createdAt[0] ? dayjs(createdAt[0], "YYYY-MM-DD") : null,
                     createdAt[1] ? dayjs(createdAt[1], "YYYY-MM-DD") : null,

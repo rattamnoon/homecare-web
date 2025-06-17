@@ -48,7 +48,7 @@ export const RepairCallCenterCallingDialog = ({
         >
           <DatePicker
             showTime
-            format="YYYY-MM-DD HH:mm"
+            format="DD/MM/YYYY HH:mm"
             placeholder="เลือกวันที่และเวลา"
           />
         </Form.Item>
