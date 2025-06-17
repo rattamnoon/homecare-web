@@ -530,7 +530,24 @@ export type TaskDetailFragment = {
   task: {
     __typename?: "Task";
     id: string;
+    projectId: string;
+    unitId?: string | null;
+    unitNumber?: string | null;
+    customerName?: string | null;
+    customerPhone?: string | null;
     checkInDate?: Date | null;
+    project: {
+      __typename?: "Project";
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    };
+    unit?: {
+      __typename?: "Unit";
+      id: string;
+      unitNumber?: string | null;
+      houseNumber?: string | null;
+    } | null;
     checkInRangeTime?: {
       __typename?: "TaskRangeTimeDto";
       id: string;
@@ -1057,7 +1074,24 @@ export type TaskQuery = {
       task: {
         __typename?: "Task";
         id: string;
+        projectId: string;
+        unitId?: string | null;
+        unitNumber?: string | null;
+        customerName?: string | null;
+        customerPhone?: string | null;
         checkInDate?: Date | null;
+        project: {
+          __typename?: "Project";
+          id: string;
+          nameTh: string;
+          nameEn: string;
+        };
+        unit?: {
+          __typename?: "Unit";
+          id: string;
+          unitNumber?: string | null;
+          houseNumber?: string | null;
+        } | null;
         checkInRangeTime?: {
           __typename?: "TaskRangeTimeDto";
           id: string;
@@ -1810,7 +1844,24 @@ export type UpdateTaskDetailMutation = {
     task: {
       __typename?: "Task";
       id: string;
+      projectId: string;
+      unitId?: string | null;
+      unitNumber?: string | null;
+      customerName?: string | null;
+      customerPhone?: string | null;
       checkInDate?: Date | null;
+      project: {
+        __typename?: "Project";
+        id: string;
+        nameTh: string;
+        nameEn: string;
+      };
+      unit?: {
+        __typename?: "Unit";
+        id: string;
+        unitNumber?: string | null;
+        houseNumber?: string | null;
+      } | null;
       checkInRangeTime?: {
         __typename?: "TaskRangeTimeDto";
         id: string;
@@ -2291,6 +2342,565 @@ export type CreateTaskDetailReportLogWithAssignMutation = {
   };
 };
 
+export type TaskDetailsQueryVariables = Types.Exact<{
+  type: Types.TaskType;
+  statuses?: Types.InputMaybe<Array<Types.TaskStatus> | Types.TaskStatus>;
+  searchText?: Types.InputMaybe<Types.Scalars["String"]["input"]>;
+  projectId?: Types.InputMaybe<Types.Scalars["String"]["input"]>;
+  unitIds?: Types.InputMaybe<
+    Array<Types.Scalars["String"]["input"]> | Types.Scalars["String"]["input"]
+  >;
+  page: Types.Scalars["Int"]["input"];
+  limit: Types.Scalars["Int"]["input"];
+  isCall?: Types.InputMaybe<Types.Scalars["Boolean"]["input"]>;
+  isCsat?: Types.InputMaybe<Types.Scalars["Boolean"]["input"]>;
+  finishedDate?: Types.InputMaybe<
+    Array<Types.Scalars["Date"]["input"]> | Types.Scalars["Date"]["input"]
+  >;
+}>;
+
+export type TaskDetailsQuery = {
+  __typename?: "Query";
+  taskDetails: {
+    __typename?: "TaskDetailPaginate";
+    meta?: {
+      __typename?: "IPaginateMeta";
+      totalItems?: number | null;
+      itemCount: number;
+      itemsPerPage: number;
+      totalPages?: number | null;
+      currentPage: number;
+    } | null;
+    links?: {
+      __typename?: "IPaginateLinks";
+      first?: string | null;
+      previous?: string | null;
+      next?: string | null;
+      last?: string | null;
+    } | null;
+    items: Array<{
+      __typename?: "TaskDetail";
+      id: string;
+      taskId: string;
+      code: string;
+      description?: string | null;
+      categoryId?: string | null;
+      subCategoryId?: string | null;
+      slaId?: string | null;
+      causeId?: string | null;
+      contractorId?: string | null;
+      homecareId?: string | null;
+      homecareInDate?: Date | null;
+      homecareRemark?: string | null;
+      assignInDate?: Date | null;
+      appointmentDate?: Date | null;
+      appointmentTime?: string | null;
+      appointmentRepairDate?: Date | null;
+      appointmentRepairTime?: string | null;
+      appointmentRepairRemark?: string | null;
+      calledDate?: Date | null;
+      assignedDate?: Date | null;
+      inprogressDate?: Date | null;
+      reinprogressId?: string | null;
+      reinprogressCode?: string | null;
+      reinprogressDate?: Date | null;
+      isReinprogress?: boolean | null;
+      finishedDate?: Date | null;
+      closedDate?: Date | null;
+      isCSAT?: boolean | null;
+      CSATComment?: string | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+      status?: {
+        __typename?: "TaskStatusDto";
+        id: Types.TaskStatus;
+        nameTh: string;
+        nameEn: string;
+        color: string;
+      } | null;
+      homecareStatus?: {
+        __typename?: "TaskStatusDto";
+        id: Types.TaskStatus;
+        nameTh: string;
+        nameEn: string;
+        color: string;
+      } | null;
+      task: {
+        __typename?: "Task";
+        id: string;
+        projectId: string;
+        unitId?: string | null;
+        unitNumber?: string | null;
+        customerName?: string | null;
+        customerPhone?: string | null;
+        checkInDate?: Date | null;
+        project: {
+          __typename?: "Project";
+          id: string;
+          nameTh: string;
+          nameEn: string;
+        };
+        unit?: {
+          __typename?: "Unit";
+          id: string;
+          unitNumber?: string | null;
+          houseNumber?: string | null;
+        } | null;
+        checkInRangeTime?: {
+          __typename?: "TaskRangeTimeDto";
+          id: string;
+          nameTh: string;
+          nameEn: string;
+        } | null;
+      };
+      homecareInRangeTime?: {
+        __typename?: "TaskRangeTimeDto";
+        id: string;
+        nameTh: string;
+        nameEn: string;
+      } | null;
+      assignRangeTime?: {
+        __typename?: "TaskRangeTimeDto";
+        id: string;
+        nameTh: string;
+        nameEn: string;
+      } | null;
+      priority?: {
+        __typename?: "TaskPriorityDto";
+        color: string;
+        id: number;
+        nameEn: string;
+        nameTh: string;
+      } | null;
+      images: Array<{
+        __typename?: "UploadFile";
+        id: string;
+        refId?: string | null;
+        fileId?: string | null;
+        fileType: Types.UploadFileType;
+        fileName?: string | null;
+        fileFolder?: string | null;
+        filePath?: string | null;
+        fileBucket?: string | null;
+        fileExtension?: string | null;
+        fileUrl: string;
+        isPublic: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      }>;
+      category?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      subCategory?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      homecare?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        username: string;
+        firstName?: string | null;
+        lastName?: string | null;
+        email: string;
+        lastLoginAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      cause?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      contractor?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      sla?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+        parent?: {
+          __typename?: "Master";
+          id: string;
+          parentId?: string | null;
+          type: Types.MasterType;
+          sequence?: number | null;
+          nameTh?: string | null;
+          nameEn?: string | null;
+          maxScore?: number | null;
+          defaultScore?: number | null;
+          areaTypeTh?: string | null;
+          areaTypeEn?: string | null;
+          SLA1H?: number | null;
+          SLA1D?: number | null;
+          SLA2H?: number | null;
+          SLA2D?: number | null;
+          SLA3H?: number | null;
+          SLA3D?: number | null;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        } | null;
+      } | null;
+      assigns: Array<{
+        __typename?: "TaskDetailAssign";
+        id: string;
+        code: string;
+        SLA?: number | null;
+        SLAEndDate?: Date | null;
+        SLAStartDate?: Date | null;
+        SLAWorkHour?: number | null;
+        assetComment?: string | null;
+        remark?: string | null;
+        createdAt: Date;
+        customerNameFinish?: string | null;
+        isAssetCustomer?: boolean | null;
+        requestedDate?: Date | null;
+        reassignedInDate?: Date | null;
+        reassignedRemark?: string | null;
+        finishedDate?: Date | null;
+        logs: Array<{
+          __typename?: "TaskDetailAssign";
+          id: string;
+          code: string;
+          SLA?: number | null;
+          SLAEndDate?: Date | null;
+          SLAStartDate?: Date | null;
+          SLAWorkHour?: number | null;
+          assetComment?: string | null;
+          remark?: string | null;
+          createdAt: Date;
+          customerNameFinish?: string | null;
+          isAssetCustomer?: boolean | null;
+          requestedDate?: Date | null;
+          reassignedInDate?: Date | null;
+          reassignedRemark?: string | null;
+          finishedDate?: Date | null;
+          status?: {
+            __typename?: "TaskStatusDto";
+            id: Types.TaskStatus;
+            nameTh: string;
+            nameEn: string;
+            color: string;
+          } | null;
+          staffStatus?: {
+            __typename?: "TaskStatusDto";
+            id: Types.TaskStatus;
+            nameTh: string;
+            nameEn: string;
+            color: string;
+          } | null;
+          staff?: {
+            __typename?: "User";
+            id: string;
+            employeeId: string;
+            firstName?: string | null;
+            lastName?: string | null;
+          } | null;
+          requestedRangeTime?: {
+            __typename?: "TaskRangeTimeDto";
+            id: string;
+            nameTh: string;
+            nameEn: string;
+          } | null;
+          reassignedRangeTime?: {
+            __typename?: "TaskRangeTimeDto";
+            id: string;
+            nameTh: string;
+            nameEn: string;
+          } | null;
+          finishedType?: {
+            __typename?: "TaskStatusDto";
+            id: Types.TaskStatus;
+            nameTh: string;
+            nameEn: string;
+            color: string;
+          } | null;
+          images: Array<{
+            __typename?: "UploadFile";
+            id: string;
+            refId?: string | null;
+            fileId?: string | null;
+            fileType: Types.UploadFileType;
+            fileName?: string | null;
+            fileFolder?: string | null;
+            filePath?: string | null;
+            fileBucket?: string | null;
+            fileExtension?: string | null;
+            fileUrl: string;
+            isPublic: boolean;
+            createdAt: Date;
+            updatedAt: Date;
+            deletedAt?: Date | null;
+          }>;
+          createdBy?: {
+            __typename?: "User";
+            id: string;
+            employeeId: string;
+            firstName?: string | null;
+            lastName?: string | null;
+          } | null;
+          updatedBy?: {
+            __typename?: "User";
+            id: string;
+            employeeId: string;
+            firstName?: string | null;
+            lastName?: string | null;
+          } | null;
+        }>;
+        reportLogs: Array<{
+          __typename?: "TaskDetailReportLog";
+          callbackDate?: Date | null;
+          checkInDate?: Date | null;
+          remark?: string | null;
+          createdAt: Date;
+          deletedAt?: Date | null;
+          id: string;
+          taskDetailAssignId?: string | null;
+          taskDetailId?: string | null;
+          updatedAt: Date;
+          type?: {
+            __typename?: "TaskStatusDto";
+            id: Types.TaskStatus;
+            nameTh: string;
+            nameEn: string;
+            color: string;
+          } | null;
+          checkInRangeTime?: {
+            __typename?: "TaskRangeTimeDto";
+            id: string;
+            nameTh: string;
+            nameEn: string;
+          } | null;
+          images: Array<{
+            __typename?: "UploadFile";
+            id: string;
+            refId?: string | null;
+            fileId?: string | null;
+            fileType: Types.UploadFileType;
+            fileName?: string | null;
+            fileFolder?: string | null;
+            filePath?: string | null;
+            fileBucket?: string | null;
+            fileExtension?: string | null;
+            fileUrl: string;
+            isPublic: boolean;
+            createdAt: Date;
+            updatedAt: Date;
+            deletedAt?: Date | null;
+          }>;
+        }>;
+        status?: {
+          __typename?: "TaskStatusDto";
+          id: Types.TaskStatus;
+          nameTh: string;
+          nameEn: string;
+          color: string;
+        } | null;
+        staffStatus?: {
+          __typename?: "TaskStatusDto";
+          id: Types.TaskStatus;
+          nameTh: string;
+          nameEn: string;
+          color: string;
+        } | null;
+        staff?: {
+          __typename?: "User";
+          id: string;
+          employeeId: string;
+          firstName?: string | null;
+          lastName?: string | null;
+        } | null;
+        requestedRangeTime?: {
+          __typename?: "TaskRangeTimeDto";
+          id: string;
+          nameTh: string;
+          nameEn: string;
+        } | null;
+        reassignedRangeTime?: {
+          __typename?: "TaskRangeTimeDto";
+          id: string;
+          nameTh: string;
+          nameEn: string;
+        } | null;
+        finishedType?: {
+          __typename?: "TaskStatusDto";
+          id: Types.TaskStatus;
+          nameTh: string;
+          nameEn: string;
+          color: string;
+        } | null;
+        images: Array<{
+          __typename?: "UploadFile";
+          id: string;
+          refId?: string | null;
+          fileId?: string | null;
+          fileType: Types.UploadFileType;
+          fileName?: string | null;
+          fileFolder?: string | null;
+          filePath?: string | null;
+          fileBucket?: string | null;
+          fileExtension?: string | null;
+          fileUrl: string;
+          isPublic: boolean;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        }>;
+        createdBy?: {
+          __typename?: "User";
+          id: string;
+          employeeId: string;
+          firstName?: string | null;
+          lastName?: string | null;
+        } | null;
+        updatedBy?: {
+          __typename?: "User";
+          id: string;
+          employeeId: string;
+          firstName?: string | null;
+          lastName?: string | null;
+        } | null;
+      }>;
+      reportLogs: Array<{
+        __typename?: "TaskDetailReportLog";
+        callbackDate?: Date | null;
+        checkInDate?: Date | null;
+        remark?: string | null;
+        createdAt: Date;
+        deletedAt?: Date | null;
+        id: string;
+        taskDetailAssignId?: string | null;
+        taskDetailId?: string | null;
+        updatedAt: Date;
+        type?: {
+          __typename?: "TaskStatusDto";
+          id: Types.TaskStatus;
+          nameTh: string;
+          nameEn: string;
+          color: string;
+        } | null;
+        checkInRangeTime?: {
+          __typename?: "TaskRangeTimeDto";
+          id: string;
+          nameTh: string;
+          nameEn: string;
+        } | null;
+        images: Array<{
+          __typename?: "UploadFile";
+          id: string;
+          refId?: string | null;
+          fileId?: string | null;
+          fileType: Types.UploadFileType;
+          fileName?: string | null;
+          fileFolder?: string | null;
+          filePath?: string | null;
+          fileBucket?: string | null;
+          fileExtension?: string | null;
+          fileUrl: string;
+          isPublic: boolean;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        }>;
+      }>;
+    }>;
+  };
+};
+
 export const TaskStatusFragmentDoc = gql`
   fragment TaskStatus on TaskStatusDto {
     id
@@ -2501,6 +3111,21 @@ export const TaskDetailFragmentDoc = gql`
     }
     task {
       id
+      projectId
+      unitId
+      unitNumber
+      project {
+        id
+        nameTh
+        nameEn
+      }
+      unit {
+        id
+        unitNumber
+        houseNumber
+      }
+      customerName
+      customerPhone
       checkInDate
       checkInRangeTime {
         ...TaskRangeTime
@@ -3067,3 +3692,125 @@ export type CreateTaskDetailReportLogWithAssignMutationOptions =
     CreateTaskDetailReportLogWithAssignMutation,
     CreateTaskDetailReportLogWithAssignMutationVariables
   >;
+export const TaskDetailsDocument = gql`
+  query TaskDetails(
+    $type: TaskType!
+    $statuses: [TaskStatus!]
+    $searchText: String
+    $projectId: String
+    $unitIds: [String!]
+    $page: Int!
+    $limit: Int!
+    $isCall: Boolean
+    $isCsat: Boolean
+    $finishedDate: [Date!]
+  ) {
+    taskDetails(
+      type: $type
+      statuses: $statuses
+      searchText: $searchText
+      projectId: $projectId
+      unitIds: $unitIds
+      page: $page
+      limit: $limit
+      isCall: $isCall
+      isCSAT: $isCsat
+      finishedDate: $finishedDate
+    ) {
+      meta {
+        ...IPaginateMeta
+      }
+      links {
+        ...IPaginateLinks
+      }
+      items {
+        ...TaskDetail
+      }
+    }
+  }
+  ${IPaginateMetaFragmentDoc}
+  ${IPaginateLinksFragmentDoc}
+  ${TaskDetailFragmentDoc}
+`;
+
+/**
+ * __useTaskDetailsQuery__
+ *
+ * To run a query within a React component, call `useTaskDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTaskDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTaskDetailsQuery({
+ *   variables: {
+ *      type: // value for 'type'
+ *      statuses: // value for 'statuses'
+ *      searchText: // value for 'searchText'
+ *      projectId: // value for 'projectId'
+ *      unitIds: // value for 'unitIds'
+ *      page: // value for 'page'
+ *      limit: // value for 'limit'
+ *      isCall: // value for 'isCall'
+ *      isCsat: // value for 'isCsat'
+ *      finishedDate: // value for 'finishedDate'
+ *   },
+ * });
+ */
+export function useTaskDetailsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    TaskDetailsQuery,
+    TaskDetailsQueryVariables
+  > &
+    (
+      | { variables: TaskDetailsQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<TaskDetailsQuery, TaskDetailsQueryVariables>(
+    TaskDetailsDocument,
+    options,
+  );
+}
+export function useTaskDetailsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    TaskDetailsQuery,
+    TaskDetailsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<TaskDetailsQuery, TaskDetailsQueryVariables>(
+    TaskDetailsDocument,
+    options,
+  );
+}
+export function useTaskDetailsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        TaskDetailsQuery,
+        TaskDetailsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<TaskDetailsQuery, TaskDetailsQueryVariables>(
+    TaskDetailsDocument,
+    options,
+  );
+}
+export type TaskDetailsQueryHookResult = ReturnType<typeof useTaskDetailsQuery>;
+export type TaskDetailsLazyQueryHookResult = ReturnType<
+  typeof useTaskDetailsLazyQuery
+>;
+export type TaskDetailsSuspenseQueryHookResult = ReturnType<
+  typeof useTaskDetailsSuspenseQuery
+>;
+export type TaskDetailsQueryResult = Apollo.QueryResult<
+  TaskDetailsQuery,
+  TaskDetailsQueryVariables
+>;

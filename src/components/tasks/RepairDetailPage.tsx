@@ -194,7 +194,9 @@ export const RepairDetailPage = () => {
                 {task?.code}
               </Descriptions.Item>
               <Descriptions.Item label="โครงการ">
-                {task?.project?.nameTh}
+                {task?.project
+                  ? `${task?.project.id} - ${task?.project.nameTh}`
+                  : "-"}
               </Descriptions.Item>
               <Descriptions.Item label="ห้อง (เลขที่ห้อง)" span={3}>
                 {task?.unit?.unitNumber}

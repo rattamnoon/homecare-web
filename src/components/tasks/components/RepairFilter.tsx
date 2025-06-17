@@ -24,7 +24,7 @@ import dayjs from "dayjs";
 import { uniqBy } from "lodash-es";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 
 export const useRepairFilter = () => {
   const searchParams = useSearchParams();
@@ -50,24 +50,27 @@ export const useRepairFilter = () => {
   const currentPage = Number(searchParams.get("currentPage")) || 1;
   const pageSize = Number(searchParams.get("pageSize")) || 10;
 
-  const handleSearch = (key: string, value: string | string[] | number) => {
-    const stringValue = Array.isArray(value)
-      ? value.join(",")
-      : typeof value === "number"
-      ? value.toString()
-      : value;
+  const handleSearch = useCallback(
+    (key: string, value: string | string[] | number) => {
+      const stringValue = Array.isArray(value)
+        ? value.join(",")
+        : typeof value === "number"
+        ? value.toString()
+        : value;
 
-    const queryParams = {
-      [key]: stringValue,
-      ...(key !== "currentPage" && { currentPage: "1" }),
-      ...(key !== "pageSize" && { pageSize: "10" }),
-    };
+      const queryParams = {
+        [key]: stringValue,
+        ...(key !== "currentPage" && { currentPage: "1" }),
+        ...(key !== "pageSize" && { pageSize: "10" }),
+      };
 
-    const queryString = createQueryString(queryParams);
-    router.push(`${Routes.TasksRepair}?${queryString}`, {
-      scroll: false,
-    });
-  };
+      const queryString = createQueryString(queryParams);
+      router.push(`${Routes.TasksRepair}?${queryString}`, {
+        scroll: false,
+      });
+    },
+    [createQueryString, router]
+  );
 
   return {
     searchText,

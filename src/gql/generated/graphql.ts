@@ -367,6 +367,7 @@ export type Query = {
   project: Project;
   projects: Array<Project>;
   task: Task;
+  taskDetails: TaskDetailPaginate;
   taskPriorities: Array<TaskPriorityDto>;
   taskRangeTimes: Array<TaskRangeTimeDto>;
   taskSources: Array<TaskSourceDto>;
@@ -398,6 +399,19 @@ export type QueryProjectArgs = {
 
 export type QueryTaskArgs = {
   id: Scalars["ID"]["input"];
+};
+
+export type QueryTaskDetailsArgs = {
+  finishedDate?: InputMaybe<Array<Scalars["Date"]["input"]>>;
+  isCSAT?: InputMaybe<Scalars["Boolean"]["input"]>;
+  isCall?: InputMaybe<Scalars["Boolean"]["input"]>;
+  limit?: Scalars["Int"]["input"];
+  page?: Scalars["Int"]["input"];
+  projectId?: InputMaybe<Scalars["String"]["input"]>;
+  searchText?: InputMaybe<Scalars["String"]["input"]>;
+  statuses?: InputMaybe<Array<TaskStatus>>;
+  type?: TaskType;
+  unitIds?: InputMaybe<Array<Scalars["String"]["input"]>>;
 };
 
 export type QueryTasksArgs = {
@@ -554,6 +568,13 @@ export type TaskDetailAssign = {
   taskDetailId: Scalars["String"]["output"];
   updatedAt: Scalars["Date"]["output"];
   updatedBy?: Maybe<User>;
+};
+
+export type TaskDetailPaginate = {
+  __typename?: "TaskDetailPaginate";
+  items: Array<TaskDetail>;
+  links?: Maybe<IPaginateLinks>;
+  meta?: Maybe<IPaginateMeta>;
 };
 
 export type TaskDetailReportLog = {

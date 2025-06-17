@@ -226,6 +226,21 @@ fragment TaskDetail on TaskDetail {
   }
   task {
     id
+    projectId
+    unitId
+    unitNumber
+    project {
+      id
+      nameTh
+      nameEn
+    }
+    unit {
+      id
+      unitNumber
+      houseNumber
+    }
+    customerName
+    customerPhone
     checkInDate
     checkInRangeTime {
       ...TaskRangeTime
@@ -361,5 +376,41 @@ mutation CreateTaskDetailReportLogWithAssign(
     createUploadFileInput: $createUploadFileInput
   ) {
     id
+  }
+}
+
+query TaskDetails(
+  $type: TaskType!
+  $statuses: [TaskStatus!]
+  $searchText: String
+  $projectId: String
+  $unitIds: [String!]
+  $page: Int!
+  $limit: Int!
+  $isCall: Boolean
+  $isCsat: Boolean
+  $finishedDate: [Date!]
+) {
+  taskDetails(
+    type: $type
+    statuses: $statuses
+    searchText: $searchText
+    projectId: $projectId
+    unitIds: $unitIds
+    page: $page
+    limit: $limit
+    isCall: $isCall
+    isCSAT: $isCsat
+    finishedDate: $finishedDate
+  ) {
+    meta {
+      ...IPaginateMeta
+    }
+    links {
+      ...IPaginateLinks
+    }
+    items {
+      ...TaskDetail
+    }
   }
 }
