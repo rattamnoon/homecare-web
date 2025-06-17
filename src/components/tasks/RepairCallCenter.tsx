@@ -1,14 +1,21 @@
 "use client";
 
 import { Routes } from "@/config/routes";
-import { TaskStatus, TaskType } from "@/gql/generated/graphql";
+import { useCreateCsatMutation } from "@/gql/generated/csat.generated";
+import {
+  TaskStatus,
+  TaskType,
+  UpdateTaskDetailInput,
+} from "@/gql/generated/graphql";
 import {
   useProjectsQuery,
   useUnitsQuery,
 } from "@/gql/generated/project.generated";
 import {
   TaskDetailFragment,
+  TaskDetailsDocument,
   useTaskDetailsQuery,
+  useUpdateTaskDetailMutation,
 } from "@/gql/generated/tasks.generated";
 import { useCreateSearchParams } from "@/hooks/useCreateSearchParams";
 import { getTablePaginationProps } from "@/utils/utils";
@@ -29,6 +36,7 @@ import {
   Flex,
   Form,
   Input,
+  notification,
   Row,
   Select,
   SelectProps,
@@ -43,6 +51,7 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { useCallback, useMemo, useState } from "react";
 import { LayoutWithBreadcrumb } from "../layout/LayoutWithBreadcrumb";
+import { RepairCallingDialog } from "./components/RepairCallingDialog";
 import { RepairClosedDialog } from "./components/RepairClosedDialog";
 import { RepairEvaluationDialog } from "./components/RepairEvaluationDialog";
 
@@ -271,13 +280,12 @@ const RepairCallCenterFilter = () => {
 };
 
 export const RepairCallCenter = () => {
-  const router = useRouter();
+  const [notificationApi, notificationContextHolder] =
+    notification.useNotification();
   const [evaluationDialogOpen, setEvaluationDialogOpen] = useState(false);
-  const [evaluationDialogTaskDetail, setEvaluationDialogTaskDetail] =
-    useState<TaskDetailFragment | null>(null);
   const [closedDialogOpen, setClosedDialogOpen] = useState(false);
-  const [closedDialogTaskDetail, setClosedDialogTaskDetail] =
-    useState<TaskDetailFragment | null>(null);
+  const [callingDialogOpen, setCallingDialogOpen] = useState(false);
+  const [taskDetail, setTaskDetail] = useState<TaskDetailFragment | null>(null);
 
   const {
     searchText,
@@ -293,8 +301,8 @@ export const RepairCallCenter = () => {
     token: { colorPrimary },
   } = theme.useToken();
 
-  const { data, loading, refetch } = useTaskDetailsQuery({
-    variables: {
+  const variables = useMemo(() => {
+    return {
       type: TaskType.Repair,
       statuses: [TaskStatus.Finished],
       isCsat: false,
@@ -307,7 +315,19 @@ export const RepairCallCenter = () => {
         dayjs(date, "YYYY-MM-DD").toDate()
       ),
       isCall: isCall === "all" ? undefined : isCall === "has" ? true : false,
-    },
+    };
+  }, [
+    currentPage,
+    finishedDate,
+    isCall,
+    pageSize,
+    projectId,
+    searchText,
+    unitIds,
+  ]);
+
+  const { data, loading } = useTaskDetailsQuery({
+    variables,
     fetchPolicy: "cache-and-network",
   });
 
@@ -315,8 +335,60 @@ export const RepairCallCenter = () => {
   const dataSource = useMemo(() => tasksDetails?.items, [tasksDetails]);
   const meta = useMemo(() => tasksDetails?.meta, [tasksDetails]);
 
+  const [updateTaskDetail, { loading: updateTaskDetailLoading }] =
+    useUpdateTaskDetailMutation({
+      onCompleted: () => {
+        notificationApi.success({
+          message: "สำเร็จ !!",
+          description: "บันทึกข้อมูลเรียบร้อย",
+          duration: 3,
+        });
+        setClosedDialogOpen(false);
+        setTaskDetail(null);
+      },
+      onError: (error) => {
+        notificationApi.error({
+          message: "เกิดข้อผิดพลาด !!",
+          description: error.message,
+          duration: 5,
+        });
+      },
+      refetchQueries: [
+        {
+          query: TaskDetailsDocument,
+          variables,
+        },
+      ],
+    });
+
+  const [createCsat, { loading: createCsatLoading }] = useCreateCsatMutation({
+    onCompleted: () => {
+      notificationApi.success({
+        message: "สำเร็จ !!",
+        description: "บันทึกข้อมูลเรียบร้อย",
+        duration: 3,
+      });
+      setTaskDetail(null);
+      setEvaluationDialogOpen(false);
+    },
+    onError: (error) => {
+      notificationApi.error({
+        message: "เกิดข้อผิดพลาด !!",
+        description: error.message,
+        duration: 5,
+      });
+    },
+    refetchQueries: [
+      {
+        query: TaskDetailsDocument,
+        variables,
+      },
+    ],
+  });
+
   return (
     <LayoutWithBreadcrumb>
+      {notificationContextHolder}
       <Row gutter={[16, 16]}>
         <Col span={24}>
           <RepairCallCenterFilter />
@@ -360,7 +432,7 @@ export const RepairCallCenter = () => {
                               key: "evaluate",
                               icon: <FontAwesomeIcon icon={faStar} />,
                               onClick: () => {
-                                setEvaluationDialogTaskDetail(record);
+                                setTaskDetail(record);
                                 setEvaluationDialogOpen(true);
                               },
                             },
@@ -369,7 +441,7 @@ export const RepairCallCenter = () => {
                               key: "close",
                               icon: <FontAwesomeIcon icon={faClose} />,
                               onClick: () => {
-                                setClosedDialogTaskDetail(record);
+                                setTaskDetail(record);
                                 setClosedDialogOpen(true);
                               },
                             },
@@ -377,6 +449,10 @@ export const RepairCallCenter = () => {
                               label: "โทรติดต่อลูกบ้าน",
                               key: "call",
                               icon: <FontAwesomeIcon icon={faPhoneArrowUp} />,
+                              onClick: () => {
+                                setTaskDetail(record);
+                                setCallingDialogOpen(true);
+                              },
                             },
                             {
                               label: "Re-inprogress",
@@ -588,18 +664,55 @@ export const RepairCallCenter = () => {
       <RepairEvaluationDialog
         open={evaluationDialogOpen}
         onCancel={() => {
+          setTaskDetail(null);
           setEvaluationDialogOpen(false);
-          refetch();
         }}
-        taskDetail={evaluationDialogTaskDetail}
+        taskDetail={taskDetail}
+        onSubmit={async (values) => {
+          await createCsat({
+            variables: {
+              taskDetailId: taskDetail?.id ?? "",
+              csatComment: values.CSATComment,
+              createCsatInput: values.evaluation.map((item) => ({
+                taskId: taskDetail?.taskId ?? "",
+                taskDetailId: taskDetail?.id ?? "",
+                questionId: item.questionId,
+                score: item.score,
+                comment: values.CSATComment,
+              })),
+            },
+          });
+        }}
+        confirmLoading={createCsatLoading}
       />
       <RepairClosedDialog
         open={closedDialogOpen}
         onCancel={() => {
+          setTaskDetail(null);
           setClosedDialogOpen(false);
-          refetch();
         }}
-        taskDetail={closedDialogTaskDetail}
+        taskDetail={taskDetail}
+        onSubmit={async (values) => {
+          const updateTaskDetailInput: UpdateTaskDetailInput = {
+            id: taskDetail?.id ?? "",
+            status: TaskStatus.Closed,
+            priority: taskDetail?.priority?.id ?? 0,
+            homecareRemark: values.remark,
+          };
+
+          await updateTaskDetail({
+            variables: { updateTaskDetailInput },
+          });
+        }}
+        confirmLoading={updateTaskDetailLoading}
+      />
+      <RepairCallingDialog
+        open={callingDialogOpen}
+        onCancel={() => {
+          setTaskDetail(null);
+          setCallingDialogOpen(false);
+        }}
+        taskDetail={taskDetail}
       />
     </LayoutWithBreadcrumb>
   );

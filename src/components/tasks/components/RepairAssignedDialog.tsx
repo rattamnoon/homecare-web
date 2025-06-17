@@ -1,16 +1,8 @@
 import { CustomModal } from "@/components/common/CustomModal";
-import {
-  MasterType,
-  TaskStatus,
-  UpdateTaskDetailInput,
-} from "@/gql/generated/graphql";
+import { MasterType } from "@/gql/generated/graphql";
 import { useMastersQuery } from "@/gql/generated/master.generated";
 import { useTaskOptionsQuery } from "@/gql/generated/option.generated";
-import {
-  TaskDetailFragment,
-  TaskDocument,
-  useUpdateTaskDetailMutation,
-} from "@/gql/generated/tasks.generated";
+import { TaskDetailFragment } from "@/gql/generated/tasks.generated";
 import { useAllActiveUsersQuery } from "@/gql/generated/user.generated";
 import { faSave } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,12 +22,22 @@ import { useEffect, useMemo } from "react";
 interface RepairAssignedDialogProps {
   open: boolean;
   onCancel: () => void;
+  onSubmit: (values: {
+    parentId: string;
+    slaId: string;
+    homecareId: string;
+    homecareInDate: Date;
+    homecareRangeTime: string;
+  }) => void;
+  confirmLoading: boolean;
   taskDetail: TaskDetailFragment | null;
 }
 
 export const RepairAssignedDialog = ({
   open,
   onCancel,
+  onSubmit,
+  confirmLoading,
   taskDetail,
 }: RepairAssignedDialogProps) => {
   const [notificationApi, notificationContextHolder] =
@@ -55,33 +57,6 @@ export const RepairAssignedDialog = ({
   const { data: usersData, loading: usersLoading } = useAllActiveUsersQuery({
     skip: !open,
   });
-
-  const [updateTaskDetail, { loading: updateTaskDetailLoading }] =
-    useUpdateTaskDetailMutation({
-      onCompleted: () => {
-        notificationApi.success({
-          message: "สำเร็จ !!",
-          description: "บันทึกข้อมูลเรียบร้อย",
-          duration: 3,
-        });
-        onCancel();
-      },
-      onError: (error) => {
-        notificationApi.error({
-          message: "เกิดข้อผิดพลาด !!",
-          description: error.message,
-          duration: 5,
-        });
-      },
-      refetchQueries: [
-        {
-          query: TaskDocument,
-          variables: {
-            id: taskDetail?.taskId ?? "",
-          },
-        },
-      ],
-    });
 
   const slaOptions = useMemo(() => {
     return mastersData?.masters
@@ -168,7 +143,7 @@ export const RepairAssignedDialog = ({
           icon: <FontAwesomeIcon icon={faSave} />,
         }}
         width={800}
-        confirmLoading={updateTaskDetailLoading}
+        confirmLoading={confirmLoading}
         destroyOnHidden
       >
         <Skeleton
@@ -186,26 +161,7 @@ export const RepairAssignedDialog = ({
               homecareInDate: homecareInDate,
               homecareRangeTime: homecareRangeTime,
             }}
-            onFinish={async (values) => {
-              const updateTaskDetailInput: UpdateTaskDetailInput = {
-                id: taskDetail?.id ?? "",
-                slaId: values.slaId,
-                priority: taskDetail?.priority?.id,
-                status: TaskStatus.Open,
-                homecareId: values.homecareId,
-                homecareStatus: TaskStatus.Open,
-                homecareInDate: values.homecareInDate
-                  ? dayjs(values.homecareInDate).startOf("day").toDate()
-                  : undefined,
-                homecareRangeTime: values.homecareRangeTime
-                  ? values.homecareRangeTime
-                  : undefined,
-              };
-
-              await updateTaskDetail({
-                variables: { updateTaskDetailInput },
-              });
-            }}
+            onFinish={onSubmit}
           >
             <Row gutter={[8, 8]}>
               <Col xs={24} sm={12}>

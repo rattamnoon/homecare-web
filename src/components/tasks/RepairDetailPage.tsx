@@ -1,11 +1,19 @@
 "use client";
 
 import { LayoutWithBreadcrumb } from "@/components/layout/LayoutWithBreadcrumb";
-import { TaskStatus, UploadFileType } from "@/gql/generated/graphql";
+import { useCreateCsatMutation } from "@/gql/generated/csat.generated";
+import {
+  CreateTaskDetailReportLogInput,
+  CreateUploadFileInput,
+  TaskStatus,
+  UpdateTaskDetailInput,
+  UploadFileType,
+} from "@/gql/generated/graphql";
 import {
   TaskDetailFragment,
   TaskDocument,
   TaskStatusFragment,
+  useCreateTaskDetailReportLogMutation,
   useTaskQuery,
   useUpdateTaskDetailMutation,
 } from "@/gql/generated/tasks.generated";
@@ -31,6 +39,7 @@ import {
   Space,
   Tag,
   Typography,
+  UploadFile,
 } from "antd";
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
@@ -70,26 +79,13 @@ export const RepairDetailPage = () => {
   const [notificationApi, notificationContextHolder] =
     notification.useNotification();
   const [priorityDialogOpen, setPriorityDialogOpen] = useState(false);
-  const [priorityDialogTaskDetail, setPriorityDialogTaskDetail] =
-    useState<TaskDetailFragment | null>(null);
   const [assignedDialogOpen, setAssignedDialogOpen] = useState(false);
-  const [assignedDialogTaskDetail, setAssignedDialogTaskDetail] =
-    useState<TaskDetailFragment | null>(null);
   const [misscallDialogOpen, setMisscallDialogOpen] = useState(false);
-  const [misscallDialogTaskDetail, setMisscallDialogTaskDetail] =
-    useState<TaskDetailFragment | null>(null);
   const [waitingConstructionDialogOpen, setWaitingConstructionDialogOpen] =
     useState(false);
-  const [
-    waitingConstructionDialogTaskDetail,
-    setWaitingConstructionDialogTaskDetail,
-  ] = useState<TaskDetailFragment | null>(null);
   const [logsDialogOpen, setLogsDialogOpen] = useState(false);
-  const [logsDialogTaskDetail, setLogsDialogTaskDetail] =
-    useState<TaskDetailFragment | null>(null);
   const [evaluationDialogOpen, setEvaluationDialogOpen] = useState(false);
-  const [evaluationDialogTaskDetail, setEvaluationDialogTaskDetail] =
-    useState<TaskDetailFragment | null>(null);
+  const [taskDetail, setTaskDetail] = useState<TaskDetailFragment | null>(null);
 
   const { data, loading, error } = useTaskQuery({
     variables: { id: taskId },
@@ -97,13 +93,46 @@ export const RepairDetailPage = () => {
     fetchPolicy: "cache-and-network",
   });
 
-  const [updateTaskDetail] = useUpdateTaskDetailMutation({
+  const [updateTaskDetail, { loading: updateTaskDetailLoading }] =
+    useUpdateTaskDetailMutation({
+      onCompleted: () => {
+        notificationApi.success({
+          message: "สำเร็จ !!",
+          description: "บันทึกข้อมูลเรียบร้อย",
+          duration: 3,
+        });
+        setTaskDetail(null);
+        setAssignedDialogOpen(false);
+        setPriorityDialogOpen(false);
+      },
+      onError: (error) => {
+        notificationApi.error({
+          message: "เกิดข้อผิดพลาด !!",
+          description: error.message,
+          duration: 5,
+        });
+      },
+      refetchQueries: [
+        {
+          query: TaskDocument,
+          variables: { id: taskId },
+        },
+      ],
+    });
+
+  const [
+    createTaskDetailReportLog,
+    { loading: createTaskDetailReportLogLoading },
+  ] = useCreateTaskDetailReportLogMutation({
     onCompleted: () => {
       notificationApi.success({
         message: "สำเร็จ !!",
         description: "บันทึกข้อมูลเรียบร้อย",
         duration: 3,
       });
+      setTaskDetail(null);
+      setWaitingConstructionDialogOpen(false);
+      setMisscallDialogOpen(false);
     },
     onError: (error) => {
       notificationApi.error({
@@ -116,6 +145,31 @@ export const RepairDetailPage = () => {
       {
         query: TaskDocument,
         variables: { id: taskId },
+      },
+    ],
+  });
+
+  const [createCsat, { loading: createCsatLoading }] = useCreateCsatMutation({
+    onCompleted: () => {
+      notificationApi.success({
+        message: "สำเร็จ !!",
+        description: "บันทึกข้อมูลเรียบร้อย",
+        duration: 3,
+      });
+      setTaskDetail(null);
+      setEvaluationDialogOpen(false);
+    },
+    onError: (error) => {
+      notificationApi.error({
+        message: "เกิดข้อผิดพลาด !!",
+        description: error.message,
+        duration: 5,
+      });
+    },
+    refetchQueries: [
+      {
+        query: TaskDocument,
+        variables: { id: taskDetail?.taskId },
       },
     ],
   });
@@ -162,6 +216,49 @@ export const RepairDetailPage = () => {
     return [TaskStatus.HomecareFinished, TaskStatus.Hold].includes(
       detail.status?.id
     );
+  };
+
+  const handleSubmitMisscallOrWaitingConstruction = async (values: {
+    type: TaskStatus;
+    callbackDate: Date;
+    checkInDate: Date;
+    checkInRangeTime: string;
+    remark: string;
+    images: UploadFile[];
+  }) => {
+    const createTaskDetailReportLogInput: CreateTaskDetailReportLogInput = {
+      taskDetailId: taskDetail?.id,
+      callbackDate: values.callbackDate
+        ? dayjs(values.callbackDate).startOf("day").toDate()
+        : undefined,
+      checkInDate: values.checkInDate
+        ? dayjs(values.checkInDate).startOf("day").toDate()
+        : undefined,
+      checkInRangeTime: values.checkInRangeTime,
+      remark: values.remark,
+      type: values.type,
+    };
+
+    let createUploadFileInput: CreateUploadFileInput[] = [];
+
+    if (values?.images?.length > 0) {
+      createUploadFileInput = values.images.map((image: UploadFile) => ({
+        fileType: UploadFileType.Other,
+        fileId: image.response?.fileId,
+        fileName: image.response?.fileName,
+        fileFolder: image.response?.fileFolder,
+        filePath: image.response?.filePath,
+        fileBucket: image.response?.fileBucket,
+        fileExtension: image.response?.fileExtension,
+      }));
+    }
+
+    await createTaskDetailReportLog({
+      variables: {
+        createTaskDetailReportLogInput,
+        createUploadFileInput,
+      },
+    });
   };
 
   return (
@@ -307,7 +404,7 @@ export const RepairDetailPage = () => {
                             color="primary"
                             size="small"
                             onClick={() => {
-                              setEvaluationDialogTaskDetail(detail);
+                              setTaskDetail(detail);
                               setEvaluationDialogOpen(true);
                             }}
                           >
@@ -381,7 +478,7 @@ export const RepairDetailPage = () => {
                             variant="outlined"
                             color="primary"
                             onClick={() => {
-                              setMisscallDialogTaskDetail(detail);
+                              setTaskDetail(detail);
                               setMisscallDialogOpen(true);
                             }}
                             disabled={handleDisabled(detail.status)}
@@ -393,7 +490,7 @@ export const RepairDetailPage = () => {
                             variant="outlined"
                             color="primary"
                             onClick={() => {
-                              setWaitingConstructionDialogTaskDetail(detail);
+                              setTaskDetail(detail);
                               setWaitingConstructionDialogOpen(true);
                             }}
                             disabled={handleDisabled(detail.status)}
@@ -405,7 +502,7 @@ export const RepairDetailPage = () => {
                             variant="outlined"
                             color="primary"
                             onClick={() => {
-                              setLogsDialogTaskDetail(detail);
+                              setTaskDetail(detail);
                               setLogsDialogOpen(true);
                             }}
                           >
@@ -437,7 +534,7 @@ export const RepairDetailPage = () => {
                             color={detail.slaId ? "orange" : "blue"}
                             icon={<FontAwesomeIcon icon={faPlus} />}
                             onClick={() => {
-                              setAssignedDialogTaskDetail(detail);
+                              setTaskDetail(detail);
                               setAssignedDialogOpen(true);
                             }}
                             disabled={handleDisabled(detail.status)}
@@ -458,7 +555,7 @@ export const RepairDetailPage = () => {
                             color="cyan"
                             icon={<FontAwesomeIcon icon={faFaceSmile} />}
                             onClick={() => {
-                              setPriorityDialogTaskDetail(detail);
+                              setTaskDetail(detail);
                               setPriorityDialogOpen(true);
                             }}
                             disabled={handleDisabled(detail.status)}
@@ -546,32 +643,94 @@ export const RepairDetailPage = () => {
       <RepairPriorityDialog
         open={priorityDialogOpen}
         onCancel={() => setPriorityDialogOpen(false)}
-        taskDetail={priorityDialogTaskDetail}
+        taskDetail={taskDetail}
+        onSubmit={async (values) => {
+          await updateTaskDetail({
+            variables: {
+              updateTaskDetailInput: {
+                id: taskDetail?.id ?? "",
+                priority: values.priority,
+              },
+            },
+          });
+        }}
+        confirmLoading={updateTaskDetailLoading}
       />
       <RepairAssignedDialog
         open={assignedDialogOpen}
         onCancel={() => setAssignedDialogOpen(false)}
-        taskDetail={assignedDialogTaskDetail}
+        taskDetail={taskDetail}
+        onSubmit={async (values) => {
+          const updateTaskDetailInput: UpdateTaskDetailInput = {
+            id: taskDetail?.id ?? "",
+            slaId: values.slaId,
+            priority: taskDetail?.priority?.id,
+            status: TaskStatus.Open,
+            homecareId: values.homecareId,
+            homecareStatus: TaskStatus.Open,
+            homecareInDate: values.homecareInDate
+              ? dayjs(values.homecareInDate).startOf("day").toDate()
+              : undefined,
+            homecareRangeTime: values.homecareRangeTime
+              ? values.homecareRangeTime
+              : undefined,
+          };
+
+          await updateTaskDetail({
+            variables: { updateTaskDetailInput },
+          });
+        }}
+        confirmLoading={updateTaskDetailLoading}
       />
       <RepairMisscallDialog
         open={misscallDialogOpen}
         onCancel={() => setMisscallDialogOpen(false)}
-        taskDetail={misscallDialogTaskDetail}
+        taskDetail={taskDetail}
+        onSubmit={async (values) => {
+          handleSubmitMisscallOrWaitingConstruction({
+            type: TaskStatus.MissedCall,
+            ...values,
+          });
+        }}
+        confirmLoading={createTaskDetailReportLogLoading}
       />
       <RepairWaitingConstructionDialog
         open={waitingConstructionDialogOpen}
         onCancel={() => setWaitingConstructionDialogOpen(false)}
-        taskDetail={waitingConstructionDialogTaskDetail}
+        taskDetail={taskDetail}
+        onSubmit={async (values) => {
+          handleSubmitMisscallOrWaitingConstruction({
+            type: TaskStatus.WaitingConstruction,
+            ...values,
+          });
+        }}
+        confirmLoading={createTaskDetailReportLogLoading}
       />
       <RepairLogsDialog
         open={logsDialogOpen}
         onCancel={() => setLogsDialogOpen(false)}
-        taskDetail={logsDialogTaskDetail}
+        taskDetail={taskDetail}
       />
       <RepairEvaluationDialog
         open={evaluationDialogOpen}
         onCancel={() => setEvaluationDialogOpen(false)}
-        taskDetail={evaluationDialogTaskDetail}
+        taskDetail={taskDetail}
+        onSubmit={async (values) => {
+          await createCsat({
+            variables: {
+              taskDetailId: taskDetail?.id ?? "",
+              csatComment: values.CSATComment,
+              createCsatInput: values.evaluation.map((item) => ({
+                taskId: taskDetail?.taskId ?? "",
+                taskDetailId: taskDetail?.id ?? "",
+                questionId: item.questionId,
+                score: item.score,
+                comment: values.CSATComment,
+              })),
+            },
+          });
+        }}
+        confirmLoading={createCsatLoading}
       />
     </LayoutWithBreadcrumb>
   );
