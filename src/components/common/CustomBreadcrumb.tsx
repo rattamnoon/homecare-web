@@ -10,6 +10,8 @@ const route: { [key: string]: string } = {
   "/tasks/repair/create": "เพิ่มงานแจ้งซ่อม",
   "/tasks/repair/calendar": "ปฏิทินงานแจ้งซ่อม",
   "/tasks/repair/call-center": "Call Center",
+  "/tasks/repair/pending": "รายการงานรอดำเนินการ",
+  "/tasks/repair/waiting-approval": "รายการงานรออนุมัติ",
   "/tasks/juristic/service": "Service",
   "/tasks/juristic/central": "ส่วนกลาง",
   "/dashboard": "Dashboard",

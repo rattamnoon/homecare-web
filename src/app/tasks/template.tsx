@@ -4,6 +4,8 @@ import { Routes } from "@/config/routes";
 import {
   faBuilding,
   faCalendarDays,
+  faClock,
+  faClockRotateLeft,
   faList,
   faPhoneIntercom,
   faScrewdriverWrench,
@@ -71,6 +73,18 @@ export default function TasksTemplate({
                   label: "Call Center",
                   icon: <FontAwesomeIcon icon={faPhoneIntercom} />,
                   onClick: () => router.push(Routes.TasksRepairCallCenter),
+                },
+                {
+                  key: Routes.TasksRepairPending,
+                  label: "รอดำเนินการ",
+                  icon: <FontAwesomeIcon icon={faClockRotateLeft} />,
+                  onClick: () => router.push(Routes.TasksRepairPending),
+                },
+                {
+                  key: Routes.TasksRepairWaitingApproval,
+                  label: "รออนุมัติ",
+                  icon: <FontAwesomeIcon icon={faClock} />,
+                  onClick: () => router.push(Routes.TasksRepairWaitingApproval),
                 },
               ],
             },

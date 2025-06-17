@@ -5,4 +5,4 @@ export const metadata: Metadata = {
   description: "ORIGIN | HOMECARE - Call Center",
 };
 
-export { RepairCallCenter as default } from "@/components/tasks/RepairCallCenter";
+export { RepairCallCenterPage as default } from "@/components/tasks/RepairCallCenterPage";

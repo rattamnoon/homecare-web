@@ -16,6 +16,7 @@ interface LayoutWithBreadcrumbProps {
   fullWidth?: boolean;
   breadcrumb?: BreadcrumbItem[];
   showBackButton?: boolean;
+  backButtonText?: string;
 }
 
 interface PaddingConfig {
@@ -59,6 +60,7 @@ export const LayoutWithBreadcrumb = ({
   breadcrumb,
   fullWidth = false,
   showBackButton = false,
+  backButtonText,
 }: LayoutWithBreadcrumbProps) => {
   const router = useRouter();
   const {
@@ -81,7 +83,9 @@ export const LayoutWithBreadcrumb = ({
               style={{ cursor: "pointer" }}
               size="lg"
             />
-            <Text strong>{breadcrumb?.[breadcrumb.length - 1]?.title}</Text>
+            <Text strong>
+              {backButtonText || breadcrumb?.[breadcrumb.length - 1]?.title}
+            </Text>
           </Space>
         )}
         {children}

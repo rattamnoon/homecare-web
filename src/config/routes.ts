@@ -5,6 +5,8 @@ export const Routes = {
   TasksRepair: "/tasks/repair",
   TasksRepairDetail: (id: string) => `/tasks/repair/${id}`,
   TasksRepairCallCenter: "/tasks/repair/call-center",
+  TasksRepairPending: "/tasks/repair/pending",
+  TasksRepairWaitingApproval: "/tasks/repair/waiting-approval",
   TasksRepairCreate: "/tasks/repair/create",
   TasksRepairCalendar: "/tasks/repair/calendar",
   TasksJuristicService: "/tasks/juristic/service",

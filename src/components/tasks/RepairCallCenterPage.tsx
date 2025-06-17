@@ -51,7 +51,7 @@ import {
 import { RepairClosedDialog } from "./components/RepairClosedDialog";
 import { RepairEvaluationDialog } from "./components/RepairEvaluationDialog";
 
-export const RepairCallCenter = () => {
+export const RepairCallCenterPage = () => {
   const [notificationApi, notificationContextHolder] =
     notification.useNotification();
   const [modalApi, modalContextHolder] = Modal.useModal();
@@ -189,34 +189,32 @@ export const RepairCallCenter = () => {
       ],
     });
 
-  const [
-    createTaskDetailReinprogress,
-    { loading: createTaskDetailReinprogressLoading },
-  ] = useCreateTaskDetailReinprogressMutation({
-    onCompleted: () => {
-      notificationApi.success({
-        message: "สำเร็จ !!",
-        description: "บันทึกข้อมูลเรียบร้อย",
-        duration: 3,
-      });
-    },
-    onError: (error) => {
-      notificationApi.error({
-        message: "เกิดข้อผิดพลาด !!",
-        description: error.message,
-        duration: 5,
-      });
-    },
-    refetchQueries: [
-      {
-        query: TaskDetailsDocument,
-        variables,
+  const [createTaskDetailReinprogress] =
+    useCreateTaskDetailReinprogressMutation({
+      onCompleted: () => {
+        notificationApi.success({
+          message: "สำเร็จ !!",
+          description: "บันทึกข้อมูลเรียบร้อย",
+          duration: 3,
+        });
       },
-    ],
-  });
+      onError: (error) => {
+        notificationApi.error({
+          message: "เกิดข้อผิดพลาด !!",
+          description: error.message,
+          duration: 5,
+        });
+      },
+      refetchQueries: [
+        {
+          query: TaskDetailsDocument,
+          variables,
+        },
+      ],
+    });
 
   return (
-    <LayoutWithBreadcrumb>
+    <LayoutWithBreadcrumb showBackButton backButtonText="Call Center">
       {modalContextHolder}
       {notificationContextHolder}
       <Row gutter={[16, 16]}>
