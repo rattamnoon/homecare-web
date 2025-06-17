@@ -1,5 +1,9 @@
 "use client";
 
+import {
+  SearchFilter,
+  useSearchFilter,
+} from "@/components/common/SearchFilter";
 import { LayoutWithBreadcrumb } from "@/components/layout/LayoutWithBreadcrumb";
 import { Routes } from "@/config/routes";
 import { TaskStatus, TaskType } from "@/gql/generated/graphql";
@@ -14,7 +18,6 @@ import { Col, Row, Space, Table, Tag, theme } from "antd";
 import dayjs from "dayjs";
 import { useRouter } from "nextjs-toploader/app";
 import { useMemo } from "react";
-import { RepairFilter, useRepairFilter } from "./components/RepairFilter";
 
 export const RepairPage = () => {
   const router = useRouter();
@@ -30,7 +33,7 @@ export const RepairPage = () => {
     currentPage,
     pageSize,
     handleSearch,
-  } = useRepairFilter();
+  } = useSearchFilter("TasksRepair");
   const {
     token: { colorPrimary },
   } = theme.useToken();
@@ -57,7 +60,17 @@ export const RepairPage = () => {
     <LayoutWithBreadcrumb>
       <Row gutter={[16, 16]}>
         <Col span={24}>
-          <RepairFilter />
+          <SearchFilter
+            route="TasksRepair"
+            isSearchText
+            isCreateButton
+            isStatus
+            isProject
+            isUnit
+            isSource
+            isCheckInDate
+            isCreatedAt
+          />
         </Col>
         <Col span={24}>
           <Table

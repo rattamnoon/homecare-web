@@ -16,4 +16,6 @@ export const Routes = {
   AdminUsers: "/admin/user",
   AdminRoles: "/admin/role",
   System: "/system",
+  SystemMaster: "/system/master",
+  SystemInsuranceExpand: "/system/insurance-expand",
 };

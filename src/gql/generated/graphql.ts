@@ -67,6 +67,13 @@ export type CreateCsatInput = {
   taskId?: InputMaybe<Scalars["String"]["input"]>;
 };
 
+export type CreateInsuranceExtensionInput = {
+  insuranceDateDefault?: InputMaybe<Scalars["Date"]["input"]>;
+  insuranceDateExpand?: InputMaybe<Scalars["Date"]["input"]>;
+  projectId?: InputMaybe<Scalars["String"]["input"]>;
+  unitId?: InputMaybe<Scalars["String"]["input"]>;
+};
+
 export type CreateMasterInput = {
   SLA1D?: InputMaybe<Scalars["Int"]["input"]>;
   SLA1H?: InputMaybe<Scalars["Int"]["input"]>;
@@ -206,6 +213,31 @@ export type IPaginateMeta = {
   totalPages?: Maybe<Scalars["Float"]["output"]>;
 };
 
+export type InsuranceExtension = {
+  __typename?: "InsuranceExtension";
+  createdAt: Scalars["Date"]["output"];
+  createdBy?: Maybe<User>;
+  deletedAt?: Maybe<Scalars["Date"]["output"]>;
+  deletedBy?: Maybe<User>;
+  files: Array<UploadFile>;
+  id: Scalars["ID"]["output"];
+  insuranceDateDefault: Scalars["Date"]["output"];
+  insuranceDateExpand?: Maybe<Scalars["Date"]["output"]>;
+  project?: Maybe<Project>;
+  projectId: Scalars["String"]["output"];
+  unit?: Maybe<Unit>;
+  unitId: Scalars["String"]["output"];
+  updatedAt: Scalars["Date"]["output"];
+  updatedBy?: Maybe<User>;
+};
+
+export type InsuranceExtensionPaginate = {
+  __typename?: "InsuranceExtensionPaginate";
+  items: Array<InsuranceExtension>;
+  links?: Maybe<IPaginateLinks>;
+  meta?: Maybe<IPaginateMeta>;
+};
+
 export type LegacyMigration = {
   __typename?: "LegacyMigration";
   syncDate: Scalars["Date"]["output"];
@@ -253,6 +285,7 @@ export type Mutation = {
   __typename?: "Mutation";
   createCalling: Calling;
   createCsat: Array<Csat>;
+  createInsuranceExtension: InsuranceExtension;
   createLegacyMigration: LegacyMigration;
   createMaster: Master;
   createProject: Project;
@@ -266,6 +299,7 @@ export type Mutation = {
   refreshToken?: Maybe<Auth>;
   removeCalling: Scalars["Boolean"]["output"];
   removeCsat: Csat;
+  removeInsuranceExtension: Scalars["Boolean"]["output"];
   removeMaster: Scalars["Boolean"]["output"];
   removeProject: Scalars["Boolean"]["output"];
   removeTask: Scalars["Boolean"]["output"];
@@ -273,6 +307,7 @@ export type Mutation = {
   removeUser: Scalars["Boolean"]["output"];
   updateCalling: Calling;
   updateCsat: Csat;
+  updateInsuranceExtension: InsuranceExtension;
   updateMaster: Master;
   updateProject: Project;
   updateTask: Task;
@@ -289,6 +324,10 @@ export type MutationCreateCsatArgs = {
   CSATComment?: InputMaybe<Scalars["String"]["input"]>;
   createCsatInput: Array<CreateCsatInput>;
   taskDetailId: Scalars["ID"]["input"];
+};
+
+export type MutationCreateInsuranceExtensionArgs = {
+  createInsuranceExtensionInput: CreateInsuranceExtensionInput;
 };
 
 export type MutationCreateMasterArgs = {
@@ -339,6 +378,10 @@ export type MutationRemoveCsatArgs = {
   id: Scalars["ID"]["input"];
 };
 
+export type MutationRemoveInsuranceExtensionArgs = {
+  id: Scalars["ID"]["input"];
+};
+
 export type MutationRemoveMasterArgs = {
   id: Scalars["ID"]["input"];
 };
@@ -365,6 +408,10 @@ export type MutationUpdateCallingArgs = {
 
 export type MutationUpdateCsatArgs = {
   updateCsatInput: UpdateCsatInput;
+};
+
+export type MutationUpdateInsuranceExtensionArgs = {
+  updateInsuranceExtensionInput: UpdateInsuranceExtensionInput;
 };
 
 export type MutationUpdateMasterArgs = {
@@ -406,6 +453,8 @@ export type Query = {
   callings: Array<Calling>;
   csat: Csat;
   csats: Array<Csat>;
+  insuranceExtension: InsuranceExtension;
+  insuranceExtensions: InsuranceExtensionPaginate;
   master: Master;
   masters: Array<Master>;
   me: User;
@@ -435,6 +484,20 @@ export type QueryCallingsArgs = {
 
 export type QueryCsatArgs = {
   id: Scalars["ID"]["input"];
+};
+
+export type QueryInsuranceExtensionArgs = {
+  id: Scalars["ID"]["input"];
+};
+
+export type QueryInsuranceExtensionsArgs = {
+  insuranceDateDefault?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  insuranceDateExpand?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  limit?: Scalars["Int"]["input"];
+  page?: Scalars["Int"]["input"];
+  projectId?: InputMaybe<Scalars["String"]["input"]>;
+  searchText?: InputMaybe<Scalars["String"]["input"]>;
+  unitIds?: InputMaybe<Array<Scalars["String"]["input"]>>;
 };
 
 export type QueryMasterArgs = {
@@ -764,6 +827,14 @@ export type UpdateCsatInput = {
   score?: InputMaybe<Scalars["Int"]["input"]>;
   taskDetailId?: InputMaybe<Scalars["String"]["input"]>;
   taskId?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type UpdateInsuranceExtensionInput = {
+  id: Scalars["ID"]["input"];
+  insuranceDateDefault?: InputMaybe<Scalars["Date"]["input"]>;
+  insuranceDateExpand?: InputMaybe<Scalars["Date"]["input"]>;
+  projectId?: InputMaybe<Scalars["String"]["input"]>;
+  unitId?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type UpdateMasterInput = {

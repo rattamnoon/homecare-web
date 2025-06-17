@@ -99,7 +99,13 @@ const MainMenu = () => {
       ...item,
       icon: <FontAwesomeIcon icon={item.icon} />,
       key: item.key,
-      onClick: () => router.push(item.href),
+      ...(item.href && { onClick: () => router.push(item.href) }),
+      children: item.children?.map((child) => ({
+        ...child,
+        icon: <FontAwesomeIcon icon={child.icon} />,
+        key: child.key,
+        onClick: () => router.push(child.href),
+      })),
     })),
     ...(!isMobile
       ? []

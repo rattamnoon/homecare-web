@@ -26,7 +26,7 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { useCallback, useMemo } from "react";
 
-export const useRepairFilter = () => {
+export const useSearchFilter = (route: keyof typeof Routes) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { createQueryString } = useCreateSearchParams();
@@ -47,6 +47,10 @@ export const useRepairFilter = () => {
   const createdAt = ((searchParams.get("createdAt") as string) || "")
     .split(",")
     .filter(Boolean);
+  const finishedDate = ((searchParams.get("finishedDate") as string) || "")
+    .split(",")
+    .filter(Boolean);
+  const isCall = searchParams.get("isCall") || "all";
   const currentPage = Number(searchParams.get("currentPage")) || 1;
   const pageSize = Number(searchParams.get("pageSize")) || 10;
 
@@ -65,13 +69,12 @@ export const useRepairFilter = () => {
       };
 
       const queryString = createQueryString(queryParams);
-      router.push(`${Routes.TasksRepair}?${queryString}`, {
+      router.push(`${Routes[route]}?${queryString}`, {
         scroll: false,
       });
     },
-    [createQueryString, router]
+    [createQueryString, router, route]
   );
-
   return {
     searchText,
     statuses,
@@ -80,24 +83,55 @@ export const useRepairFilter = () => {
     sources,
     checkInDate,
     createdAt,
+    finishedDate,
+    isCall,
     currentPage,
     pageSize,
     handleSearch,
   };
 };
 
-export const RepairFilter = () => {
+interface SearchFilterProps {
+  route: keyof typeof Routes;
+  isSearchText?: boolean;
+  isCreateButton?: boolean;
+  isStatus?: boolean;
+  isProject?: boolean;
+  isUnit?: boolean;
+  isFinishedDate?: boolean;
+  isIsCall?: boolean;
+  isSource?: boolean;
+  isCheckInDate?: boolean;
+  isCreatedAt?: boolean;
+}
+
+export const SearchFilter = ({
+  route,
+  isSearchText,
+  isCreateButton,
+  isStatus,
+  isProject,
+  isUnit,
+  isFinishedDate,
+  isIsCall,
+  isSource,
+  isCheckInDate,
+  isCreatedAt,
+}: SearchFilterProps) => {
   const router = useRouter();
   const {
     searchText,
-    statuses,
     projectId,
     unitIds,
     sources,
     checkInDate,
     createdAt,
+    statuses,
+    finishedDate,
+    isCall,
     handleSearch,
-  } = useRepairFilter();
+  } = useSearchFilter(route);
+
   const { data: statusesData, loading: statusesLoading } =
     useTaskStatusesQuery();
   const { data: projectsData, loading: projectsLoading } = useProjectsQuery();
@@ -136,7 +170,7 @@ export const RepairFilter = () => {
   return (
     <Form layout="horizontal">
       <Row gutter={[16, 16]}>
-        <Col span={24}>
+        <Col span={24} style={{ display: isSearchText ? "block" : "none" }}>
           <Flex justify="space-between">
             <Form.Item
               label="ค้นหา"
@@ -154,21 +188,27 @@ export const RepairFilter = () => {
                 style={{ width: 325 }}
               />
             </Form.Item>
-            <Button
-              variant="solid"
-              color="primary"
-              icon={<FontAwesomeIcon icon={faPlus} />}
-              onClick={() => {
-                router.push(Routes.TasksRepairCreate);
-              }}
-            >
-              เพิ่มงานแจ้งซ่อม
-            </Button>
+            {isCreateButton && (
+              <Button
+                variant="solid"
+                color="primary"
+                icon={<FontAwesomeIcon icon={faPlus} />}
+                onClick={() => {
+                  router.push(Routes.TasksRepairCreate);
+                }}
+              >
+                เพิ่มงานแจ้งซ่อม
+              </Button>
+            )}
           </Flex>
         </Col>
         <Col span={24}>
           <Row gutter={[8, 8]}>
-            <Col xs={24} md={6}>
+            <Col
+              xs={24}
+              md={6}
+              style={{ display: isStatus ? "block" : "none" }}
+            >
               <Form.Item
                 label="สถานะ"
                 name="statuses"
@@ -200,7 +240,11 @@ export const RepairFilter = () => {
                 />
               </Form.Item>
             </Col>
-            <Col xs={24} md={6}>
+            <Col
+              xs={24}
+              md={6}
+              style={{ display: isProject ? "block" : "none" }}
+            >
               <Form.Item
                 label="โครงการ"
                 name="projectId"
@@ -222,7 +266,7 @@ export const RepairFilter = () => {
                 />
               </Form.Item>
             </Col>
-            <Col xs={24} md={6}>
+            <Col xs={24} md={6} style={{ display: isUnit ? "block" : "none" }}>
               <Form.Item
                 label="ห้อง"
                 name="unitIds"
@@ -245,7 +289,78 @@ export const RepairFilter = () => {
                 />
               </Form.Item>
             </Col>
-            <Col xs={24} md={6}>
+            <Col
+              xs={24}
+              md={6}
+              style={{ display: isFinishedDate ? "block" : "none" }}
+            >
+              <Form.Item
+                label="วันที่เสร็จงาน"
+                name="finishedDate"
+                colon={false}
+                style={{ marginBottom: 0 }}
+              >
+                <DatePicker.RangePicker
+                  placeholder={["เริ่มต้น", "สิ้นสุด"]}
+                  allowClear
+                  format="DD/MM/YYYY"
+                  defaultValue={[
+                    finishedDate[0]
+                      ? dayjs(finishedDate[0], "YYYY-MM-DD")
+                      : null,
+                    finishedDate[1]
+                      ? dayjs(finishedDate[1], "YYYY-MM-DD")
+                      : null,
+                  ]}
+                  onChange={(value) => {
+                    if (value) {
+                      handleSearch(
+                        "finishedDate",
+                        value
+                          .map((date) => date?.format("YYYY-MM-DD"))
+                          .filter(Boolean)
+                          .join(",")
+                      );
+                    } else {
+                      handleSearch("checkInDate", "");
+                    }
+                  }}
+                  style={{ width: "100%" }}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              md={6}
+              style={{ display: isIsCall ? "block" : "none" }}
+            >
+              <Form.Item
+                label="การโทรที่ถูกบันทึกไว้"
+                name="isCall"
+                colon={false}
+                style={{ marginBottom: 0 }}
+              >
+                <Select
+                  {...sharedSelectProps}
+                  placeholder="การโทรที่ถูกบันทึกไว้"
+                  allowClear={false}
+                  defaultValue={isCall}
+                  onChange={(value) => {
+                    handleSearch("isCall", value);
+                  }}
+                  options={[
+                    { label: "ทั้งหมด", value: "all" },
+                    { label: "มี", value: "has" },
+                    { label: "ไม่มี", value: "no" },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              md={6}
+              style={{ display: isSource ? "block" : "none" }}
+            >
               <Form.Item
                 label="ช่องทาง"
                 name="sources"
@@ -268,7 +383,11 @@ export const RepairFilter = () => {
                 />
               </Form.Item>
             </Col>
-            <Col xs={24} md={6}>
+            <Col
+              xs={24}
+              md={6}
+              style={{ display: isCheckInDate ? "block" : "none" }}
+            >
               <Form.Item
                 label="วันที่นัดตรวจสอบ"
                 name="checkInDate"
@@ -300,7 +419,11 @@ export const RepairFilter = () => {
                 />
               </Form.Item>
             </Col>
-            <Col xs={24} md={6}>
+            <Col
+              xs={24}
+              md={6}
+              style={{ display: isCreatedAt ? "block" : "none" }}
+            >
               <Form.Item
                 label="วันที่สร้าง"
                 name="createdAt"

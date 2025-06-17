@@ -1,4 +1,6 @@
 import {
+  faClockRotateLeft,
+  faDatabase,
   faDisplayChartUpCircleDollar,
   faGear,
   faHouse,
@@ -49,9 +51,22 @@ export const siteConfig = {
     },
     {
       label: "ตั้งค่า",
-      href: Routes.System,
       key: "system",
       icon: faGear,
+      children: [
+        {
+          label: "ข้อมูลพื้นฐาน",
+          key: "master",
+          icon: faDatabase,
+          href: Routes.SystemMaster,
+        },
+        {
+          label: "ขยายวันประกัน",
+          key: "insurance-expand",
+          icon: faClockRotateLeft,
+          href: Routes.SystemInsuranceExpand,
+        },
+      ],
     },
   ],
 };

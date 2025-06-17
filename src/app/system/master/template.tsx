@@ -1,5 +1,6 @@
 "use client";
 
+import { Routes } from "@/config/routes";
 import { MasterType } from "@/gql/generated/graphql";
 import {
   faBuilding,
@@ -33,7 +34,7 @@ export default function AdminTemplate({
   const [collapsed, setCollapsed] = useState(false);
 
   const handleClick = (key: string) => {
-    router.push(`/system?type=${key}`);
+    router.push(`${Routes.SystemMaster}?type=${key}`);
   };
 
   return (

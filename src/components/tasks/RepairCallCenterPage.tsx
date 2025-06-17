@@ -39,15 +39,12 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import { useMemo, useState } from "react";
+import { SearchFilter, useSearchFilter } from "../common/SearchFilter";
 import { LayoutWithBreadcrumb } from "../layout/LayoutWithBreadcrumb";
 import {
   RepairCallCenterCallingDialog,
   RepairCallCenterCallingHistoryDialog,
 } from "./components/RepairCallCenterCallingDialog";
-import {
-  RepairCallCenterFilter,
-  useRepairCallCenterFilter,
-} from "./components/RepairCallCenterFilter";
 import { RepairClosedDialog } from "./components/RepairClosedDialog";
 import { RepairEvaluationDialog } from "./components/RepairEvaluationDialog";
 
@@ -74,7 +71,7 @@ export const RepairCallCenterPage = () => {
     pageSize,
     handleSearch,
     isCall,
-  } = useRepairCallCenterFilter();
+  } = useSearchFilter("TasksRepairCallCenter");
   const {
     token: { colorPrimary },
   } = theme.useToken();
@@ -219,7 +216,15 @@ export const RepairCallCenterPage = () => {
       {notificationContextHolder}
       <Row gutter={[16, 16]}>
         <Col span={24}>
-          <RepairCallCenterFilter />
+          <SearchFilter
+            route="TasksRepairCallCenter"
+            isSearchText
+            isCreateButton
+            isProject
+            isUnit
+            isFinishedDate
+            isIsCall
+          />
         </Col>
         <Col span={24}>
           <Table
