@@ -283,7 +283,7 @@ export const SearchFilter = ({
                     handleSearch("unitIds", value.join(","));
                   }}
                   options={unitsOptions?.map((unit) => ({
-                    label: unit.unitNumber,
+                    label: `${unit.unitNumber} (${unit.houseNumber})`,
                     value: unit.id,
                   }))}
                 />

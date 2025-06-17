@@ -27,14 +27,21 @@ import { SearchFilter, useSearchFilter } from "../common/SearchFilter";
 const { Text } = Typography;
 
 export const SystemInsuranceExpandPage = () => {
-  const { searchText, projectId, currentPage, pageSize, handleSearch } =
-    useSearchFilter("SystemInsuranceExpand");
+  const {
+    searchText,
+    projectId,
+    unitIds,
+    currentPage,
+    pageSize,
+    handleSearch,
+  } = useSearchFilter("SystemInsuranceExpand");
   const { data, loading } = useInsuranceExtensionsQuery({
     variables: {
       limit: pageSize,
       page: currentPage,
       searchText,
       projectId,
+      unitIds,
     },
   });
 
