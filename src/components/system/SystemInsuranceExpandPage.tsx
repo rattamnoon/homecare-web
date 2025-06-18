@@ -9,6 +9,7 @@ import {
 import {
   InsuranceExtensionFragment,
   InsuranceExtensionsDocument,
+  useBulkCreateOrUpdateInsuranceExtensionMutation,
   useCreateOrUpdateInsuranceExtensionMutation,
   useInsuranceExtensionsQuery,
 } from "@/gql/generated/insurance-extensions.generated";
@@ -36,6 +37,7 @@ import {
 import dayjs from "dayjs";
 import { useMemo, useState } from "react";
 import { SearchFilter, useSearchFilter } from "../common/SearchFilter";
+import { SystemInsuranceExpandProjectDialog } from "./components/SystemInsuranceExpandProjectDialog";
 import { SystemInsuranceExpandRoomDialog } from "./components/SystemInsuranceExpandRoomDialog";
 
 const { Text } = Typography;
@@ -45,7 +47,8 @@ export const SystemInsuranceExpandPage = () => {
     notification.useNotification();
   const { projectId, unitIds, currentPage, pageSize, handleSearch } =
     useSearchFilter("SystemInsuranceExpand");
-  const [openExpandDialog, setOpenExpandDialog] = useState(false);
+  const [openExpandRoomDialog, setOpenExpandRoomDialog] = useState(false);
+  const [openExpandProjectDialog, setOpenExpandProjectDialog] = useState(false);
   const [insuranceExpand, setInsuranceExpand] =
     useState<InsuranceExtensionFragment | null>(null);
 
@@ -70,7 +73,7 @@ export const SystemInsuranceExpandPage = () => {
           description: "บันทึกข้อมูลเรียบร้อย",
           duration: 3,
         });
-        setOpenExpandDialog(false);
+        setOpenExpandRoomDialog(false);
         setInsuranceExpand(null);
       },
       onError: (error) => {
@@ -87,6 +90,33 @@ export const SystemInsuranceExpandPage = () => {
         },
       ],
     });
+
+  const [
+    bulkCreateOrUpdateInsuranceExtension,
+    { loading: bulkCreateOrUpdateLoading },
+  ] = useBulkCreateOrUpdateInsuranceExtensionMutation({
+    onCompleted: () => {
+      notificationApi.success({
+        message: "สำเร็จ !!",
+        description: "บันทึกข้อมูลเรียบร้อย",
+        duration: 3,
+      });
+      setOpenExpandProjectDialog(false);
+    },
+    onError: (error) => {
+      notificationApi.error({
+        message: "เกิดข้อผิดพลาด !!",
+        description: error.message,
+        duration: 5,
+      });
+    },
+    refetchQueries: [
+      {
+        query: InsuranceExtensionsDocument,
+        variables,
+      },
+    ],
+  });
 
   const insuranceExtensions = useMemo(() => data?.insuranceExtensions, [data]);
   const dataSource = useMemo(
@@ -108,7 +138,11 @@ export const SystemInsuranceExpandPage = () => {
               <Button
                 variant="solid"
                 color="primary"
+                disabled={!projectId}
                 icon={<FontAwesomeIcon icon={faExpand} />}
+                onClick={() => {
+                  setOpenExpandProjectDialog(true);
+                }}
               >
                 ขยายวันประกันทั้งโครงการ
               </Button>
@@ -277,7 +311,7 @@ export const SystemInsuranceExpandPage = () => {
                               icon: <FontAwesomeIcon icon={faEdit} />,
                               onClick: () => {
                                 setInsuranceExpand(record);
-                                setOpenExpandDialog(true);
+                                setOpenExpandRoomDialog(true);
                               },
                             },
                             {
@@ -315,8 +349,8 @@ export const SystemInsuranceExpandPage = () => {
           </Col>
         </Row>
         <SystemInsuranceExpandRoomDialog
-          open={openExpandDialog}
-          onCancel={() => setOpenExpandDialog(false)}
+          open={openExpandRoomDialog}
+          onCancel={() => setOpenExpandRoomDialog(false)}
           onSubmit={({ insuranceDate, files }) => {
             const id = insuranceExpand?.id || insuranceExpand?.unitId || "";
             const updateInsuranceExtensionInput: UpdateInsuranceExtensionInput =
@@ -349,6 +383,20 @@ export const SystemInsuranceExpandPage = () => {
           }}
           insuranceExpand={insuranceExpand}
           confirmLoading={createOrUpdateLoading}
+        />
+        <SystemInsuranceExpandProjectDialog
+          open={openExpandProjectDialog}
+          onCancel={() => setOpenExpandProjectDialog(false)}
+          onSubmit={async ({ insuranceDate }) => {
+            await bulkCreateOrUpdateInsuranceExtension({
+              variables: {
+                insuranceDate,
+                projectId: projectId ?? "",
+              },
+            });
+          }}
+          projectId={projectId ?? ""}
+          confirmLoading={bulkCreateOrUpdateLoading}
         />
       </LayoutWithBreadcrumb>
     </>

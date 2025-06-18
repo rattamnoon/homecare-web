@@ -17,6 +17,17 @@ query Projects {
   }
 }
 
+query Project($projectId: ID!) {
+  project(id: $projectId) {
+    ...Project
+    a10Date
+    insuranceDate
+    units {
+      ...Unit
+    }
+  }
+}
+
 query Units($projectId: String!) {
   units(projectId: $projectId) {
     ...Unit

@@ -30,6 +30,29 @@ export type ProjectsQuery = {
   }>;
 };
 
+export type ProjectQueryVariables = Types.Exact<{
+  projectId: Types.Scalars["ID"]["input"];
+}>;
+
+export type ProjectQuery = {
+  __typename?: "Query";
+  project: {
+    __typename?: "Project";
+    a10Date?: Date | null;
+    insuranceDate?: Date | null;
+    id: string;
+    nameTh: string;
+    nameEn: string;
+    units: Array<{
+      __typename?: "Unit";
+      id: string;
+      projectId: string;
+      unitNumber?: string | null;
+      houseNumber?: string | null;
+    }>;
+  };
+};
+
 export type UnitsQueryVariables = Types.Exact<{
   projectId: Types.Scalars["String"]["input"];
 }>;
@@ -129,6 +152,82 @@ export type ProjectsSuspenseQueryHookResult = ReturnType<
 export type ProjectsQueryResult = Apollo.QueryResult<
   ProjectsQuery,
   ProjectsQueryVariables
+>;
+export const ProjectDocument = gql`
+  query Project($projectId: ID!) {
+    project(id: $projectId) {
+      ...Project
+      a10Date
+      insuranceDate
+      units {
+        ...Unit
+      }
+    }
+  }
+  ${ProjectFragmentDoc}
+  ${UnitFragmentDoc}
+`;
+
+/**
+ * __useProjectQuery__
+ *
+ * To run a query within a React component, call `useProjectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useProjectQuery(
+  baseOptions: Apollo.QueryHookOptions<ProjectQuery, ProjectQueryVariables> &
+    ({ variables: ProjectQueryVariables; skip?: boolean } | { skip: boolean }),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<ProjectQuery, ProjectQueryVariables>(
+    ProjectDocument,
+    options,
+  );
+}
+export function useProjectLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ProjectQuery,
+    ProjectQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<ProjectQuery, ProjectQueryVariables>(
+    ProjectDocument,
+    options,
+  );
+}
+export function useProjectSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<ProjectQuery, ProjectQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<ProjectQuery, ProjectQueryVariables>(
+    ProjectDocument,
+    options,
+  );
+}
+export type ProjectQueryHookResult = ReturnType<typeof useProjectQuery>;
+export type ProjectLazyQueryHookResult = ReturnType<typeof useProjectLazyQuery>;
+export type ProjectSuspenseQueryHookResult = ReturnType<
+  typeof useProjectSuspenseQuery
+>;
+export type ProjectQueryResult = Apollo.QueryResult<
+  ProjectQuery,
+  ProjectQueryVariables
 >;
 export const UnitsDocument = gql`
   query Units($projectId: String!) {
