@@ -182,6 +182,167 @@ export type InsuranceExtensionsQuery = {
   };
 };
 
+export type CreateOrUpdateInsuranceExtensionMutationVariables = Types.Exact<{
+  createUploadFileInput:
+    | Array<Types.CreateUploadFileInput>
+    | Types.CreateUploadFileInput;
+  updateInsuranceExtensionInput: Types.UpdateInsuranceExtensionInput;
+}>;
+
+export type CreateOrUpdateInsuranceExtensionMutation = {
+  __typename?: "Mutation";
+  createOrUpdateInsuranceExtension: {
+    __typename?: "InsuranceExtension";
+    id: string;
+    insuranceDateDefault?: Date | null;
+    insuranceDateExpand?: Date | null;
+    projectId: string;
+    transferDate?: Date | null;
+    unitId: string;
+    updatedAt?: Date | null;
+    createdAt?: Date | null;
+    deletedAt?: Date | null;
+    project?: {
+      __typename?: "Project";
+      a10Date?: Date | null;
+      insuranceDate?: Date | null;
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    } | null;
+    unit?: {
+      __typename?: "Unit";
+      id: string;
+      projectId: string;
+      unitNumber?: string | null;
+      houseNumber?: string | null;
+    } | null;
+    createdBy?: {
+      __typename?: "User";
+      id: string;
+      employeeId: string;
+      username: string;
+      firstName?: string | null;
+      lastName?: string | null;
+      email: string;
+      lastLoginAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    updatedBy?: {
+      __typename?: "User";
+      id: string;
+      employeeId: string;
+      username: string;
+      firstName?: string | null;
+      lastName?: string | null;
+      email: string;
+      lastLoginAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    files: Array<{
+      __typename?: "UploadFile";
+      id: string;
+      refId?: string | null;
+      fileId?: string | null;
+      fileType: Types.UploadFileType;
+      fileName?: string | null;
+      fileFolder?: string | null;
+      filePath?: string | null;
+      fileBucket?: string | null;
+      fileExtension?: string | null;
+      fileUrl: string;
+      isPublic: boolean;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    }>;
+  };
+};
+
+export type BulkCreateOrUpdateInsuranceExtensionMutationVariables =
+  Types.Exact<{
+    insuranceDate: Types.Scalars["Date"]["input"];
+    projectId: Types.Scalars["ID"]["input"];
+  }>;
+
+export type BulkCreateOrUpdateInsuranceExtensionMutation = {
+  __typename?: "Mutation";
+  bulkCreateOrUpdateInsuranceExtension: Array<{
+    __typename?: "InsuranceExtension";
+    id: string;
+    insuranceDateDefault?: Date | null;
+    insuranceDateExpand?: Date | null;
+    projectId: string;
+    transferDate?: Date | null;
+    unitId: string;
+    updatedAt?: Date | null;
+    createdAt?: Date | null;
+    deletedAt?: Date | null;
+    project?: {
+      __typename?: "Project";
+      a10Date?: Date | null;
+      insuranceDate?: Date | null;
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    } | null;
+    unit?: {
+      __typename?: "Unit";
+      id: string;
+      projectId: string;
+      unitNumber?: string | null;
+      houseNumber?: string | null;
+    } | null;
+    createdBy?: {
+      __typename?: "User";
+      id: string;
+      employeeId: string;
+      username: string;
+      firstName?: string | null;
+      lastName?: string | null;
+      email: string;
+      lastLoginAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    updatedBy?: {
+      __typename?: "User";
+      id: string;
+      employeeId: string;
+      username: string;
+      firstName?: string | null;
+      lastName?: string | null;
+      email: string;
+      lastLoginAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    files: Array<{
+      __typename?: "UploadFile";
+      id: string;
+      refId?: string | null;
+      fileId?: string | null;
+      fileType: Types.UploadFileType;
+      fileName?: string | null;
+      fileFolder?: string | null;
+      filePath?: string | null;
+      fileBucket?: string | null;
+      fileExtension?: string | null;
+      fileUrl: string;
+      isPublic: boolean;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    }>;
+  }>;
+};
+
 export const InsuranceExtensionFragmentDoc = gql`
   fragment InsuranceExtension on InsuranceExtension {
     id
@@ -322,3 +483,123 @@ export type InsuranceExtensionsQueryResult = Apollo.QueryResult<
   InsuranceExtensionsQuery,
   InsuranceExtensionsQueryVariables
 >;
+export const CreateOrUpdateInsuranceExtensionDocument = gql`
+  mutation CreateOrUpdateInsuranceExtension(
+    $createUploadFileInput: [CreateUploadFileInput!]!
+    $updateInsuranceExtensionInput: UpdateInsuranceExtensionInput!
+  ) {
+    createOrUpdateInsuranceExtension(
+      createUploadFileInput: $createUploadFileInput
+      updateInsuranceExtensionInput: $updateInsuranceExtensionInput
+    ) {
+      ...InsuranceExtension
+    }
+  }
+  ${InsuranceExtensionFragmentDoc}
+`;
+export type CreateOrUpdateInsuranceExtensionMutationFn =
+  Apollo.MutationFunction<
+    CreateOrUpdateInsuranceExtensionMutation,
+    CreateOrUpdateInsuranceExtensionMutationVariables
+  >;
+
+/**
+ * __useCreateOrUpdateInsuranceExtensionMutation__
+ *
+ * To run a mutation, you first call `useCreateOrUpdateInsuranceExtensionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrUpdateInsuranceExtensionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOrUpdateInsuranceExtensionMutation, { data, loading, error }] = useCreateOrUpdateInsuranceExtensionMutation({
+ *   variables: {
+ *      createUploadFileInput: // value for 'createUploadFileInput'
+ *      updateInsuranceExtensionInput: // value for 'updateInsuranceExtensionInput'
+ *   },
+ * });
+ */
+export function useCreateOrUpdateInsuranceExtensionMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateOrUpdateInsuranceExtensionMutation,
+    CreateOrUpdateInsuranceExtensionMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateOrUpdateInsuranceExtensionMutation,
+    CreateOrUpdateInsuranceExtensionMutationVariables
+  >(CreateOrUpdateInsuranceExtensionDocument, options);
+}
+export type CreateOrUpdateInsuranceExtensionMutationHookResult = ReturnType<
+  typeof useCreateOrUpdateInsuranceExtensionMutation
+>;
+export type CreateOrUpdateInsuranceExtensionMutationResult =
+  Apollo.MutationResult<CreateOrUpdateInsuranceExtensionMutation>;
+export type CreateOrUpdateInsuranceExtensionMutationOptions =
+  Apollo.BaseMutationOptions<
+    CreateOrUpdateInsuranceExtensionMutation,
+    CreateOrUpdateInsuranceExtensionMutationVariables
+  >;
+export const BulkCreateOrUpdateInsuranceExtensionDocument = gql`
+  mutation BulkCreateOrUpdateInsuranceExtension(
+    $insuranceDate: Date!
+    $projectId: ID!
+  ) {
+    bulkCreateOrUpdateInsuranceExtension(
+      insuranceDate: $insuranceDate
+      projectId: $projectId
+    ) {
+      ...InsuranceExtension
+    }
+  }
+  ${InsuranceExtensionFragmentDoc}
+`;
+export type BulkCreateOrUpdateInsuranceExtensionMutationFn =
+  Apollo.MutationFunction<
+    BulkCreateOrUpdateInsuranceExtensionMutation,
+    BulkCreateOrUpdateInsuranceExtensionMutationVariables
+  >;
+
+/**
+ * __useBulkCreateOrUpdateInsuranceExtensionMutation__
+ *
+ * To run a mutation, you first call `useBulkCreateOrUpdateInsuranceExtensionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBulkCreateOrUpdateInsuranceExtensionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [bulkCreateOrUpdateInsuranceExtensionMutation, { data, loading, error }] = useBulkCreateOrUpdateInsuranceExtensionMutation({
+ *   variables: {
+ *      insuranceDate: // value for 'insuranceDate'
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useBulkCreateOrUpdateInsuranceExtensionMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    BulkCreateOrUpdateInsuranceExtensionMutation,
+    BulkCreateOrUpdateInsuranceExtensionMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    BulkCreateOrUpdateInsuranceExtensionMutation,
+    BulkCreateOrUpdateInsuranceExtensionMutationVariables
+  >(BulkCreateOrUpdateInsuranceExtensionDocument, options);
+}
+export type BulkCreateOrUpdateInsuranceExtensionMutationHookResult = ReturnType<
+  typeof useBulkCreateOrUpdateInsuranceExtensionMutation
+>;
+export type BulkCreateOrUpdateInsuranceExtensionMutationResult =
+  Apollo.MutationResult<BulkCreateOrUpdateInsuranceExtensionMutation>;
+export type BulkCreateOrUpdateInsuranceExtensionMutationOptions =
+  Apollo.BaseMutationOptions<
+    BulkCreateOrUpdateInsuranceExtensionMutation,
+    BulkCreateOrUpdateInsuranceExtensionMutationVariables
+  >;

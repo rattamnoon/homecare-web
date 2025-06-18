@@ -67,16 +67,6 @@ export type CreateCsatInput = {
   taskId?: InputMaybe<Scalars["String"]["input"]>;
 };
 
-export type CreateInsuranceExtensionInput = {
-  houseNumber?: InputMaybe<Scalars["String"]["input"]>;
-  insuranceDateDefault?: InputMaybe<Scalars["Date"]["input"]>;
-  insuranceDateExpand?: InputMaybe<Scalars["Date"]["input"]>;
-  projectId?: InputMaybe<Scalars["String"]["input"]>;
-  transferDate?: InputMaybe<Scalars["Date"]["input"]>;
-  unitId?: InputMaybe<Scalars["String"]["input"]>;
-  unitNumber?: InputMaybe<Scalars["String"]["input"]>;
-};
-
 export type CreateMasterInput = {
   SLA1D?: InputMaybe<Scalars["Int"]["input"]>;
   SLA1H?: InputMaybe<Scalars["Int"]["input"]>;
@@ -223,7 +213,7 @@ export type InsuranceExtension = {
   deletedAt?: Maybe<Scalars["Date"]["output"]>;
   deletedBy?: Maybe<User>;
   files: Array<UploadFile>;
-  houseNumber: Scalars["String"]["output"];
+  houseNumber?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["ID"]["output"];
   insuranceDateDefault?: Maybe<Scalars["Date"]["output"]>;
   insuranceDateExpand?: Maybe<Scalars["Date"]["output"]>;
@@ -232,7 +222,7 @@ export type InsuranceExtension = {
   transferDate?: Maybe<Scalars["Date"]["output"]>;
   unit?: Maybe<Unit>;
   unitId: Scalars["String"]["output"];
-  unitNumber: Scalars["String"]["output"];
+  unitNumber?: Maybe<Scalars["String"]["output"]>;
   updatedAt?: Maybe<Scalars["Date"]["output"]>;
   updatedBy?: Maybe<User>;
 };
@@ -289,11 +279,12 @@ export enum MasterType {
 
 export type Mutation = {
   __typename?: "Mutation";
+  bulkCreateOrUpdateInsuranceExtension: Array<InsuranceExtension>;
   createCalling: Calling;
   createCsat: Array<Csat>;
-  createInsuranceExtension: InsuranceExtension;
   createLegacyMigration: LegacyMigration;
   createMaster: Master;
+  createOrUpdateInsuranceExtension: InsuranceExtension;
   createProject: Project;
   createTask: Task;
   createTaskDetailReinprogress: TaskDetail;
@@ -313,13 +304,17 @@ export type Mutation = {
   removeUser: Scalars["Boolean"]["output"];
   updateCalling: Calling;
   updateCsat: Csat;
-  updateInsuranceExtension: InsuranceExtension;
   updateMaster: Master;
   updateProject: Project;
   updateTask: Task;
   updateTaskDetail: TaskDetail;
   updateUploadFile: UploadFile;
   updateUser: User;
+};
+
+export type MutationBulkCreateOrUpdateInsuranceExtensionArgs = {
+  insuranceDate: Scalars["Date"]["input"];
+  projectId: Scalars["ID"]["input"];
 };
 
 export type MutationCreateCallingArgs = {
@@ -332,12 +327,13 @@ export type MutationCreateCsatArgs = {
   taskDetailId: Scalars["ID"]["input"];
 };
 
-export type MutationCreateInsuranceExtensionArgs = {
-  createInsuranceExtensionInput: CreateInsuranceExtensionInput;
-};
-
 export type MutationCreateMasterArgs = {
   createMasterInput: CreateMasterInput;
+};
+
+export type MutationCreateOrUpdateInsuranceExtensionArgs = {
+  createUploadFileInput: Array<CreateUploadFileInput>;
+  updateInsuranceExtensionInput: UpdateInsuranceExtensionInput;
 };
 
 export type MutationCreateProjectArgs = {
@@ -414,10 +410,6 @@ export type MutationUpdateCallingArgs = {
 
 export type MutationUpdateCsatArgs = {
   updateCsatInput: UpdateCsatInput;
-};
-
-export type MutationUpdateInsuranceExtensionArgs = {
-  updateInsuranceExtensionInput: UpdateInsuranceExtensionInput;
 };
 
 export type MutationUpdateMasterArgs = {
@@ -838,14 +830,11 @@ export type UpdateCsatInput = {
 };
 
 export type UpdateInsuranceExtensionInput = {
-  houseNumber?: InputMaybe<Scalars["String"]["input"]>;
   id: Scalars["ID"]["input"];
   insuranceDateDefault?: InputMaybe<Scalars["Date"]["input"]>;
   insuranceDateExpand?: InputMaybe<Scalars["Date"]["input"]>;
   projectId?: InputMaybe<Scalars["String"]["input"]>;
-  transferDate?: InputMaybe<Scalars["Date"]["input"]>;
   unitId?: InputMaybe<Scalars["String"]["input"]>;
-  unitNumber?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type UpdateMasterInput = {

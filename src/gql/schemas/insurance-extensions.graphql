@@ -50,3 +50,27 @@ query InsuranceExtensions(
     }
   }
 }
+
+mutation CreateOrUpdateInsuranceExtension(
+  $createUploadFileInput: [CreateUploadFileInput!]!
+  $updateInsuranceExtensionInput: UpdateInsuranceExtensionInput!
+) {
+  createOrUpdateInsuranceExtension(
+    createUploadFileInput: $createUploadFileInput
+    updateInsuranceExtensionInput: $updateInsuranceExtensionInput
+  ) {
+    ...InsuranceExtension
+  }
+}
+
+mutation BulkCreateOrUpdateInsuranceExtension(
+  $insuranceDate: Date!
+  $projectId: ID!
+) {
+  bulkCreateOrUpdateInsuranceExtension(
+    insuranceDate: $insuranceDate
+    projectId: $projectId
+  ) {
+    ...InsuranceExtension
+  }
+}
