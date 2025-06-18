@@ -340,6 +340,12 @@ query TaskStatuses {
   }
 }
 
+mutation UpdateTask($updateTaskInput: UpdateTaskInput!) {
+  updateTask(updateTaskInput: $updateTaskInput) {
+    ...Task
+  }
+}
+
 mutation CreateTask(
   $createTaskInput: CreateTaskInput!
   $createTaskDetailInput: [CreateTaskDetailInput!]!

@@ -1687,6 +1687,132 @@ export type TaskStatusesQuery = {
   }>;
 };
 
+export type UpdateTaskMutationVariables = Types.Exact<{
+  updateTaskInput: Types.UpdateTaskInput;
+}>;
+
+export type UpdateTaskMutation = {
+  __typename?: "Mutation";
+  updateTask: {
+    __typename?: "Task";
+    id: string;
+    code: string;
+    projectId: string;
+    unitId?: string | null;
+    unitNumber?: string | null;
+    customerName?: string | null;
+    customerPhone?: string | null;
+    checkInDate?: Date | null;
+    insuranceDateDefault?: Date | null;
+    insuranceDate?: Date | null;
+    transferDate?: Date | null;
+    customerRequestedRepairDate?: Date | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+    status: {
+      __typename?: "TaskStatusDto";
+      id: Types.TaskStatus;
+      nameTh: string;
+      nameEn: string;
+      color: string;
+    };
+    source?: {
+      __typename?: "TaskSourceDto";
+      id: string;
+      nameTh: string;
+      nameEn: string;
+      color?: string | null;
+    } | null;
+    checkInRangeTime?: {
+      __typename?: "TaskRangeTimeDto";
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    } | null;
+    project: {
+      __typename?: "Project";
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    };
+    unit?: {
+      __typename?: "Unit";
+      id: string;
+      projectId: string;
+      unitNumber?: string | null;
+      houseNumber?: string | null;
+    } | null;
+    area?: {
+      __typename?: "Master";
+      id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
+      nameEn?: string | null;
+      maxScore?: number | null;
+      defaultScore?: number | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    building?: {
+      __typename?: "Master";
+      id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
+      nameEn?: string | null;
+      maxScore?: number | null;
+      defaultScore?: number | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    floor?: {
+      __typename?: "Master";
+      id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
+      nameEn?: string | null;
+      maxScore?: number | null;
+      defaultScore?: number | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    details: Array<{ __typename?: "TaskDetail"; id: string; code: string }>;
+  };
+};
+
 export type CreateTaskMutationVariables = Types.Exact<{
   createTaskInput: Types.CreateTaskInput;
   createTaskDetailInput:
@@ -4074,6 +4200,57 @@ export type TaskStatusesSuspenseQueryHookResult = ReturnType<
 export type TaskStatusesQueryResult = Apollo.QueryResult<
   TaskStatusesQuery,
   TaskStatusesQueryVariables
+>;
+export const UpdateTaskDocument = gql`
+  mutation UpdateTask($updateTaskInput: UpdateTaskInput!) {
+    updateTask(updateTaskInput: $updateTaskInput) {
+      ...Task
+    }
+  }
+  ${TaskFragmentDoc}
+`;
+export type UpdateTaskMutationFn = Apollo.MutationFunction<
+  UpdateTaskMutation,
+  UpdateTaskMutationVariables
+>;
+
+/**
+ * __useUpdateTaskMutation__
+ *
+ * To run a mutation, you first call `useUpdateTaskMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTaskMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTaskMutation, { data, loading, error }] = useUpdateTaskMutation({
+ *   variables: {
+ *      updateTaskInput: // value for 'updateTaskInput'
+ *   },
+ * });
+ */
+export function useUpdateTaskMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateTaskMutation,
+    UpdateTaskMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateTaskMutation, UpdateTaskMutationVariables>(
+    UpdateTaskDocument,
+    options,
+  );
+}
+export type UpdateTaskMutationHookResult = ReturnType<
+  typeof useUpdateTaskMutation
+>;
+export type UpdateTaskMutationResult =
+  Apollo.MutationResult<UpdateTaskMutation>;
+export type UpdateTaskMutationOptions = Apollo.BaseMutationOptions<
+  UpdateTaskMutation,
+  UpdateTaskMutationVariables
 >;
 export const CreateTaskDocument = gql`
   mutation CreateTask(
