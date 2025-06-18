@@ -346,6 +346,12 @@ mutation UpdateTask($updateTaskInput: UpdateTaskInput!) {
   }
 }
 
+mutation UpdateClosedTask($closedRemark: String!, $id: ID!) {
+  updateClosedTask(closedRemark: $closedRemark, id: $id) {
+    ...Task
+  }
+}
+
 mutation CreateTask(
   $createTaskInput: CreateTaskInput!
   $createTaskDetailInput: [CreateTaskDetailInput!]!

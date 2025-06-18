@@ -44,9 +44,9 @@ import { LayoutWithBreadcrumb } from "../layout/LayoutWithBreadcrumb";
 import {
   RepairCallCenterCallingDialog,
   RepairCallCenterCallingHistoryDialog,
-} from "./components/RepairCallCenterCallingDialog";
-import { RepairClosedDialog } from "./components/RepairClosedDialog";
-import { RepairEvaluationDialog } from "./components/RepairEvaluationDialog";
+} from "./components/dialogs/RepairCallCenterCallingDialog";
+import { RepairTaskDetailClosedDialog } from "./components/dialogs/RepairClosedDialog";
+import { RepairEvaluationDialog } from "./components/dialogs/RepairEvaluationDialog";
 
 export const RepairCallCenterPage = () => {
   const [notificationApi, notificationContextHolder] =
@@ -247,11 +247,10 @@ export const RepairCallCenterPage = () => {
             }}
             columns={[
               {
-                title: "Action",
                 dataIndex: "action",
                 key: "action",
                 align: "center",
-                width: 100,
+                width: 60,
                 fixed: "left",
                 render: (_, record) => {
                   return (
@@ -284,7 +283,7 @@ export const RepairCallCenterPage = () => {
                               icon: <FontAwesomeIcon icon={faContactBook} />,
                               children: [
                                 {
-                                  label: "โทรติดต่อ",
+                                  label: "บันทึกโทรติดต่อ",
                                   key: "call",
                                   icon: (
                                     <FontAwesomeIcon icon={faPhoneArrowUp} />
@@ -295,7 +294,7 @@ export const RepairCallCenterPage = () => {
                                   },
                                 },
                                 {
-                                  label: "ประวัติการโทร",
+                                  label: "ประวัติโทรติดต่อ",
                                   key: "call-history",
                                   icon: <FontAwesomeIcon icon={faHistory} />,
                                   onClick: () => {
@@ -552,7 +551,7 @@ export const RepairCallCenterPage = () => {
         }}
         confirmLoading={createCsatLoading}
       />
-      <RepairClosedDialog
+      <RepairTaskDetailClosedDialog
         open={closedDialogOpen}
         onCancel={() => {
           setTaskDetail(null);

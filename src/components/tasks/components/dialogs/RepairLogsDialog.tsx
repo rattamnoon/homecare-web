@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import { List } from "antd";
 import dayjs from "dayjs";
 import { useMemo } from "react";
-import { RepairImagePreview } from "./RepairImagePreview";
+import { RepairImagePreview } from "../RepairImagePreview";
 
 const Card = styled.div`
   border-left: 4px solid ${({ color }) => color};

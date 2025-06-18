@@ -5,13 +5,14 @@ import {
   useSearchFilter,
 } from "@/components/common/SearchFilter";
 import { LayoutWithBreadcrumb } from "@/components/layout/LayoutWithBreadcrumb";
-import { RepairInsuranceExpandDialog } from "@/components/tasks/components/RepairInsuranceExpandDialog";
+import { RepairInsuranceExpandDialog } from "@/components/tasks/components/dialogs/RepairInsuranceExpandDialog";
 import { Routes } from "@/config/routes";
 import { TaskStatus, TaskType } from "@/gql/generated/graphql";
 import {
   TaskFragment,
   TasksDocument,
   useTasksQuery,
+  useUpdateClosedTaskMutation,
   useUpdateTaskMutation,
 } from "@/gql/generated/tasks.generated";
 import { getTablePaginationProps } from "@/utils/utils";
@@ -39,6 +40,7 @@ import {
 import dayjs from "dayjs";
 import { useRouter } from "nextjs-toploader/app";
 import { useMemo, useState } from "react";
+import { RepairTaskClosedDialog } from "./components/dialogs/RepairClosedDialog";
 
 export const RepairPage = () => {
   const [notificationApi, notificationContextHolder] =
@@ -47,6 +49,7 @@ export const RepairPage = () => {
   const router = useRouter();
   const [openInsuranceExpandDialog, setOpenInsuranceExpandDialog] =
     useState(false);
+  const [openCloseTaskDialog, setOpenCloseTaskDialog] = useState(false);
   const [task, setTask] = useState<TaskFragment | null>(null);
 
   const {
@@ -102,6 +105,7 @@ export const RepairPage = () => {
         duration: 3,
       });
       setOpenInsuranceExpandDialog(false);
+      setTask(null);
     },
     onError: (error) => {
       notificationApi.error({
@@ -117,6 +121,32 @@ export const RepairPage = () => {
       },
     ],
   });
+
+  const [updateClosedTask, { loading: updateClosedTaskLoading }] =
+    useUpdateClosedTaskMutation({
+      onCompleted: () => {
+        notificationApi.success({
+          message: "สำเร็จ !!",
+          description: "บันทึกข้อมูลเรียบร้อย",
+          duration: 3,
+        });
+        setOpenCloseTaskDialog(false);
+        setTask(null);
+      },
+      onError: (error) => {
+        notificationApi.error({
+          message: "เกิดข้อผิดพลาด !!",
+          description: error.message,
+          duration: 5,
+        });
+      },
+      refetchQueries: [
+        {
+          query: TasksDocument,
+          variables,
+        },
+      ],
+    });
 
   const tasks = useMemo(() => data?.tasks, [data]);
   const dataSource = useMemo(() => tasks?.items, [tasks]);
@@ -197,14 +227,18 @@ export const RepairPage = () => {
                                 <FontAwesomeIcon icon={faClockRotateLeft} />
                               ),
                               onClick: () => {
-                                setOpenInsuranceExpandDialog(true);
                                 setTask(record);
+                                setOpenInsuranceExpandDialog(true);
                               },
                             },
                             {
                               label: "ปิดงาน",
                               key: "close",
                               icon: <FontAwesomeIcon icon={faXmark} />,
+                              onClick: () => {
+                                setTask(record);
+                                setOpenCloseTaskDialog(true);
+                              },
                             },
                           ],
                         }}
@@ -224,12 +258,15 @@ export const RepairPage = () => {
                   key: "code",
                   align: "center",
                   width: 150,
-                  onCell: () => ({
+                  onCell: (record) => ({
                     style: {
                       cursor: "pointer",
                       textAlign: "center",
                       fontWeight: "bold",
                       color: colorPrimary,
+                    },
+                    onClick: () => {
+                      router.push(Routes.TasksRepairDetail(record.id));
                     },
                   }),
                 },
@@ -431,6 +468,29 @@ export const RepairPage = () => {
                       status: task.status?.id,
                       insuranceDate: values.insuranceDate,
                     },
+                  },
+                });
+              },
+            });
+          }}
+        />
+        <RepairTaskClosedDialog
+          open={openCloseTaskDialog}
+          onCancel={() => setOpenCloseTaskDialog(false)}
+          confirmLoading={updateTaskLoading}
+          task={task}
+          onSubmit={async (values) => {
+            if (!task) return;
+            await modalApi.confirm({
+              title: "ยืนยันการปิดงาน",
+              content: "ยืนยันการปิดงานห้องนี้หรือไม่",
+              okText: "ยืนยัน",
+              cancelText: "ยกเลิก",
+              onOk: async () => {
+                await updateClosedTask({
+                  variables: {
+                    closedRemark: values.remark,
+                    id: task.id,
                   },
                 });
               },

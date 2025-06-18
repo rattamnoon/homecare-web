@@ -45,14 +45,14 @@ import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { RepairApprovePlan } from "./components/RepairApprovePlan";
-import { RepairAssignedDialog } from "./components/RepairAssignedDialog";
-import { RepairEvaluationDialog } from "./components/RepairEvaluationDialog";
 import { RepairImagePreview } from "./components/RepairImagePreview";
-import { RepairLogsDialog } from "./components/RepairLogsDialog";
-import { RepairMisscallDialog } from "./components/RepairMisscallDialog";
-import { RepairPriorityDialog } from "./components/RepairPriorityDialog";
 import { RepairSOPImagePreview } from "./components/RepairSOPImagePreview";
-import { RepairWaitingConstructionDialog } from "./components/RepairWaitingConstructionDialog";
+import { RepairAssignedDialog } from "./components/dialogs/RepairAssignedDialog";
+import { RepairEvaluationDialog } from "./components/dialogs/RepairEvaluationDialog";
+import { RepairLogsDialog } from "./components/dialogs/RepairLogsDialog";
+import { RepairMisscallDialog } from "./components/dialogs/RepairMisscallDialog";
+import { RepairPriorityDialog } from "./components/dialogs/RepairPriorityDialog";
+import { RepairWaitingConstructionDialog } from "./components/dialogs/RepairWaitingConstructionDialog";
 
 const { Title, Text } = Typography;
 

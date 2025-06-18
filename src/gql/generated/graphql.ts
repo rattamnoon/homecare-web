@@ -140,6 +140,7 @@ export type CreateTaskInput = {
   buildingId?: InputMaybe<Scalars["String"]["input"]>;
   checkInDate?: InputMaybe<Scalars["Date"]["input"]>;
   checkInRangeTime: Scalars["String"]["input"];
+  closedRemark?: InputMaybe<Scalars["String"]["input"]>;
   customerName?: InputMaybe<Scalars["String"]["input"]>;
   customerPhone?: InputMaybe<Scalars["String"]["input"]>;
   customerRequestedRepairDate?: InputMaybe<Scalars["Date"]["input"]>;
@@ -303,6 +304,7 @@ export type Mutation = {
   removeUploadFile: Scalars["Boolean"]["output"];
   removeUser: Scalars["Boolean"]["output"];
   updateCalling: Calling;
+  updateClosedTask: Task;
   updateCsat: Csat;
   updateMaster: Master;
   updateProject: Project;
@@ -406,6 +408,11 @@ export type MutationRemoveUserArgs = {
 
 export type MutationUpdateCallingArgs = {
   updateCallingInput: UpdateCallingInput;
+};
+
+export type MutationUpdateClosedTaskArgs = {
+  closedRemark: Scalars["String"]["input"];
+  id: Scalars["ID"]["input"];
 };
 
 export type MutationUpdateCsatArgs = {
@@ -568,6 +575,7 @@ export type Task = {
   buildingId?: Maybe<Scalars["String"]["output"]>;
   checkInDate?: Maybe<Scalars["Date"]["output"]>;
   checkInRangeTime?: Maybe<TaskRangeTimeDto>;
+  closedRemark?: Maybe<Scalars["String"]["output"]>;
   code: Scalars["String"]["output"];
   createdAt: Scalars["Date"]["output"];
   createdBy?: Maybe<User>;
@@ -904,6 +912,7 @@ export type UpdateTaskInput = {
   buildingId?: InputMaybe<Scalars["String"]["input"]>;
   checkInDate?: InputMaybe<Scalars["Date"]["input"]>;
   checkInRangeTime?: InputMaybe<Scalars["String"]["input"]>;
+  closedRemark?: InputMaybe<Scalars["String"]["input"]>;
   customerName?: InputMaybe<Scalars["String"]["input"]>;
   customerPhone?: InputMaybe<Scalars["String"]["input"]>;
   customerRequestedRepairDate?: InputMaybe<Scalars["Date"]["input"]>;
