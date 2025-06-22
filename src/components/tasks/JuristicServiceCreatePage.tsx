@@ -110,7 +110,7 @@ export const JuristicServiceCreatePage = () => {
         message: "สำเร็จ !!",
         description: "สร้างงานแจ้งซ่อมสำเร็จ",
       });
-      router.push(Routes.Tasks);
+      router.push(Routes.TasksJuristicService);
     },
     onError: (error) => {
       notificationApi.error({
