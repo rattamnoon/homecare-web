@@ -394,6 +394,7 @@ export const RepairDetailPage = () => {
                 setAddItemDialogOpen(true);
               }}
               disabled={handleDisabled(task?.status)}
+              loading={loading}
             >
               เพิ่มรายการงานแจ้งซ่อม
             </Button>
