@@ -134,11 +134,20 @@ export const RepairCreatePage = () => {
   }, [projects]);
 
   const unitsOptions = useMemo(() => {
-    return units?.units.map((unit) => ({
-      label: `ยูนิต ${unit.unitNumber} บ้านเลขที่ ${unit.houseNumber}`,
-      value: unit.id,
-      key: unit.id,
-    }));
+    return (units?.units ?? [])
+      .slice()
+      .sort((a, b) =>
+        (a.unitNumber ?? "").localeCompare(b.unitNumber ?? "", "en", {
+          numeric: true,
+        })
+      )
+      .map((unit) => ({
+        label: `ยูนิต ${unit.unitNumber}${
+          unit.houseNumber ? ` บ้านเลขที่ ${unit.houseNumber}` : ""
+        }`,
+        value: unit.id,
+        key: unit.id,
+      }));
   }, [units]);
 
   const masters = useMemo(() => mastersData?.masters, [mastersData]);
