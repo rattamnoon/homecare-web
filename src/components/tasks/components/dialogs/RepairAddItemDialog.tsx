@@ -46,8 +46,8 @@ export const RepairAddItemDialog = ({
   const uploadFile = useFileUpload("file", "customer");
 
   const { control, handleSubmit, watch } = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
     mode: "onChange",
+    resolver: zodResolver(schema),
   });
 
   const categoryId = watch("categoryId");

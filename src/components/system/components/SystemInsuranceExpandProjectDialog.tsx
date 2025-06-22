@@ -44,7 +44,7 @@ export const SystemInsuranceExpandProjectDialog = ({
     skip: !open,
   });
 
-  const { control, handleSubmit, formState } = useForm<z.infer<typeof schema>>({
+  const { control, handleSubmit } = useForm<z.infer<typeof schema>>({
     mode: "onChange",
     resolver: zodResolver(schema),
   });
@@ -90,15 +90,13 @@ export const SystemInsuranceExpandProjectDialog = ({
               <Controller
                 control={control}
                 name="insuranceDate"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <Form.Item
                     label="เป็นวันที่"
                     name="insuranceDate"
                     required={false}
-                    validateStatus={
-                      formState.errors.insuranceDate ? "error" : ""
-                    }
-                    help={formState.errors.insuranceDate?.message}
+                    validateStatus={errors.insuranceDate ? "error" : ""}
+                    help={errors.insuranceDate?.message}
                   >
                     <DatePicker
                       format="DD/MM/YYYY"

@@ -44,7 +44,7 @@ export const RepairEvaluationDialog = ({
   confirmLoading,
   taskDetail,
 }: RepairEvaluationDialogProps) => {
-  const { control, handleSubmit, getValues, formState } = useForm<Schema>({
+  const { control, handleSubmit, getValues } = useForm<Schema>({
     mode: "onChange",
     resolver: zodResolver(schema),
   });
@@ -97,14 +97,12 @@ export const RepairEvaluationDialog = ({
               key={field.id}
               control={control}
               name={`evaluation.${index}.score`}
-              render={({ field }) => (
+              render={({ field, formState: { errors } }) => (
                 <Form.Item
                   label={getValues(`evaluation.${index}.label`)}
                   required={false}
                   validateStatus={
-                    formState.errors.evaluation?.[index]?.score
-                      ? "error"
-                      : undefined
+                    errors?.evaluation?.[index]?.score ? "error" : undefined
                   }
                 >
                   <Rate count={5} {...field} />
@@ -115,15 +113,13 @@ export const RepairEvaluationDialog = ({
           <Controller
             control={control}
             name="CSATComment"
-            render={({ field }) => (
+            render={({ field, formState: { errors } }) => (
               <Form.Item
                 label="ชมเชย/ข้อเสนอแนะ"
                 name="CSATComment"
                 required={false}
-                validateStatus={
-                  formState.errors.CSATComment ? "error" : undefined
-                }
-                help={formState.errors.CSATComment?.message}
+                validateStatus={errors.CSATComment ? "error" : undefined}
+                help={errors.CSATComment?.message}
               >
                 <Input.TextArea rows={4} {...field} value={field.value ?? ""} />
               </Form.Item>

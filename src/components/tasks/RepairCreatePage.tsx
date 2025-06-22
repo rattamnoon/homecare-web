@@ -77,6 +77,7 @@ export const RepairCreatePage = () => {
   const [notificationApi, contextHolder] = notification.useNotification();
   const router = useRouter();
   const { control, handleSubmit, watch } = useForm<z.infer<typeof schema>>({
+    mode: "onChange",
     resolver: zodResolver(schema),
     defaultValues: {
       taskDetails: [{}],

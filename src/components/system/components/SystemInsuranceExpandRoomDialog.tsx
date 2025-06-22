@@ -40,9 +40,7 @@ export const SystemInsuranceExpandRoomDialog = ({
   insuranceExpand,
   confirmLoading,
 }: SystemInsuranceExpandRoomDialogProps) => {
-  const { control, handleSubmit, formState, reset } = useForm<
-    z.infer<typeof schema>
-  >({
+  const { control, handleSubmit } = useForm<z.infer<typeof schema>>({
     mode: "onChange",
     resolver: zodResolver(schema),
   });
@@ -77,12 +75,12 @@ export const SystemInsuranceExpandRoomDialog = ({
             <Controller
               control={control}
               name="insuranceDate"
-              render={({ field }) => (
+              render={({ field, formState: { errors } }) => (
                 <Form.Item
                   label="เป็นวันที่"
                   required={false}
-                  validateStatus={formState.errors.insuranceDate ? "error" : ""}
-                  help={formState.errors.insuranceDate?.message}
+                  validateStatus={errors.insuranceDate ? "error" : ""}
+                  help={errors.insuranceDate?.message}
                 >
                   <DatePicker
                     format="DD/MM/YYYY"
@@ -100,12 +98,12 @@ export const SystemInsuranceExpandRoomDialog = ({
             <Controller
               control={control}
               name="files"
-              render={({ field }) => (
+              render={({ field, formState: { errors } }) => (
                 <Form.Item
                   label="ไฟล์หลักฐาน"
                   required={false}
-                  validateStatus={formState.errors.files ? "error" : ""}
-                  help={formState.errors.files?.message}
+                  validateStatus={errors.files ? "error" : ""}
+                  help={errors.files?.message}
                 >
                   <Upload
                     {...field}
