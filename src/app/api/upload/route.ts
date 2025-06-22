@@ -7,8 +7,8 @@ import {
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-const Bucket = process.env.AWS_S3_BUCKET;
-const s3 = new S3Client({
+export const Bucket = process.env.AWS_S3_BUCKET;
+export const s3Client = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
         const buffer = Buffer.from(await file.arrayBuffer());
 
-        await s3.send(
+        await s3Client.send(
           new PutObjectCommand({
             Bucket,
             Key: key,
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
         );
 
         const signedUrl = await getSignedUrl(
-          s3,
+          s3Client,
           new GetObjectCommand({
             Bucket,
             Key: key,
