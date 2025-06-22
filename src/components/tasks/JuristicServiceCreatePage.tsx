@@ -134,22 +134,27 @@ export const JuristicServiceCreatePage = () => {
     return units?.units.map((unit) => ({
       label: `ยูนิต ${unit.unitNumber} บ้านเลขที่ ${unit.houseNumber}`,
       value: unit.id,
+      key: unit.id,
     }));
   }, [units]);
 
   const masters = useMemo(() => mastersData?.masters, [mastersData]);
 
   const categoryOptions = useMemo(() => {
-    return masters?.map((master) => ({
-      label: master.nameTh,
-      value: master.id,
-    }));
+    return masters
+      ?.filter((master) => master.type === MasterType.Service)
+      .map((master) => ({
+        label: master.nameTh,
+        value: master.id,
+      }));
   }, [masters]);
 
   const getSubCategoryOptions = (categoryId: string) => {
-    const options = masters?.filter((master) => {
-      return master.id === categoryId;
-    });
+    const options = masters
+      ?.filter((master) => master.type === MasterType.Service)
+      .filter((master) => {
+        return master.id === categoryId;
+      });
 
     if (!options) return [];
 

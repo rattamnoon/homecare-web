@@ -137,6 +137,7 @@ export const RepairCreatePage = () => {
     return units?.units.map((unit) => ({
       label: `ยูนิต ${unit.unitNumber} บ้านเลขที่ ${unit.houseNumber}`,
       value: unit.id,
+      key: unit.id,
     }));
   }, [units]);
 
