@@ -162,13 +162,6 @@ export const JuristicServiceCreatePage = () => {
       }));
   };
 
-  const rangeTimesOptions = useMemo(() => {
-    return options?.rangeTimes.map((rangeTime) => ({
-      label: rangeTime.nameTh,
-      value: rangeTime.id,
-    }));
-  }, [options]);
-
   const sourcesOptions = useMemo(() => {
     return options?.sources.map((source) => ({
       label: source.nameTh,
