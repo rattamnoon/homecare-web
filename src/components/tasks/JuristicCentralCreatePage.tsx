@@ -14,6 +14,7 @@ import { useMastersQuery } from "@/gql/generated/master.generated";
 import { useTaskOptionsQuery } from "@/gql/generated/option.generated";
 import { useProjectsQuery } from "@/gql/generated/project.generated";
 import { useCreateTaskMutation } from "@/gql/generated/tasks.generated";
+import { useMeQuery } from "@/gql/generated/user.generated";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import {
   faPlus,
@@ -46,17 +47,9 @@ import { z } from "zod";
 const schema = z.object({
   projectId: z.string({ message: "กรุณาเลือกโครงการ" }),
   customerName: z.string({ message: "กรุณากรอกชื่อ-นามสกุล" }),
-  customerPhone: z
-    .string({ message: "กรุณากรอกเบอร์โทร" })
-    .min(10, {
-      message: "กรุณากรอกเบอร์โทร 10 หลัก",
-    })
-    .max(10, {
-      message: "กรุณากรอกเบอร์โทร 10 หลัก",
-    })
-    .regex(/^[0-9]+$/, {
-      message: "กรุณากรอกเบอร์โทร 10 หลัก",
-    }),
+  customerPhone: z.string({ message: "กรุณากรอกเบอร์โทร" }).regex(/^[0-9]+$/, {
+    message: "กรุณากรอกเบอร์โทร 10 หลัก",
+  }),
   source: z.string({ message: "กรุณาเลือกช่องทาง" }),
   areaId: z.string({ message: "กรุณาเลือกพื้นที่" }),
   buildingId: z.string({ message: "กรุณาเลือกอาคาร" }),
@@ -81,7 +74,9 @@ const { Title } = Typography;
 export const JuristicCentralCreatePage = () => {
   const [notificationApi, contextHolder] = notification.useNotification();
   const router = useRouter();
-  const { control, handleSubmit, watch } = useForm<z.infer<typeof schema>>({
+  const { control, handleSubmit, watch, setValue } = useForm<
+    z.infer<typeof schema>
+  >({
     mode: "onChange",
     resolver: zodResolver(schema),
     defaultValues: {
@@ -94,6 +89,13 @@ export const JuristicCentralCreatePage = () => {
   const { fields, append, remove } = useFieldArray({
     control,
     name: "taskDetails",
+  });
+
+  useMeQuery({
+    onCompleted: (data) => {
+      setValue("customerName", `${data.me.firstName} ${data.me.lastName}`);
+      setValue("customerPhone", "020300000");
+    },
   });
 
   const { data: projects, loading: projectsLoading } = useProjectsQuery();

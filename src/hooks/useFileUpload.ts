@@ -5,7 +5,7 @@ import { v7 as uuidv7 } from "uuid";
 
 export const useFileUpload = (name: string, fileFolder: string) => {
   const method = "POST" as "POST" | "PUT" | "PATCH" | "post" | "put" | "patch";
-  const action = `${process.env.NEXT_PUBLIC_API_URL}/upload`;
+  const action = "/api/upload";
 
   const data = (file: UploadFile) => {
     const mimetype = file.type?.split("/")[1];

@@ -51,17 +51,9 @@ const schema = z.object({
   projectId: z.string({ message: "กรุณาเลือกโครงการ" }),
   unitId: z.string({ message: "กรุณาเลือกหน่วย" }),
   customerName: z.string({ message: "กรุณากรอกชื่อ-นามสกุล" }),
-  customerPhone: z
-    .string({ message: "กรุณากรอกเบอร์โทร" })
-    .min(10, {
-      message: "กรุณากรอกเบอร์โทร 10 หลัก",
-    })
-    .max(10, {
-      message: "กรุณากรอกเบอร์โทร 10 หลัก",
-    })
-    .regex(/^[0-9]+$/, {
-      message: "กรุณากรอกเบอร์โทร 10 หลัก",
-    }),
+  customerPhone: z.string({ message: "กรุณากรอกเบอร์โทร" }).regex(/^[0-9]+$/, {
+    message: "กรุณากรอกเบอร์โทร 10 หลัก",
+  }),
   source: z.string({ message: "กรุณาเลือกช่องทาง" }),
   taskDetails: z.array(
     z.object(
