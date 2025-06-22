@@ -777,6 +777,7 @@ export enum TaskStatus {
   CustomerFinished = "CUSTOMER_FINISHED",
   Doing = "DOING",
   Finished = "FINISHED",
+  FinishByProject = "FINISH_BY_PROJECT",
   Hold = "HOLD",
   HomecareFinished = "HOMECARE_FINISHED",
   InProgress = "IN_PROGRESS",
