@@ -3760,6 +3760,7 @@ export type CreateTaskDetailReinprogressMutation = {
 };
 
 export type CreateTaskDetailMutationVariables = Types.Exact<{
+  taskId: Types.Scalars["ID"]["input"];
   createTaskDetailInput: Types.CreateTaskDetailInput;
 }>;
 
@@ -5376,8 +5377,14 @@ export type CreateTaskDetailReinprogressMutationOptions =
     CreateTaskDetailReinprogressMutationVariables
   >;
 export const CreateTaskDetailDocument = gql`
-  mutation CreateTaskDetail($createTaskDetailInput: CreateTaskDetailInput!) {
-    createTaskDetail(createTaskDetailInput: $createTaskDetailInput) {
+  mutation CreateTaskDetail(
+    $taskId: ID!
+    $createTaskDetailInput: CreateTaskDetailInput!
+  ) {
+    createTaskDetail(
+      taskId: $taskId
+      createTaskDetailInput: $createTaskDetailInput
+    ) {
       ...TaskDetail
     }
   }
@@ -5401,6 +5408,7 @@ export type CreateTaskDetailMutationFn = Apollo.MutationFunction<
  * @example
  * const [createTaskDetailMutation, { data, loading, error }] = useCreateTaskDetailMutation({
  *   variables: {
+ *      taskId: // value for 'taskId'
  *      createTaskDetailInput: // value for 'createTaskDetailInput'
  *   },
  * });

@@ -350,6 +350,7 @@ export type MutationCreateTaskArgs = {
 
 export type MutationCreateTaskDetailArgs = {
   createTaskDetailInput: CreateTaskDetailInput;
+  taskId: Scalars["ID"]["input"];
 };
 
 export type MutationCreateTaskDetailReinprogressArgs = {
