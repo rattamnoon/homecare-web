@@ -40,7 +40,9 @@ export const SystemInsuranceExpandRoomDialog = ({
   insuranceExpand,
   confirmLoading,
 }: SystemInsuranceExpandRoomDialogProps) => {
-  const { control, handleSubmit, formState } = useForm<z.infer<typeof schema>>({
+  const { control, handleSubmit, formState, reset } = useForm<
+    z.infer<typeof schema>
+  >({
     mode: "onChange",
     resolver: zodResolver(schema),
   });

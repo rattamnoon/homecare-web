@@ -13,6 +13,7 @@ import {
   TaskDetailFragment,
   TaskDocument,
   TaskStatusFragment,
+  useCreateTaskDetailMutation,
   useCreateTaskDetailReportLogMutation,
   useTaskQuery,
   useUpdateTaskDetailMutation,
@@ -24,6 +25,7 @@ import {
   faListDots,
   faPersonCircleCheck,
   faPlus,
+  faSave,
 } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -175,6 +177,32 @@ export const RepairDetailPage = () => {
       },
     ],
   });
+
+  const [createTaskDetail, { loading: createTaskDetailLoading }] =
+    useCreateTaskDetailMutation({
+      onCompleted: () => {
+        notificationApi.success({
+          message: "สำเร็จ !!",
+          description: "บันทึกข้อมูลเรียบร้อย",
+          duration: 3,
+        });
+        setTaskDetail(null);
+        setAddItemDialogOpen(false);
+      },
+      onError: (error) => {
+        notificationApi.error({
+          message: "เกิดข้อผิดพลาด !!",
+          description: error.message,
+          duration: 5,
+        });
+      },
+      refetchQueries: [
+        {
+          query: TaskDocument,
+          variables: { id: taskId },
+        },
+      ],
+    });
 
   const task = useMemo(() => data?.task, [data]);
   const taskDetails = useMemo(() => task?.details || [], [task]);
@@ -365,6 +393,7 @@ export const RepairDetailPage = () => {
               onClick={() => {
                 setAddItemDialogOpen(true);
               }}
+              disabled={handleDisabled(task?.status)}
             >
               เพิ่มรายการงานแจ้งซ่อม
             </Button>
@@ -381,21 +410,39 @@ export const RepairDetailPage = () => {
                     <Space size={4}>
                       <Space>
                         <Text type="secondary">Priority : </Text>
-                        <Tag color={detail.priority?.color}>
-                          {detail.priority?.nameTh}
-                        </Tag>
+                        {detail.priority ? (
+                          <Tag color={detail.priority?.color}>
+                            {detail.priority?.nameTh}
+                          </Tag>
+                        ) : (
+                          <Tag color="default" bordered={false}>
+                            ยังไม่ได้ระบุ
+                          </Tag>
+                        )}
                       </Space>
                       <Space>
                         <Text type="secondary">สถานะเคส : </Text>
-                        <Tag color={detail.status?.color}>
-                          {detail.status?.nameEn}
-                        </Tag>
+                        {detail.status ? (
+                          <Tag color={detail.status?.color}>
+                            {detail.status?.nameEn}
+                          </Tag>
+                        ) : (
+                          <Tag color="default" bordered={false}>
+                            ยังไม่ได้ระบุ
+                          </Tag>
+                        )}
                       </Space>
                       <Space>
                         <Text type="secondary">สถานะผู้รับผิดชอบ : </Text>
-                        <Tag color={detail.homecareStatus?.color}>
-                          {detail.homecareStatus?.nameEn}
-                        </Tag>
+                        {detail.homecareStatus ? (
+                          <Tag color={detail.homecareStatus?.color}>
+                            {detail.homecareStatus?.nameEn}
+                          </Tag>
+                        ) : (
+                          <Tag color="default" bordered={false}>
+                            ยังไม่ได้ระบุ
+                          </Tag>
+                        )}
                       </Space>
                     </Space>
                   </Flex>
@@ -749,8 +796,41 @@ export const RepairDetailPage = () => {
       <RepairAddItemDialog
         open={addItemDialogOpen}
         onCancel={() => setAddItemDialogOpen(false)}
-        confirmLoading={false}
-        taskId={taskId}
+        onSubmit={async (values) => {
+          modalApi.confirm({
+            title: "ยืนยันการเพิ่มรายการงาน",
+            content: "ยืนยันการเพิ่มรายการงาน",
+            okText: "ยืนยัน",
+            cancelText: "ยกเลิก",
+            okButtonProps: {
+              icon: <FontAwesomeIcon icon={faSave} />,
+            },
+            onOk: async () => {
+              await createTaskDetail({
+                variables: {
+                  taskId,
+                  createTaskDetailInput: {
+                    status: TaskStatus.Pending,
+                    categoryId: values.categoryId,
+                    subCategoryId: values.subCategoryId,
+                    description: values.description,
+                    files:
+                      values.images?.map((image) => ({
+                        fileType: UploadFileType.Customer,
+                        fileId: image.response?.fileId,
+                        fileName: image.response?.fileName,
+                        fileFolder: image.response?.fileFolder,
+                        filePath: image.response?.filePath,
+                        fileBucket: image.response?.fileBucket,
+                        fileExtension: image.response?.fileExtension,
+                      })) ?? [],
+                  },
+                },
+              });
+            },
+          });
+        }}
+        confirmLoading={createTaskDetailLoading}
       />
     </LayoutWithBreadcrumb>
   );
