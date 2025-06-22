@@ -84,7 +84,7 @@ export const RepairCreatePage = () => {
     },
   });
 
-  const uploadFile = useFileUpload("file", "customer");
+  const uploadFile = useFileUpload("file", "repair/customer");
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -143,10 +143,12 @@ export const RepairCreatePage = () => {
   const masters = useMemo(() => mastersData?.masters, [mastersData]);
 
   const categoryOptions = useMemo(() => {
-    return masters?.map((master) => ({
-      label: master.nameTh,
-      value: master.id,
-    }));
+    return masters
+      ?.filter((master) => master.type === MasterType.Category)
+      .map((master) => ({
+        label: master.nameTh,
+        value: master.id,
+      }));
   }, [masters]);
 
   const getSubCategoryOptions = (categoryId: string) => {

@@ -139,7 +139,7 @@ export type CreateTaskInput = {
   areaId?: InputMaybe<Scalars["String"]["input"]>;
   buildingId?: InputMaybe<Scalars["String"]["input"]>;
   checkInDate?: InputMaybe<Scalars["Date"]["input"]>;
-  checkInRangeTime: Scalars["String"]["input"];
+  checkInRangeTime?: InputMaybe<Scalars["String"]["input"]>;
   closedRemark?: InputMaybe<Scalars["String"]["input"]>;
   customerName?: InputMaybe<Scalars["String"]["input"]>;
   customerPhone?: InputMaybe<Scalars["String"]["input"]>;
@@ -269,11 +269,13 @@ export type Master = {
 /** ประเภทของข้อมูลหลัก */
 export enum MasterType {
   Area = "AREA",
+  Building = "BUILDING",
   Category = "CATEGORY",
   Cause = "CAUSE",
   Central = "CENTRAL",
   Contractor = "CONTRACTOR",
   Csat = "CSAT",
+  Floor = "FLOOR",
   Service = "SERVICE",
   Sla = "SLA",
 }

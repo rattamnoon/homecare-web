@@ -42,7 +42,7 @@ export const RepairMisscallDialog = ({
 }: RepairMisscallDialogProps) => {
   const [form] = Form.useForm();
   const { data: taskOptions } = useTaskOptionsQuery();
-  const uploadFile = useFileUpload("file", "other/missed-call");
+  const uploadFile = useFileUpload("file", "repair/other/missed-call");
 
   const checkInRangeTimeOptions = useMemo(() => {
     return taskOptions?.rangeTimes.map((option) => ({

@@ -44,7 +44,7 @@ export const SystemInsuranceExpandRoomDialog = ({
     mode: "onChange",
     resolver: zodResolver(schema),
   });
-  const uploadFile = useFileUpload("file", "insurance-expand");
+  const uploadFile = useFileUpload("file", "system/insurance-expand");
 
   return (
     <CustomModal

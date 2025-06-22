@@ -30,7 +30,7 @@ export const RepairAddItemDialog = ({
   onCancel,
   confirmLoading,
 }: RepairAddItemDialogProps) => {
-  const uploadFile = useFileUpload("file", "customer");
+  const uploadFile = useFileUpload("file", "repair/customer");
 
   const { control, handleSubmit, watch } = useForm<z.infer<typeof schema>>({
     mode: "onChange",

@@ -42,7 +42,7 @@ export const RepairWaitingConstructionDialog = ({
 }: RepairWaitingConstructionDialogProps) => {
   const [form] = Form.useForm();
   const { data: taskOptions } = useTaskOptionsQuery();
-  const uploadFile = useFileUpload("file", "other/waiting-construction");
+  const uploadFile = useFileUpload("file", "repair/other/waiting-construction");
 
   const checkInRangeTimeOptions = useMemo(() => {
     return taskOptions?.rangeTimes.map((option) => ({
