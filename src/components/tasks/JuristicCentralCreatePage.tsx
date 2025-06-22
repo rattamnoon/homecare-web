@@ -46,7 +46,17 @@ import { z } from "zod";
 const schema = z.object({
   projectId: z.string({ message: "กรุณาเลือกโครงการ" }),
   customerName: z.string({ message: "กรุณากรอกชื่อ-นามสกุล" }),
-  customerPhone: z.string({ message: "กรุณากรอกเบอร์โทร" }),
+  customerPhone: z
+    .string({ message: "กรุณากรอกเบอร์โทร" })
+    .min(10, {
+      message: "กรุณากรอกเบอร์โทร 10 หลัก",
+    })
+    .max(10, {
+      message: "กรุณากรอกเบอร์โทร 10 หลัก",
+    })
+    .regex(/^[0-9]+$/, {
+      message: "กรุณากรอกเบอร์โทร 10 หลัก",
+    }),
   source: z.string({ message: "กรุณาเลือกช่องทาง" }),
   areaId: z.string({ message: "กรุณาเลือกพื้นที่" }),
   buildingId: z.string({ message: "กรุณาเลือกอาคาร" }),
