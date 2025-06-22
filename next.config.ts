@@ -4,6 +4,10 @@ const nextConfig: NextConfig = {
   output: "standalone",
   reactStrictMode: true,
   transpilePackages: ["antd", "lodash-es"],
+  serverExternalPackages: [
+    "@aws-sdk/client-s3",
+    "@aws-sdk/s3-request-presigner",
+  ],
   experimental: {
     optimizePackageImports: ["antd", "lodash-es"],
   },
