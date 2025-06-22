@@ -93,7 +93,6 @@ export const SystemInsuranceExpandProjectDialog = ({
                 render={({ field, formState: { errors } }) => (
                   <Form.Item
                     label="เป็นวันที่"
-                    name="insuranceDate"
                     required={false}
                     validateStatus={errors.insuranceDate ? "error" : ""}
                     help={errors.insuranceDate?.message}

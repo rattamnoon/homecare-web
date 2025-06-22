@@ -276,7 +276,6 @@ export const RepairCreatePage = () => {
                 render={({ field, formState: { errors } }) => (
                   <Form.Item
                     label="โครงการ"
-                    name="projectId"
                     required={false}
                     validateStatus={errors.projectId ? "error" : ""}
                     help={errors.projectId?.message}
@@ -301,7 +300,6 @@ export const RepairCreatePage = () => {
                 render={({ field, formState: { errors } }) => (
                   <Form.Item
                     label="เลขยูนิต"
-                    name="unitId"
                     required={false}
                     validateStatus={errors.unitId ? "error" : ""}
                     help={errors.unitId?.message}
@@ -327,7 +325,6 @@ export const RepairCreatePage = () => {
                 render={({ field, formState: { errors } }) => (
                   <Form.Item
                     label="ชื่อ-นามสกุล"
-                    name="customerName"
                     required={false}
                     validateStatus={errors.customerName ? "error" : ""}
                     help={errors.customerName?.message}
@@ -344,7 +341,6 @@ export const RepairCreatePage = () => {
                 render={({ field, formState: { errors } }) => (
                   <Form.Item
                     label="เบอร์โทร"
-                    name="customerPhone"
                     required={false}
                     validateStatus={errors.customerPhone ? "error" : ""}
                     help={errors.customerPhone?.message}
@@ -361,7 +357,6 @@ export const RepairCreatePage = () => {
                 render={({ field, formState: { errors } }) => (
                   <Form.Item
                     label="วันที่เข้าตรวจสอบ"
-                    name="checkInDate"
                     required={false}
                     validateStatus={errors.checkInDate ? "error" : ""}
                     help={errors.checkInDate?.message}
@@ -389,7 +384,6 @@ export const RepairCreatePage = () => {
                 render={({ field, formState: { errors } }) => (
                   <Form.Item
                     label="แจ้งผ่านช่องทาง"
-                    name="source"
                     required={false}
                     validateStatus={errors.source ? "error" : ""}
                     help={errors.source?.message}
@@ -411,7 +405,6 @@ export const RepairCreatePage = () => {
                 render={({ field, formState: { errors } }) => (
                   <Form.Item
                     label="ช่วงเวลา"
-                    name="checkInRangeTime"
                     required={false}
                     validateStatus={errors.checkInRangeTime ? "error" : ""}
                     help={errors.checkInRangeTime?.message}
@@ -454,7 +447,6 @@ export const RepairCreatePage = () => {
                             render={({ field, formState: { errors } }) => (
                               <Form.Item
                                 label="ประเภท"
-                                name={`taskDetails.${index}.categoryId`}
                                 required={false}
                                 validateStatus={
                                   errors.taskDetails?.[index]?.categoryId
@@ -485,7 +477,6 @@ export const RepairCreatePage = () => {
                             render={({ field, formState: { errors } }) => (
                               <Form.Item
                                 label="ประเภทย่อย"
-                                name={`taskDetails.${index}.subCategoryId`}
                                 required={false}
                                 validateStatus={
                                   errors.taskDetails?.[index]?.subCategoryId
@@ -516,7 +507,6 @@ export const RepairCreatePage = () => {
                             render={({ field, formState: { errors } }) => (
                               <Form.Item
                                 label="รายละเอียด"
-                                name={`taskDetails.${index}.description`}
                                 required={false}
                                 validateStatus={
                                   errors.taskDetails?.[index]?.description
@@ -543,7 +533,6 @@ export const RepairCreatePage = () => {
                             render={({ field, formState: { errors } }) => (
                               <Form.Item
                                 label="รูปภาพ"
-                                name={`taskDetails.${index}.images`}
                                 required={false}
                                 validateStatus={
                                   errors.taskDetails?.[index]?.images

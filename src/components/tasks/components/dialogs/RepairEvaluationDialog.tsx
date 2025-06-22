@@ -42,7 +42,6 @@ export const RepairEvaluationDialog = ({
   onCancel,
   onSubmit,
   confirmLoading,
-  taskDetail,
 }: RepairEvaluationDialogProps) => {
   const { control, handleSubmit, getValues } = useForm<Schema>({
     mode: "onChange",
@@ -116,7 +115,6 @@ export const RepairEvaluationDialog = ({
             render={({ field, formState: { errors } }) => (
               <Form.Item
                 label="ชมเชย/ข้อเสนอแนะ"
-                name="CSATComment"
                 required={false}
                 validateStatus={errors.CSATComment ? "error" : undefined}
                 help={errors.CSATComment?.message}

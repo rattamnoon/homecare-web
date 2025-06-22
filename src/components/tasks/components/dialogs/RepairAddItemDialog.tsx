@@ -94,7 +94,6 @@ export const RepairAddItemDialog = ({
           render={({ field, formState: { errors } }) => (
             <Form.Item
               label="ประเภท"
-              name="categoryId"
               required={false}
               validateStatus={errors?.categoryId ? "error" : ""}
               help={errors?.categoryId?.message}
@@ -117,7 +116,6 @@ export const RepairAddItemDialog = ({
           render={({ field, formState: { errors } }) => (
             <Form.Item
               label="ประเภทย่อย"
-              name="subCategoryId"
               required={false}
               validateStatus={errors?.subCategoryId ? "error" : ""}
               help={errors?.subCategoryId?.message}
@@ -142,7 +140,6 @@ export const RepairAddItemDialog = ({
           render={({ field, formState: { errors } }) => (
             <Form.Item
               label="รายละเอียด"
-              name="description"
               required={false}
               validateStatus={errors?.description ? "error" : ""}
               help={errors?.description?.message}
@@ -158,7 +155,6 @@ export const RepairAddItemDialog = ({
           render={({ field, formState: { errors } }) => (
             <Form.Item
               label="รูปภาพ"
-              name="images"
               required={false}
               validateStatus={errors?.images ? "error" : ""}
               help={errors.images?.message}

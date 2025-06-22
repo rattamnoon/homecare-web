@@ -91,7 +91,7 @@ export const JuristicCentralCreatePage = () => {
     name: "taskDetails",
   });
 
-  useMeQuery({
+  const { loading: meLoading } = useMeQuery({
     onCompleted: (data) => {
       setValue("customerName", `${data.me.firstName} ${data.me.lastName}`);
       setValue("customerPhone", "020300000");
@@ -279,7 +279,6 @@ export const JuristicCentralCreatePage = () => {
                 render={({ field, formState: { errors } }) => (
                   <Form.Item
                     label="โครงการ"
-                    name="projectId"
                     required={false}
                     validateStatus={errors.projectId ? "error" : ""}
                     help={errors.projectId?.message}
@@ -304,7 +303,6 @@ export const JuristicCentralCreatePage = () => {
                 render={({ field, formState: { errors } }) => (
                   <Form.Item
                     label="บริเวณ"
-                    name="areaId"
                     required={false}
                     validateStatus={errors.areaId ? "error" : ""}
                     help={errors.areaId?.message}
@@ -329,7 +327,6 @@ export const JuristicCentralCreatePage = () => {
                 render={({ field, formState: { errors } }) => (
                   <Form.Item
                     label="อาคาร"
-                    name="buildingId"
                     required={false}
                     validateStatus={errors.buildingId ? "error" : ""}
                     help={errors.buildingId?.message}
@@ -354,7 +351,6 @@ export const JuristicCentralCreatePage = () => {
                 render={({ field, formState: { errors } }) => (
                   <Form.Item
                     label="ชั้น"
-                    name="floorId"
                     required={false}
                     validateStatus={errors.floorId ? "error" : ""}
                     help={errors.floorId?.message}
@@ -379,12 +375,15 @@ export const JuristicCentralCreatePage = () => {
                 render={({ field, formState: { errors } }) => (
                   <Form.Item
                     label="ชื่อ-นามสกุล"
-                    name="customerName"
                     required={false}
                     validateStatus={errors.customerName ? "error" : ""}
                     help={errors.customerName?.message}
                   >
-                    <Input {...field} placeholder="ชื่อ-นามสกุล" />
+                    <Input
+                      {...field}
+                      placeholder="ชื่อ-นามสกุล"
+                      disabled={meLoading}
+                    />
                   </Form.Item>
                 )}
               />
@@ -396,12 +395,15 @@ export const JuristicCentralCreatePage = () => {
                 render={({ field, formState: { errors } }) => (
                   <Form.Item
                     label="เบอร์โทร"
-                    name="customerPhone"
                     required={false}
                     validateStatus={errors.customerPhone ? "error" : ""}
                     help={errors.customerPhone?.message}
                   >
-                    <Input {...field} placeholder="เบอร์โทร" />
+                    <Input
+                      {...field}
+                      placeholder="เบอร์โทร"
+                      disabled={meLoading}
+                    />
                   </Form.Item>
                 )}
               />
@@ -413,7 +415,6 @@ export const JuristicCentralCreatePage = () => {
                 render={({ field, formState: { errors } }) => (
                   <Form.Item
                     label="แจ้งผ่านช่องทาง"
-                    name="source"
                     required={false}
                     validateStatus={errors.source ? "error" : ""}
                     help={errors.source?.message}
@@ -456,7 +457,6 @@ export const JuristicCentralCreatePage = () => {
                             render={({ field, formState: { errors } }) => (
                               <Form.Item
                                 label="ประเภท"
-                                name={`taskDetails.${index}.categoryId`}
                                 required={false}
                                 validateStatus={
                                   errors.taskDetails?.[index]?.categoryId
@@ -487,7 +487,6 @@ export const JuristicCentralCreatePage = () => {
                             render={({ field, formState: { errors } }) => (
                               <Form.Item
                                 label="ประเภทย่อย"
-                                name={`taskDetails.${index}.subCategoryId`}
                                 required={false}
                                 validateStatus={
                                   errors.taskDetails?.[index]?.subCategoryId
@@ -518,7 +517,6 @@ export const JuristicCentralCreatePage = () => {
                             render={({ field, formState: { errors } }) => (
                               <Form.Item
                                 label="รายละเอียด"
-                                name={`taskDetails.${index}.description`}
                                 required={false}
                                 validateStatus={
                                   errors.taskDetails?.[index]?.description
@@ -545,7 +543,6 @@ export const JuristicCentralCreatePage = () => {
                             render={({ field, formState: { errors } }) => (
                               <Form.Item
                                 label="รูปภาพ"
-                                name={`taskDetails.${index}.images`}
                                 required={false}
                                 validateStatus={
                                   errors.taskDetails?.[index]?.images
