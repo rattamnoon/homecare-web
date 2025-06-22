@@ -49,7 +49,7 @@ export default function TasksTemplate({
       >
         <Menu
           mode="inline"
-          openKeys={isJuristic ? ["juristic"] : ["repair"]}
+          defaultOpenKeys={isJuristic ? ["juristic"] : ["repair"]}
           selectedKeys={[pathname]}
           style={{ height: "100%", borderRight: 0 }}
           items={[
