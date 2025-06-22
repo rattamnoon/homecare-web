@@ -32,6 +32,8 @@ export default function TasksTemplate({
   } = theme.useToken();
   const [collapsed, setCollapsed] = useState(false);
 
+  const isJuristic = pathname.includes("/tasks/juristic");
+
   return (
     <Layout>
       <Sider
@@ -47,7 +49,7 @@ export default function TasksTemplate({
       >
         <Menu
           mode="inline"
-          defaultOpenKeys={["repair"]}
+          openKeys={isJuristic ? ["juristic"] : ["repair"]}
           selectedKeys={[pathname]}
           style={{ height: "100%", borderRight: 0 }}
           items={[

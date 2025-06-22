@@ -139,6 +139,9 @@ export const RepairPage = () => {
               route="TasksRepair"
               isSearchText
               isCreateButton
+              onCreateButtonClick={() => {
+                router.push(Routes.TasksRepairCreate);
+              }}
               isStatus
               isProject
               isUnit

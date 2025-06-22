@@ -106,6 +106,7 @@ interface SearchFilterProps {
   route: keyof typeof Routes;
   isSearchText?: boolean;
   isCreateButton?: boolean;
+  onCreateButtonClick?: () => void;
   isStatus?: boolean;
   isProject?: boolean;
   isUnit?: boolean;
@@ -120,6 +121,7 @@ export const SearchFilter = ({
   route,
   isSearchText,
   isCreateButton,
+  onCreateButtonClick,
   isStatus,
   isProject,
   isUnit,
@@ -204,9 +206,9 @@ export const SearchFilter = ({
                 variant="solid"
                 color="primary"
                 icon={<FontAwesomeIcon icon={faPlus} />}
-                onClick={() => {
-                  router.push(Routes.TasksRepairCreate);
-                }}
+                {...(onCreateButtonClick && {
+                  onClick: onCreateButtonClick,
+                })}
               >
                 เพิ่มงานแจ้งซ่อม
               </Button>
