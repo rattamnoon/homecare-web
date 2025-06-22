@@ -53,7 +53,7 @@ const schema = z.object({
   unitId: z.string({ message: "กรุณาเลือกหน่วย" }),
   customerName: z.string({ message: "กรุณากรอกชื่อ-นามสกุล" }),
   customerPhone: z.string({ message: "กรุณากรอกเบอร์โทร" }).regex(/^[0-9]+$/, {
-    message: "กรุณากรอกเบอร์โทร 10 หลัก",
+    message: "กรุณากรอกเบอร์โทรให้ถูกต้อง",
   }),
   checkInDate: z.date({ message: "กรุณากรอกวันที่เข้าตรวจสอบ" }),
   source: z.string({ message: "กรุณาเลือกช่องทาง" }),

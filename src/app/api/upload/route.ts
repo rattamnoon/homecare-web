@@ -19,61 +19,51 @@ export const s3Client = new S3Client({
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
-    const files = formData.getAll("file") as File[];
+    const file = formData.get("file") as File;
 
-    if (files.length === 0) {
+    if (!file) {
       return NextResponse.json(
         { message: "No files provided" },
         { status: 400 }
       );
     }
 
-    const uploadResults = await Promise.all(
-      files.map(async (file) => {
-        const fileFolder = (formData.get("fileFolder") as string) || "uploads";
-        const fileId =
-          (formData.get("fileId") as string) || crypto.randomUUID();
-        const fileName = (formData.get("fileName") as string) || file.name;
+    const fileFolder = (formData.get("fileFolder") as string) || "unknown";
+    const fileId = (formData.get("fileId") as string) || crypto.randomUUID();
+    const fileName = (formData.get("fileName") as string) || file.name;
 
-        const key = `${fileFolder}/${fileName}`;
+    const key = `${fileFolder}/${fileName}`;
 
-        const buffer = Buffer.from(await file.arrayBuffer());
+    const buffer = Buffer.from(await file.arrayBuffer());
 
-        await s3Client.send(
-          new PutObjectCommand({
-            Bucket,
-            Key: key,
-            Body: buffer,
-            ContentType: file.type,
-          })
-        );
-
-        const signedUrl = await getSignedUrl(
-          s3Client,
-          new GetObjectCommand({
-            Bucket,
-            Key: key,
-          }),
-          {
-            expiresIn: 60 * 60 * 24, // หมดอายุ 1 วัน
-          }
-        );
-
-        return {
-          fileId,
-          fileName,
-          fileFolder,
-          filePath: key,
-          fileBucket: Bucket,
-          fileExtension: file.type.split("/")[1],
-          fileUrl: signedUrl,
-        };
+    await s3Client.send(
+      new PutObjectCommand({
+        Bucket,
+        Key: key,
+        Body: buffer,
+        ContentType: file.type,
       })
     );
 
+    const signedUrl = await getSignedUrl(
+      s3Client,
+      new GetObjectCommand({
+        Bucket,
+        Key: key,
+      }),
+      {
+        expiresIn: 60 * 60 * 24, // หมดอายุ 1 วัน
+      }
+    );
+
     return NextResponse.json({
-      message: "Upload successful",
-      data: uploadResults,
+      fileId,
+      fileName,
+      fileFolder,
+      filePath: key,
+      fileBucket: Bucket,
+      fileExtension: file.type.split("/")[1],
+      fileUrl: signedUrl,
     });
   } catch (error) {
     console.error("Upload error:", error);

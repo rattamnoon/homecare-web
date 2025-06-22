@@ -48,7 +48,7 @@ const schema = z.object({
   projectId: z.string({ message: "กรุณาเลือกโครงการ" }),
   customerName: z.string({ message: "กรุณากรอกชื่อ-นามสกุล" }),
   customerPhone: z.string({ message: "กรุณากรอกเบอร์โทร" }).regex(/^[0-9]+$/, {
-    message: "กรุณากรอกเบอร์โทร 10 หลัก",
+    message: "กรุณากรอกเบอร์โทรให้ถูกต้อง",
   }),
   source: z.string({ message: "กรุณาเลือกช่องทาง" }),
   areaId: z.string({ message: "กรุณาเลือกพื้นที่" }),
