@@ -435,3 +435,9 @@ mutation CreateTaskDetailReinprogress($taskDetailId: String!) {
     ...TaskDetail
   }
 }
+
+mutation CreateTaskDetail($createTaskDetailInput: CreateTaskDetailInput!) {
+  createTaskDetail(createTaskDetailInput: $createTaskDetailInput) {
+    ...TaskDetail
+  }
+}

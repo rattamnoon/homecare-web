@@ -288,6 +288,7 @@ export type Mutation = {
   createOrUpdateInsuranceExtension: InsuranceExtension;
   createProject: Project;
   createTask: Task;
+  createTaskDetail: TaskDetail;
   createTaskDetailReinprogress: TaskDetail;
   createTaskDetailReportLog: TaskDetailReportLog;
   createTaskDetailReportLogWithAssign: TaskDetailReportLog;
@@ -345,6 +346,10 @@ export type MutationCreateProjectArgs = {
 export type MutationCreateTaskArgs = {
   createTaskDetailInput: Array<CreateTaskDetailInput>;
   createTaskInput: CreateTaskInput;
+};
+
+export type MutationCreateTaskDetailArgs = {
+  createTaskDetailInput: CreateTaskDetailInput;
 };
 
 export type MutationCreateTaskDetailReinprogressArgs = {

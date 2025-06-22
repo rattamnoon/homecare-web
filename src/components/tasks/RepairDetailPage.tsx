@@ -47,6 +47,7 @@ import { useMemo, useState } from "react";
 import { RepairApprovePlan } from "./components/RepairApprovePlan";
 import { RepairImagePreview } from "./components/RepairImagePreview";
 import { RepairSOPImagePreview } from "./components/RepairSOPImagePreview";
+import { RepairAddItemDialog } from "./components/dialogs/RepairAddItemDialog";
 import { RepairAssignedDialog } from "./components/dialogs/RepairAssignedDialog";
 import { RepairEvaluationDialog } from "./components/dialogs/RepairEvaluationDialog";
 import { RepairLogsDialog } from "./components/dialogs/RepairLogsDialog";
@@ -86,6 +87,7 @@ export const RepairDetailPage = () => {
   const [logsDialogOpen, setLogsDialogOpen] = useState(false);
   const [evaluationDialogOpen, setEvaluationDialogOpen] = useState(false);
   const [taskDetail, setTaskDetail] = useState<TaskDetailFragment | null>(null);
+  const [addItemDialogOpen, setAddItemDialogOpen] = useState(false);
 
   const { data, loading, error } = useTaskQuery({
     variables: { id: taskId },
@@ -354,7 +356,19 @@ export const RepairDetailPage = () => {
             </Descriptions>
           </Skeleton>
           <Divider />
-          <Title level={5}>รายการงานแจ้งซ่อม</Title>
+          <Flex justify="space-between" gap={8}>
+            <Title level={5}>รายการงานแจ้งซ่อม</Title>
+            <Button
+              variant="solid"
+              color="primary"
+              icon={<FontAwesomeIcon icon={faPlus} />}
+              onClick={() => {
+                setAddItemDialogOpen(true);
+              }}
+            >
+              เพิ่มรายการงานแจ้งซ่อม
+            </Button>
+          </Flex>
           <Skeleton loading={loading} active paragraph={{ rows: 6 }}>
             <Collapse
               accordion
@@ -731,6 +745,12 @@ export const RepairDetailPage = () => {
           });
         }}
         confirmLoading={createCsatLoading}
+      />
+      <RepairAddItemDialog
+        open={addItemDialogOpen}
+        onCancel={() => setAddItemDialogOpen(false)}
+        confirmLoading={false}
+        taskId={taskId}
       />
     </LayoutWithBreadcrumb>
   );
