@@ -32,7 +32,7 @@
     "@fortawesome/sharp-solid-svg-icons": "^6.7.2",
     "@fortawesome/sharp-thin-svg-icons": "^6.7.2",
     "@hookform/resolvers": "^5.1.1",
-    "antd": "^5.26.0",
+    "antd": "^5.26.1",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.13",
     "graphql": "^16.11.0",
@@ -80,5 +80,6 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
     "typescript": "^5"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

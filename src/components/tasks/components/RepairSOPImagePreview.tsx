@@ -1,8 +1,6 @@
 import { UploadFileType } from "@/gql/generated/graphql";
-import {
-  TaskStatusFragment,
-  UploadFileFragment,
-} from "@/gql/generated/tasks.generated";
+import { TaskStatusFragment } from "@/gql/generated/tasks.generated";
+import { UploadFileFragment } from "@/gql/generated/upload-files.generated";
 import { StepProps, Steps, Typography } from "antd";
 import { RepairImagePreview } from "./RepairImagePreview";
 
