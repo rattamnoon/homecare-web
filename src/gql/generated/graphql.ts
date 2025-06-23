@@ -130,7 +130,7 @@ export type CreateTaskDetailReportLogInput = {
   remark?: InputMaybe<Scalars["String"]["input"]>;
   taskDetailAssignId?: InputMaybe<Scalars["String"]["input"]>;
   taskDetailId?: InputMaybe<Scalars["String"]["input"]>;
-  type: TaskStatus;
+  type?: InputMaybe<TaskStatus>;
 };
 
 export type CreateTaskInput = {
@@ -458,6 +458,8 @@ export type Project = {
 export type Query = {
   __typename?: "Query";
   allActiveUsers: Array<User>;
+  allReportLogs: Array<TaskDetailReportLog>;
+  allUsers: Array<User>;
   calling: Calling;
   callings: Array<Calling>;
   csat: Csat;
@@ -481,6 +483,10 @@ export type Query = {
   uploadFiles: Array<UploadFile>;
   user: User;
   users: UserPaginate;
+};
+
+export type QueryAllReportLogsArgs = {
+  taskDetailId: Scalars["String"]["input"];
 };
 
 export type QueryCallingArgs = {

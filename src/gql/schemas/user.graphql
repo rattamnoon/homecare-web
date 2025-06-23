@@ -37,3 +37,9 @@ query AllActiveUsers {
     ...User
   }
 }
+
+query AllUsers {
+  allUsers {
+    ...User
+  }
+}

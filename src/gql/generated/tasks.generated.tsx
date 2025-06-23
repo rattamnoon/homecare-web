@@ -3304,7 +3304,98 @@ export type CreateTaskDetailReportLogMutationVariables = Types.Exact<{
 
 export type CreateTaskDetailReportLogMutation = {
   __typename?: "Mutation";
-  createTaskDetailReportLog: { __typename?: "TaskDetailReportLog"; id: string };
+  createTaskDetailReportLog: {
+    __typename?: "TaskDetailReportLog";
+    callbackDate?: Date | null;
+    checkInDate?: Date | null;
+    remark?: string | null;
+    createdAt: Date;
+    deletedAt?: Date | null;
+    id: string;
+    taskDetailAssignId?: string | null;
+    taskDetailId?: string | null;
+    updatedAt: Date;
+    type?: {
+      __typename?: "TaskStatusDto";
+      id: Types.TaskStatus;
+      nameTh: string;
+      nameEn: string;
+      color: string;
+    } | null;
+    checkInRangeTime?: {
+      __typename?: "TaskRangeTimeDto";
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    } | null;
+    images: Array<{
+      __typename?: "UploadFile";
+      id: string;
+      refId?: string | null;
+      fileId?: string | null;
+      fileType: Types.UploadFileType;
+      fileName?: string | null;
+      fileFolder?: string | null;
+      filePath?: string | null;
+      fileBucket?: string | null;
+      fileExtension?: string | null;
+      fileUrl: string;
+      isPublic: boolean;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    }>;
+  };
+};
+
+export type AllReportLogsQueryVariables = Types.Exact<{
+  taskDetailId: Types.Scalars["String"]["input"];
+}>;
+
+export type AllReportLogsQuery = {
+  __typename?: "Query";
+  allReportLogs: Array<{
+    __typename?: "TaskDetailReportLog";
+    callbackDate?: Date | null;
+    checkInDate?: Date | null;
+    remark?: string | null;
+    createdAt: Date;
+    deletedAt?: Date | null;
+    id: string;
+    taskDetailAssignId?: string | null;
+    taskDetailId?: string | null;
+    updatedAt: Date;
+    type?: {
+      __typename?: "TaskStatusDto";
+      id: Types.TaskStatus;
+      nameTh: string;
+      nameEn: string;
+      color: string;
+    } | null;
+    checkInRangeTime?: {
+      __typename?: "TaskRangeTimeDto";
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    } | null;
+    images: Array<{
+      __typename?: "UploadFile";
+      id: string;
+      refId?: string | null;
+      fileId?: string | null;
+      fileType: Types.UploadFileType;
+      fileName?: string | null;
+      fileFolder?: string | null;
+      filePath?: string | null;
+      fileBucket?: string | null;
+      fileExtension?: string | null;
+      fileUrl: string;
+      isPublic: boolean;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    }>;
+  }>;
 };
 
 export type CreateTaskDetailReportLogWithAssignMutationVariables = Types.Exact<{
@@ -6411,9 +6502,10 @@ export const CreateTaskDetailReportLogDocument = gql`
       createTaskDetailReportLogInput: $createTaskDetailReportLogInput
       createUploadFileInput: $createUploadFileInput
     ) {
-      id
+      ...TaskDetailReportLog
     }
   }
+  ${TaskDetailReportLogFragmentDoc}
 `;
 export type CreateTaskDetailReportLogMutationFn = Apollo.MutationFunction<
   CreateTaskDetailReportLogMutation,
@@ -6460,6 +6552,89 @@ export type CreateTaskDetailReportLogMutationOptions =
     CreateTaskDetailReportLogMutation,
     CreateTaskDetailReportLogMutationVariables
   >;
+export const AllReportLogsDocument = gql`
+  query AllReportLogs($taskDetailId: String!) {
+    allReportLogs(taskDetailId: $taskDetailId) {
+      ...TaskDetailReportLog
+    }
+  }
+  ${TaskDetailReportLogFragmentDoc}
+`;
+
+/**
+ * __useAllReportLogsQuery__
+ *
+ * To run a query within a React component, call `useAllReportLogsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllReportLogsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllReportLogsQuery({
+ *   variables: {
+ *      taskDetailId: // value for 'taskDetailId'
+ *   },
+ * });
+ */
+export function useAllReportLogsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    AllReportLogsQuery,
+    AllReportLogsQueryVariables
+  > &
+    (
+      | { variables: AllReportLogsQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<AllReportLogsQuery, AllReportLogsQueryVariables>(
+    AllReportLogsDocument,
+    options,
+  );
+}
+export function useAllReportLogsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AllReportLogsQuery,
+    AllReportLogsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<AllReportLogsQuery, AllReportLogsQueryVariables>(
+    AllReportLogsDocument,
+    options,
+  );
+}
+export function useAllReportLogsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        AllReportLogsQuery,
+        AllReportLogsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    AllReportLogsQuery,
+    AllReportLogsQueryVariables
+  >(AllReportLogsDocument, options);
+}
+export type AllReportLogsQueryHookResult = ReturnType<
+  typeof useAllReportLogsQuery
+>;
+export type AllReportLogsLazyQueryHookResult = ReturnType<
+  typeof useAllReportLogsLazyQuery
+>;
+export type AllReportLogsSuspenseQueryHookResult = ReturnType<
+  typeof useAllReportLogsSuspenseQuery
+>;
+export type AllReportLogsQueryResult = Apollo.QueryResult<
+  AllReportLogsQuery,
+  AllReportLogsQueryVariables
+>;
 export const CreateTaskDetailReportLogWithAssignDocument = gql`
   mutation CreateTaskDetailReportLogWithAssign(
     $createTaskDetailReportLogInput: CreateTaskDetailReportLogInput!

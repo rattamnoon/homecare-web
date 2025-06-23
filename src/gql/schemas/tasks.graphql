@@ -409,7 +409,13 @@ mutation CreateTaskDetailReportLog(
     createTaskDetailReportLogInput: $createTaskDetailReportLogInput
     createUploadFileInput: $createUploadFileInput
   ) {
-    id
+    ...TaskDetailReportLog
+  }
+}
+
+query AllReportLogs($taskDetailId: String!) {
+  allReportLogs(taskDetailId: $taskDetailId) {
+    ...TaskDetailReportLog
   }
 }
 

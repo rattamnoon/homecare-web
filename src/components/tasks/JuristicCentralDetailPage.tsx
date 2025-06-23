@@ -12,6 +12,7 @@ import imageToken from "@/utils/imageToken";
 import { UserOutlined } from "@ant-design/icons";
 import {
   faEdit,
+  faEye,
   faHistory,
   faPaperclip,
   faSave,
@@ -37,13 +38,20 @@ import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { getImageUrl } from "../layout/TopNavBar";
 import { RepairImagePreview } from "./components/RepairImagePreview";
-import { JuristicCentralEditDialog } from "./components/dialogs/JuristicCentralEditDialog";
+import {
+  getIsJuristicCentralDisabled,
+  JuristicCentralEditDialog,
+} from "./components/dialogs/JuristicCentralEditDialog";
 import { JuristicCentralLogsDialog } from "./components/dialogs/JuristicCentralLogsDialog";
 import { JuristicCentralUploadFilesDialog } from "./components/dialogs/JuristicCentralUploadFilesDialog";
 
 const { Title, Text } = Typography;
 
-const AvatarWithEmployeeId = ({ employeeId }: { employeeId: string }) => {
+export const AvatarWithEmployeeId = ({
+  employeeId,
+}: {
+  employeeId: string;
+}) => {
   const [avatar, setAvatar] = useState<string>("");
 
   useEffect(() => {
@@ -114,6 +122,8 @@ export const JuristicCentralDetailPage = () => {
         },
       ],
     });
+
+  const isDisabled = getIsJuristicCentralDisabled(task?.status?.id);
 
   return (
     <LayoutWithBreadcrumb
@@ -291,13 +301,19 @@ export const JuristicCentralDetailPage = () => {
                                 alignItems: "baseline",
                               },
                             }}
-                            icon={<FontAwesomeIcon icon={faEdit} />}
+                            icon={
+                              isDisabled ? (
+                                <FontAwesomeIcon icon={faEye} />
+                              ) : (
+                                <FontAwesomeIcon icon={faEdit} />
+                              )
+                            }
                             onClick={() => {
                               setEditDialogOpen(true);
                               setTaskDetail(detail);
                             }}
                           >
-                            แก้ไข
+                            {isDisabled ? "ดูรายละเอียด" : "แก้ไข"}
                           </Button>
                           <Button
                             variant="outlined"

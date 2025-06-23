@@ -1,9 +1,18 @@
 import { CustomFormItem } from "@/components/common/CustomFormItem";
-import { MasterType, TaskStatus } from "@/gql/generated/graphql";
+import {
+  MasterType,
+  TaskStatus,
+  UploadFileType,
+} from "@/gql/generated/graphql";
 import { useMastersQuery } from "@/gql/generated/master.generated";
 import { useTaskOptionsQuery } from "@/gql/generated/option.generated";
-import { TaskDetailFragment } from "@/gql/generated/tasks.generated";
-import { useAllActiveUsersQuery } from "@/gql/generated/user.generated";
+import {
+  AllReportLogsDocument,
+  TaskDetailFragment,
+  useAllReportLogsQuery,
+  useCreateTaskDetailReportLogMutation,
+} from "@/gql/generated/tasks.generated";
+import { useAllUsersQuery } from "@/gql/generated/user.generated";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import {
   faMessage,
@@ -23,9 +32,11 @@ import {
   Form,
   Input,
   List,
+  notification,
   Row,
   Select,
   Space,
+  Tag,
   Typography,
   Upload,
   UploadFile,
@@ -34,8 +45,20 @@ import dayjs from "dayjs";
 import { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
+import { RepairImagePreview } from "../RepairImagePreview";
 
 const { Text } = Typography;
+
+export const getIsJuristicCentralDisabled = (status?: TaskStatus | null) => {
+  switch (status) {
+    case TaskStatus.Closed:
+    case TaskStatus.Finished:
+    case TaskStatus.FinishByProject:
+      return true;
+    default:
+      return false;
+  }
+};
 
 const schema = z.object({
   code: z.string({ message: "กรุณากรอกรหัส" }),
@@ -50,9 +73,58 @@ const schema = z.object({
   appointmentTime: z.string({ message: "กรุณากรอกวันเวลา" }),
   appointmentRepairDate: z.date({ message: "กรุณากรอกวันเวลา" }),
   appointmentRepairTime: z.string({ message: "กรุณากรอกวันเวลา" }),
-  remark: z.string().optional().nullable(),
   images: z.array(z.custom<UploadFile>()).optional(),
 });
+
+const statusOptions = (currentStatus?: TaskStatus | null) => {
+  return [
+    {
+      label: "Open",
+      value: TaskStatus.Open,
+    },
+    {
+      label: "Assigned",
+      value: TaskStatus.Assigned,
+    },
+    {
+      label: "In Progress",
+      value: TaskStatus.InProgress,
+    },
+    {
+      label: "Finished",
+      value: TaskStatus.Finished,
+    },
+    {
+      label: "Finish By Project",
+      value: TaskStatus.FinishByProject,
+    },
+    {
+      label: "Re-In Progress",
+      value: TaskStatus.ReInProgress,
+    },
+    {
+      label: "Closed",
+      value: TaskStatus.Closed,
+    },
+  ].reduce((acc, curr) => {
+    if (curr.value === TaskStatus.Open) {
+      return [...acc, { ...curr, disabled: true }];
+    }
+
+    if (
+      curr.value === TaskStatus.Assigned &&
+      currentStatus === TaskStatus.InProgress
+    ) {
+      return [...acc, { ...curr, disabled: true }];
+    }
+
+    if (curr.value === TaskStatus.Closed) {
+      return [...acc, { ...curr, disabled: true }];
+    }
+
+    return [...acc, curr];
+  }, [] as { label: string; value: TaskStatus; disabled?: boolean }[]);
+};
 
 interface JuristicCentralEditDialogProps {
   open: boolean;
@@ -60,6 +132,156 @@ interface JuristicCentralEditDialogProps {
   onSubmit: () => void;
   taskDetail?: TaskDetailFragment | null;
 }
+
+const DividerWithIconTitle = ({
+  icon,
+  title,
+}: {
+  icon: React.ReactNode;
+  title: string;
+}) => {
+  return (
+    <Divider plain orientation="left">
+      <Space>
+        {icon}
+        <Text strong>{title}</Text>
+      </Space>
+    </Divider>
+  );
+};
+
+const CaseUpdateThread = ({
+  isDisabled,
+  taskDetailId,
+}: {
+  isDisabled: boolean;
+  taskDetailId: string;
+}) => {
+  const [notificationApi, notificationContextHolder] =
+    notification.useNotification();
+  const { control, handleSubmit } = useForm<{ remark?: string | null }>({
+    mode: "onChange",
+    resolver: zodResolver(
+      z.object({ remark: z.string().optional().nullable() })
+    ),
+  });
+
+  const { data: reportLogsData, loading: reportLogsLoading } =
+    useAllReportLogsQuery({
+      variables: {
+        taskDetailId,
+      },
+      skip: !taskDetailId,
+    });
+
+  const [
+    createTaskDetailReportLog,
+    { loading: createTaskDetailReportLogLoading },
+  ] = useCreateTaskDetailReportLogMutation({
+    onCompleted: () => {
+      notificationApi.success({
+        message: "สำเร็จ !!",
+        description: "บันทึกข้อมูลเรียบร้อย",
+        duration: 3,
+      });
+    },
+    onError: (error) => {
+      notificationApi.error({
+        message: "เกิดข้อผิดพลาด !!",
+        description: error.message,
+        duration: 5,
+      });
+    },
+    refetchQueries: [
+      {
+        query: AllReportLogsDocument,
+        variables: { taskDetailId },
+      },
+    ],
+  });
+
+  const reportLogs = useMemo(() => {
+    return reportLogsData?.allReportLogs ?? [];
+  }, [reportLogsData]);
+
+  const onSubmit = async (data: { remark?: string | null }) => {
+    await createTaskDetailReportLog({
+      variables: {
+        createTaskDetailReportLogInput: {
+          taskDetailId,
+          remark: data.remark,
+        },
+      },
+    });
+  };
+
+  return (
+    <>
+      {notificationContextHolder}
+      <Row gutter={[8, 8]}>
+        <Col xs={24} sm={24}>
+          <List
+            size="small"
+            rowKey={(item) => item.id}
+            dataSource={reportLogs}
+            loading={reportLogsLoading}
+            renderItem={(item) => (
+              <List.Item style={{ padding: 0, margin: 0, border: "none" }}>
+                <Flex gap={8}>
+                  <Text strong style={{ fontSize: 12 }}>
+                    {dayjs(item.createdAt).format("DD/MM/YYYY HH:mm")}
+                  </Text>
+                  <Text type="secondary" style={{ fontSize: 12 }}>
+                    {item.remark}
+                  </Text>
+                </Flex>
+              </List.Item>
+            )}
+          />
+        </Col>
+        {!isDisabled && (
+          <Col xs={24} sm={24}>
+            <Controller
+              control={control}
+              name="remark"
+              render={({ field, fieldState: { error } }) => (
+                <CustomFormItem
+                  label="ข้อมูลเพิ่มเติม"
+                  labelCol={{ span: 24 }}
+                  required={false}
+                  validateStatus={error ? "error" : ""}
+                  help={error?.message}
+                >
+                  <Input.TextArea
+                    {...field}
+                    placeholder="ข้อมูลเพิ่มเติม"
+                    value={field.value || ""}
+                    disabled={isDisabled}
+                  />
+                </CustomFormItem>
+              )}
+            />
+          </Col>
+        )}
+        {!isDisabled && (
+          <Col xs={24} sm={24}>
+            <Button
+              variant="solid"
+              color="primary"
+              size="small"
+              onClick={handleSubmit(onSubmit)}
+              disabled={isDisabled}
+              icon={<FontAwesomeIcon icon={faSave} />}
+              loading={createTaskDetailReportLogLoading}
+            >
+              บันทึก
+            </Button>
+          </Col>
+        )}
+      </Row>
+    </>
+  );
+};
 
 export const JuristicCentralEditDialog = ({
   open,
@@ -95,12 +317,12 @@ export const JuristicCentralEditDialog = ({
     skip: !open,
   });
 
-  const { data: usersData, loading: usersLoading } = useAllActiveUsersQuery({
+  const { data: usersData, loading: usersLoading } = useAllUsersQuery({
     skip: !open,
   });
 
   const masters = useMemo(() => mastersData?.masters || [], [mastersData]);
-  const users = useMemo(() => usersData?.allActiveUsers || [], [usersData]);
+  const users = useMemo(() => usersData?.allUsers || [], [usersData]);
 
   const categoryOptions = useMemo(() => {
     return masters
@@ -168,40 +390,39 @@ export const JuristicCentralEditDialog = ({
     return `${subCategory.SLA1H} ชั่วโมง หรือ ${subCategory.SLA1D} วัน`;
   }, [categoryId, subCategoryId, masters]);
 
-  const isDisabled = useMemo(() => {
-    switch (taskDetail?.status?.id) {
-      case TaskStatus.Closed:
-      case TaskStatus.Finished:
-      case TaskStatus.FinishByProject:
-        return true;
-      default:
-        return false;
-    }
+  const isDisabled = getIsJuristicCentralDisabled(taskDetail?.status?.id);
+
+  const images = useMemo(() => {
+    return (taskDetail?.images ?? []).filter(
+      (image) => image.fileType === UploadFileType.CentralFormAttachment
+    );
   }, [taskDetail]);
 
   return (
     <Drawer
-      title="แก้ไขข้อมูล"
+      title={isDisabled ? "ดูรายละเอียด" : "แก้ไขข้อมูล"}
       open={open}
       onClose={onCancel}
       width={800}
       destroyOnHidden
       footer={
-        <Flex justify="end" gap={8}>
-          <Button key="cancel" onClick={onCancel}>
-            ยกเลิก
-          </Button>
-          <Button
-            key="save"
-            variant="solid"
-            color="primary"
-            onClick={handleSubmit(onSubmit)}
-            icon={<FontAwesomeIcon icon={faSave} />}
-            disabled={isDisabled}
-          >
-            บันทึก
-          </Button>
-        </Flex>
+        !isDisabled && (
+          <Flex justify="end" gap={8}>
+            <Button key="cancel" onClick={onCancel}>
+              ยกเลิก
+            </Button>
+            <Button
+              key="save"
+              variant="solid"
+              color="primary"
+              onClick={handleSubmit(onSubmit)}
+              icon={<FontAwesomeIcon icon={faSave} />}
+              disabled={isDisabled}
+            >
+              บันทึก
+            </Button>
+          </Flex>
+        )
       }
       maskClosable={false}
     >
@@ -213,33 +434,36 @@ export const JuristicCentralEditDialog = ({
             </CustomFormItem>
           </Col>
           <Col xs={24} sm={12}>
-            <Controller
-              control={control}
-              name="status"
-              render={({ field, fieldState: { error } }) => (
-                <CustomFormItem
-                  label="สถานะ"
-                  required={false}
-                  validateStatus={error ? "error" : ""}
-                  help={error?.message}
-                >
-                  <Select
-                    {...field}
-                    placeholder="เลือกสถานะ"
-                    allowClear
-                    showSearch
-                    disabled={isDisabled}
-                    optionFilterProp="label"
-                    options={Object.values(TaskStatus)
-                      .filter((status) => status !== TaskStatus.Open)
-                      .map((status) => ({
-                        label: status,
-                        value: status,
-                      }))}
-                  />
-                </CustomFormItem>
-              )}
-            />
+            {isDisabled ? (
+              <CustomFormItem label="สถานะ">
+                <Tag color={taskDetail?.status?.color}>
+                  {taskDetail?.status?.nameEn}
+                </Tag>
+              </CustomFormItem>
+            ) : (
+              <Controller
+                control={control}
+                name="status"
+                render={({ field, fieldState: { error } }) => (
+                  <CustomFormItem
+                    label="สถานะ"
+                    required={false}
+                    validateStatus={error ? "error" : ""}
+                    help={error?.message}
+                  >
+                    <Select
+                      {...field}
+                      placeholder="เลือกสถานะ"
+                      allowClear
+                      showSearch
+                      disabled={isDisabled}
+                      optionFilterProp="label"
+                      options={statusOptions(taskDetail?.status?.id)}
+                    />
+                  </CustomFormItem>
+                )}
+              />
+            )}
           </Col>
           <Col xs={24} sm={12}>
             <CustomFormItem
@@ -296,52 +520,64 @@ export const JuristicCentralEditDialog = ({
             </CustomFormItem>
           </Col>
           <Col xs={24} sm={12}>
-            <Controller
-              control={control}
-              name="categoryId"
-              render={({ field, fieldState: { error } }) => (
-                <CustomFormItem
-                  label="ประเภทหลัก"
-                  required={false}
-                  validateStatus={error ? "error" : ""}
-                  help={error?.message}
-                >
-                  <Select
-                    {...field}
-                    options={categoryOptions}
-                    allowClear
-                    showSearch
-                    optionFilterProp="label"
-                    loading={mastersLoading}
-                    disabled={isDisabled}
-                  />
-                </CustomFormItem>
-              )}
-            />
+            {isDisabled ? (
+              <CustomFormItem label="ประเภทหลัก">
+                <Text>{taskDetail?.category?.nameTh}</Text>
+              </CustomFormItem>
+            ) : (
+              <Controller
+                control={control}
+                name="categoryId"
+                render={({ field, fieldState: { error } }) => (
+                  <CustomFormItem
+                    label="ประเภทหลัก"
+                    required={false}
+                    validateStatus={error ? "error" : ""}
+                    help={error?.message}
+                  >
+                    <Select
+                      {...field}
+                      options={categoryOptions}
+                      allowClear
+                      showSearch
+                      optionFilterProp="label"
+                      loading={mastersLoading}
+                      disabled={isDisabled}
+                    />
+                  </CustomFormItem>
+                )}
+              />
+            )}
           </Col>
           <Col xs={24} sm={12}>
-            <Controller
-              control={control}
-              name="subCategoryId"
-              render={({ field, fieldState: { error } }) => (
-                <CustomFormItem
-                  label="ประเภทย่อย"
-                  required={false}
-                  validateStatus={error ? "error" : ""}
-                  help={error?.message}
-                >
-                  <Select
-                    {...field}
-                    options={subCategoryOptions}
-                    disabled={!categoryId || isDisabled}
-                    loading={mastersLoading}
-                    allowClear
-                    showSearch
-                    optionFilterProp="label"
-                  />
-                </CustomFormItem>
-              )}
-            />
+            {isDisabled ? (
+              <CustomFormItem label="ประเภทย่อย">
+                <Text>{taskDetail?.subCategory?.nameTh}</Text>
+              </CustomFormItem>
+            ) : (
+              <Controller
+                control={control}
+                name="subCategoryId"
+                render={({ field, fieldState: { error } }) => (
+                  <CustomFormItem
+                    label="ประเภทย่อย"
+                    required={false}
+                    validateStatus={error ? "error" : ""}
+                    help={error?.message}
+                  >
+                    <Select
+                      {...field}
+                      options={subCategoryOptions}
+                      disabled={!categoryId || isDisabled}
+                      loading={mastersLoading}
+                      allowClear
+                      showSearch
+                      optionFilterProp="label"
+                    />
+                  </CustomFormItem>
+                )}
+              />
+            )}
           </Col>
           <Col xs={24} sm={12}>
             <CustomFormItem label="SLA">
@@ -349,151 +585,130 @@ export const JuristicCentralEditDialog = ({
             </CustomFormItem>
           </Col>
           <Col xs={24} sm={24}>
-            <Controller
-              control={control}
-              name="description"
-              render={({ field, fieldState: { error } }) => (
-                <CustomFormItem
-                  label="รายละเอียด"
-                  labelCol={{ span: 24 }}
-                  required={false}
-                  validateStatus={error ? "error" : ""}
-                  help={error?.message}
-                >
-                  <Input.TextArea
-                    {...field}
-                    placeholder="รายละเอียด"
-                    value={field.value || ""}
-                    disabled={isDisabled}
-                  />
-                </CustomFormItem>
-              )}
-            />
+            {isDisabled ? (
+              <CustomFormItem label="รายละเอียด">
+                <Text>{taskDetail?.description}</Text>
+              </CustomFormItem>
+            ) : (
+              <Controller
+                control={control}
+                name="description"
+                render={({ field, fieldState: { error } }) => (
+                  <CustomFormItem
+                    label="รายละเอียด"
+                    labelCol={{ span: 24 }}
+                    required={false}
+                    validateStatus={error ? "error" : ""}
+                    help={error?.message}
+                  >
+                    <Input.TextArea
+                      {...field}
+                      placeholder="รายละเอียด"
+                      value={field.value || ""}
+                      disabled={isDisabled}
+                    />
+                  </CustomFormItem>
+                )}
+              />
+            )}
           </Col>
         </Row>
 
-        <Divider plain orientation="left">
-          <Space>
-            <FontAwesomeIcon icon={faMessage} />
-            <Text strong>Case Updates Threaded</Text>
-          </Space>
-        </Divider>
+        <DividerWithIconTitle
+          icon={<FontAwesomeIcon icon={faMessage} />}
+          title="Case Updates Threaded"
+        />
+
+        <CaseUpdateThread
+          isDisabled={isDisabled}
+          taskDetailId={taskDetail?.id ?? ""}
+        />
+
+        <DividerWithIconTitle
+          icon={<FontAwesomeIcon icon={faPaperclip} />}
+          title="Update Attachment"
+        />
 
         <Row gutter={[8, 8]}>
-          {taskDetail?.reportLogs && taskDetail?.reportLogs.length > 0 && (
+          <Col xs={24} sm={24}>
+            <RepairImagePreview images={images} />
+          </Col>
+          {!isDisabled && (
             <Col xs={24} sm={24}>
-              <List
-                size="small"
-                rowKey={(item) => item.id}
-                dataSource={taskDetail?.reportLogs}
-                renderItem={(item) => (
-                  <List.Item>
-                    <Flex vertical gap={8}>
-                      <Text strong>
-                        {dayjs(item.createdAt).format("DD/MM/YYYY HH:mm")}
-                      </Text>
-                      <Text>{item.remark}</Text>
-                    </Flex>
-                  </List.Item>
+              <Controller
+                control={control}
+                name="images"
+                render={({ field, formState: { errors } }) => (
+                  <CustomFormItem
+                    label="รูปภาพ"
+                    required={false}
+                    validateStatus={errors?.images ? "error" : ""}
+                    help={errors.images?.message}
+                  >
+                    <Upload
+                      {...field}
+                      {...uploadFile}
+                      multiple
+                      onChange={(info) => {
+                        field.onChange(info.fileList);
+                      }}
+                      fileList={field.value as unknown as UploadFile[]}
+                      listType="text"
+                      accept="image/*"
+                    >
+                      <Button
+                        icon={<FontAwesomeIcon icon={faUpload} />}
+                        disabled={isDisabled}
+                      >
+                        อัพโหลดรูปภาพ
+                      </Button>
+                    </Upload>
+                  </CustomFormItem>
                 )}
               />
             </Col>
           )}
-          <Col xs={24} sm={24}>
-            <Controller
-              control={control}
-              name="remark"
-              render={({ field, fieldState: { error } }) => (
-                <CustomFormItem
-                  label="ข้อมูลเพิ่มเติม"
-                  labelCol={{ span: 24 }}
-                  required={false}
-                  validateStatus={error ? "error" : ""}
-                  help={error?.message}
-                >
-                  <Input.TextArea
-                    {...field}
-                    placeholder="ข้อมูลเพิ่มเติม"
-                    value={field.value || ""}
-                    disabled={isDisabled}
-                  />
-                </CustomFormItem>
-              )}
-            />
-          </Col>
         </Row>
 
-        <Divider plain orientation="left">
-          <Space>
-            <FontAwesomeIcon icon={faPaperclip} />
-            <Text strong>Update Attachment</Text>
-          </Space>
-        </Divider>
-
-        <Row gutter={[8, 8]}>
-          <Col xs={24} sm={24}>
-            <Controller
-              control={control}
-              name="images"
-              render={({ field, formState: { errors } }) => (
-                <CustomFormItem
-                  label="รูปภาพ"
-                  required={false}
-                  validateStatus={errors?.images ? "error" : ""}
-                  help={errors.images?.message}
-                >
-                  <Upload
-                    {...field}
-                    {...uploadFile}
-                    multiple
-                    onChange={(info) => {
-                      field.onChange(info.fileList);
-                    }}
-                    fileList={field.value as unknown as UploadFile[]}
-                    listType="text"
-                    accept="image/*"
-                  >
-                    <Button
-                      icon={<FontAwesomeIcon icon={faUpload} />}
-                      disabled={isDisabled}
-                    >
-                      อัพโหลดรูปภาพ
-                    </Button>
-                  </Upload>
-                </CustomFormItem>
-              )}
-            />
-          </Col>
-        </Row>
         <Divider />
+
         <Row gutter={[8, 8]}>
           <Col xs={24} sm={12}>
-            <Controller
-              control={control}
-              name="homecareId"
-              render={({ field, fieldState: { error } }) => (
-                <CustomFormItem
-                  label="ผู้รับผิดชอบ"
-                  required={false}
-                  validateStatus={error ? "error" : ""}
-                  help={error?.message}
-                >
-                  <Select
-                    {...field}
-                    placeholder="เลือกผู้รับผิดชอบ"
-                    allowClear
-                    showSearch
-                    optionFilterProp="label"
-                    loading={usersLoading}
-                    options={users.map((user) => ({
-                      label: `${user.firstName} ${user.lastName}`,
-                      value: user.id,
-                    }))}
-                    disabled={isDisabled}
-                  />
-                </CustomFormItem>
-              )}
-            />
+            {isDisabled ? (
+              <CustomFormItem label="ผู้รับผิดชอบ">
+                <Text>
+                  {taskDetail?.homecare?.firstName}{" "}
+                  {taskDetail?.homecare?.lastName}
+                </Text>
+              </CustomFormItem>
+            ) : (
+              <Controller
+                control={control}
+                name="homecareId"
+                render={({ field, fieldState: { error } }) => (
+                  <CustomFormItem
+                    label="ผู้รับผิดชอบ"
+                    required={false}
+                    validateStatus={error ? "error" : ""}
+                    help={error?.message}
+                  >
+                    <Select
+                      {...field}
+                      placeholder="เลือกผู้รับผิดชอบ"
+                      allowClear
+                      showSearch
+                      optionFilterProp="label"
+                      loading={usersLoading}
+                      options={users.map((user) => ({
+                        label: `${user.firstName} ${user.lastName}`,
+                        value: user.id,
+                      }))}
+                      disabled={isDisabled || usersLoading}
+                    />
+                  </CustomFormItem>
+                )}
+              />
+            )}
           </Col>
         </Row>
         <Divider size="small" dashed />
@@ -505,50 +720,66 @@ export const JuristicCentralEditDialog = ({
             >
               <Row gutter={[8, 8]}>
                 <Col xs={24} sm={12}>
-                  <Controller
-                    control={control}
-                    name="appointmentDate"
-                    render={({ field, fieldState: { error } }) => (
-                      <Flex vertical gap={8}>
-                        <DatePicker
-                          {...field}
-                          value={field.value ? dayjs(field.value) : undefined}
-                          placeholder="เลือกวันที่"
-                          format="DD/MM/YYYY"
-                          style={{ width: "100%" }}
-                          disabled={isDisabled}
-                        />
-                        {error && <Text type="danger">{error.message}</Text>}
-                      </Flex>
-                    )}
-                  />
+                  {isDisabled ? (
+                    <CustomFormItem label="วันที่">
+                      <Text>
+                        {dayjs(taskDetail?.appointmentDate).format(
+                          "DD/MM/YYYY"
+                        )}
+                      </Text>
+                    </CustomFormItem>
+                  ) : (
+                    <Controller
+                      control={control}
+                      name="appointmentDate"
+                      render={({ field, fieldState: { error } }) => (
+                        <Flex vertical gap={8}>
+                          <DatePicker
+                            {...field}
+                            value={field.value ? dayjs(field.value) : undefined}
+                            placeholder="เลือกวันที่"
+                            format="DD/MM/YYYY"
+                            style={{ width: "100%" }}
+                            disabled={isDisabled}
+                          />
+                          {error && <Text type="danger">{error.message}</Text>}
+                        </Flex>
+                      )}
+                    />
+                  )}
                 </Col>
                 <Col xs={24} sm={12}>
-                  <Controller
-                    control={control}
-                    name="appointmentTime"
-                    render={({ field, fieldState: { error } }) => (
-                      <Flex vertical gap={8}>
-                        <Select
-                          {...field}
-                          placeholder="เลือกเวลา"
-                          allowClear
-                          showSearch
-                          optionFilterProp="label"
-                          style={{ width: "100%" }}
-                          loading={optionsLoading}
-                          options={
-                            options?.rangeTimes.map((option) => ({
-                              label: option.nameTh,
-                              value: option.id,
-                            })) || []
-                          }
-                          disabled={isDisabled}
-                        />
-                        {error && <Text type="danger">{error.message}</Text>}
-                      </Flex>
-                    )}
-                  />
+                  {isDisabled ? (
+                    <CustomFormItem label="เวลา">
+                      <Text>{taskDetail?.appointmentTime?.nameTh}</Text>
+                    </CustomFormItem>
+                  ) : (
+                    <Controller
+                      control={control}
+                      name="appointmentTime"
+                      render={({ field, fieldState: { error } }) => (
+                        <Flex vertical gap={8}>
+                          <Select
+                            {...field}
+                            placeholder="เลือกเวลา"
+                            allowClear
+                            showSearch
+                            optionFilterProp="label"
+                            style={{ width: "100%" }}
+                            loading={optionsLoading}
+                            options={
+                              options?.rangeTimes.map((option) => ({
+                                label: option.nameTh,
+                                value: option.id,
+                              })) || []
+                            }
+                            disabled={isDisabled}
+                          />
+                          {error && <Text type="danger">{error.message}</Text>}
+                        </Flex>
+                      )}
+                    />
+                  )}
                 </Col>
               </Row>
             </CustomFormItem>
@@ -560,50 +791,66 @@ export const JuristicCentralEditDialog = ({
             >
               <Row gutter={[8, 8]}>
                 <Col xs={24} sm={12}>
-                  <Controller
-                    control={control}
-                    name="appointmentRepairDate"
-                    render={({ field, fieldState: { error } }) => (
-                      <Flex vertical gap={8}>
-                        <DatePicker
-                          {...field}
-                          value={field.value ? dayjs(field.value) : undefined}
-                          placeholder="เลือกวันที่"
-                          format="DD/MM/YYYY"
-                          style={{ width: "100%" }}
-                          disabled={isDisabled}
-                        />
-                        {error && <Text type="danger">{error.message}</Text>}
-                      </Flex>
-                    )}
-                  />
+                  {isDisabled ? (
+                    <CustomFormItem label="วันที่">
+                      <Text>
+                        {dayjs(taskDetail?.appointmentRepairDate).format(
+                          "DD/MM/YYYY"
+                        )}
+                      </Text>
+                    </CustomFormItem>
+                  ) : (
+                    <Controller
+                      control={control}
+                      name="appointmentRepairDate"
+                      render={({ field, fieldState: { error } }) => (
+                        <Flex vertical gap={8}>
+                          <DatePicker
+                            {...field}
+                            value={field.value ? dayjs(field.value) : undefined}
+                            placeholder="เลือกวันที่"
+                            format="DD/MM/YYYY"
+                            style={{ width: "100%" }}
+                            disabled={isDisabled}
+                          />
+                          {error && <Text type="danger">{error.message}</Text>}
+                        </Flex>
+                      )}
+                    />
+                  )}
                 </Col>
                 <Col xs={24} sm={12}>
-                  <Controller
-                    control={control}
-                    name="appointmentRepairTime"
-                    render={({ field, fieldState: { error } }) => (
-                      <Flex vertical gap={8}>
-                        <Select
-                          {...field}
-                          placeholder="เลือกเวลา"
-                          allowClear
-                          showSearch
-                          optionFilterProp="label"
-                          style={{ width: "100%" }}
-                          loading={optionsLoading}
-                          options={
-                            options?.rangeTimes.map((option) => ({
-                              label: option.nameTh,
-                              value: option.id,
-                            })) || []
-                          }
-                          disabled={isDisabled}
-                        />
-                        {error && <Text type="danger">{error.message}</Text>}
-                      </Flex>
-                    )}
-                  />
+                  {isDisabled ? (
+                    <CustomFormItem label="เวลา">
+                      <Text>{taskDetail?.appointmentRepairTime?.nameTh}</Text>
+                    </CustomFormItem>
+                  ) : (
+                    <Controller
+                      control={control}
+                      name="appointmentRepairTime"
+                      render={({ field, fieldState: { error } }) => (
+                        <Flex vertical gap={8}>
+                          <Select
+                            {...field}
+                            placeholder="เลือกเวลา"
+                            allowClear
+                            showSearch
+                            optionFilterProp="label"
+                            style={{ width: "100%" }}
+                            loading={optionsLoading}
+                            options={
+                              options?.rangeTimes.map((option) => ({
+                                label: option.nameTh,
+                                value: option.id,
+                              })) || []
+                            }
+                            disabled={isDisabled}
+                          />
+                          {error && <Text type="danger">{error.message}</Text>}
+                        </Flex>
+                      )}
+                    />
+                  )}
                 </Col>
               </Row>
             </CustomFormItem>
