@@ -29,7 +29,7 @@ import { useLocalStorage, useMediaQuery } from "usehooks-ts";
 const { Header } = Layout;
 const { Text } = Typography;
 
-const getImageUrl = async (employeeId: string): Promise<string> => {
+export const getImageUrl = async (employeeId: string): Promise<string> => {
   const url = `${process.env.NEXT_PUBLIC_MYORIGIN_API_URL}/static`;
   const blob = await imageBlob(`${url}/employee_mid/${employeeId}.jpg`);
 

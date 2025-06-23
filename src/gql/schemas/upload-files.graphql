@@ -1,0 +1,22 @@
+fragment UploadFile on UploadFile {
+  id
+  refId
+  fileId
+  fileType
+  fileName
+  fileFolder
+  filePath
+  fileBucket
+  fileExtension
+  fileUrl
+  isPublic
+  createdAt
+  updatedAt
+  deletedAt
+}
+
+mutation CreateUploadFile($createUploadFileInput: [CreateUploadFileInput!]!) {
+  createUploadFile(createUploadFileInput: $createUploadFileInput) {
+    ...UploadFile
+  }
+}

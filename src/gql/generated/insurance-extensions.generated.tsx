@@ -3,7 +3,7 @@ import * as Types from "./graphql";
 import { gql } from "@apollo/client";
 import { ProjectFragmentDoc, UnitFragmentDoc } from "./project.generated";
 import { UserFragmentDoc } from "./user.generated";
-import { UploadFileFragmentDoc } from "./tasks.generated";
+import { UploadFileFragmentDoc } from "./upload-files.generated";
 import {
   IPaginateMetaFragmentDoc,
   IPaginateLinksFragmentDoc,

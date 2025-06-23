@@ -5,7 +5,10 @@ import { Routes } from "@/config/routes";
 import { TaskStatus, TaskType } from "@/gql/generated/graphql";
 import { useTasksQuery } from "@/gql/generated/tasks.generated";
 import { getTablePaginationProps } from "@/utils/utils";
-import { Col, Row, Table, Tag, theme } from "antd";
+import { faEllipsisVertical, faGear } from "@fortawesome/pro-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button, Col, Dropdown, Row, Table, Tag, theme } from "antd";
+import dayjs from "dayjs";
 import { useRouter } from "nextjs-toploader/app";
 import { useMemo } from "react";
 import { SearchFilter, useSearchFilter } from "../common/SearchFilter";
@@ -103,6 +106,39 @@ export const JuristicCentralPage = () => {
             })}
             columns={[
               {
+                dataIndex: "action",
+                key: "action",
+                align: "center",
+                width: 60,
+                fixed: "left",
+                render: (_, record) => {
+                  return (
+                    <Dropdown
+                      menu={{
+                        items: [
+                          {
+                            label: "จัดการงาน",
+                            key: "manage",
+                            icon: <FontAwesomeIcon icon={faGear} />,
+                            onClick: () => {
+                              router.push(
+                                Routes.TasksJuristicCentralDetail(record.id)
+                              );
+                            },
+                          },
+                        ],
+                      }}
+                    >
+                      <Button
+                        type="link"
+                        size="small"
+                        icon={<FontAwesomeIcon icon={faEllipsisVertical} />}
+                      />
+                    </Dropdown>
+                  );
+                },
+              },
+              {
                 title: "รหัสงาน",
                 dataIndex: "code",
                 key: "code",
@@ -189,7 +225,7 @@ export const JuristicCentralPage = () => {
                 dataIndex: "building",
                 key: "building",
                 align: "center",
-                width: 200,
+                width: 100,
                 render: (_, record) => {
                   return record.building ? `${record.building.nameEn}` : "-";
                 },
@@ -204,13 +240,45 @@ export const JuristicCentralPage = () => {
                 dataIndex: "floor",
                 key: "floor",
                 align: "center",
-                width: 200,
+                width: 100,
                 render: (_, record) => {
                   return record.floor ? `${record.floor.nameEn}` : "-";
                 },
                 onCell: () => ({
                   style: {
                     textAlign: "left",
+                  },
+                }),
+              },
+              {
+                title: "จำนวนรายการ",
+                dataIndex: "taskDetails",
+                key: "taskDetails",
+                align: "center",
+                width: 150,
+                render: (_, record) => {
+                  return record.details.length;
+                },
+                onCell: () => ({
+                  style: {
+                    textAlign: "center",
+                  },
+                }),
+              },
+              {
+                title: "วันที่และเวลาแจ้งซ่อม",
+                dataIndex: "createdAt",
+                key: "createdAt",
+                align: "center",
+                width: 160,
+                render: (_, record) => {
+                  return record.createdAt
+                    ? dayjs(record.createdAt).format("DD/MM/YYYY HH:mm")
+                    : "-";
+                },
+                onCell: () => ({
+                  style: {
+                    textAlign: "center",
                   },
                 }),
               },

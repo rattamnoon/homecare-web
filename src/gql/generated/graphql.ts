@@ -94,8 +94,6 @@ export type CreateTaskDetailInput = {
   appointmentDate?: InputMaybe<Scalars["Date"]["input"]>;
   appointmentRepairDate?: InputMaybe<Scalars["Date"]["input"]>;
   appointmentRepairRemark?: InputMaybe<Scalars["String"]["input"]>;
-  appointmentRepairTime?: InputMaybe<Scalars["String"]["input"]>;
-  appointmentTime?: InputMaybe<Scalars["String"]["input"]>;
   assignInDate?: InputMaybe<Scalars["Date"]["input"]>;
   assignRangeTime?: InputMaybe<Scalars["String"]["input"]>;
   assignedDate?: InputMaybe<Scalars["Date"]["input"]>;
@@ -235,12 +233,6 @@ export type InsuranceExtensionPaginate = {
   meta?: Maybe<IPaginateMeta>;
 };
 
-export type LegacyMigration = {
-  __typename?: "LegacyMigration";
-  syncDate: Scalars["Date"]["output"];
-  total: Scalars["Int"]["output"];
-};
-
 export type Master = {
   __typename?: "Master";
   SLA1D?: Maybe<Scalars["Int"]["output"]>;
@@ -285,7 +277,7 @@ export type Mutation = {
   bulkCreateOrUpdateInsuranceExtension: Array<InsuranceExtension>;
   createCalling: Calling;
   createCsat: Array<Csat>;
-  createLegacyMigration: LegacyMigration;
+  createLegacyMigration: Scalars["Date"]["output"];
   createMaster: Master;
   createOrUpdateInsuranceExtension: InsuranceExtension;
   createProject: Project;
@@ -294,7 +286,7 @@ export type Mutation = {
   createTaskDetailReinprogress: TaskDetail;
   createTaskDetailReportLog: TaskDetailReportLog;
   createTaskDetailReportLogWithAssign: TaskDetailReportLog;
-  createUploadFile: UploadFile;
+  createUploadFile: Array<UploadFile>;
   createUser: User;
   login: Auth;
   refreshToken?: Maybe<Auth>;
@@ -370,7 +362,7 @@ export type MutationCreateTaskDetailReportLogWithAssignArgs = {
 };
 
 export type MutationCreateUploadFileArgs = {
-  createUploadFileInput: CreateUploadFileInput;
+  createUploadFileInput: Array<CreateUploadFileInput>;
 };
 
 export type MutationCreateUserArgs = {
@@ -617,8 +609,8 @@ export type TaskDetail = {
   appointmentDate?: Maybe<Scalars["Date"]["output"]>;
   appointmentRepairDate?: Maybe<Scalars["Date"]["output"]>;
   appointmentRepairRemark?: Maybe<Scalars["String"]["output"]>;
-  appointmentRepairTime?: Maybe<Scalars["String"]["output"]>;
-  appointmentTime?: Maybe<Scalars["String"]["output"]>;
+  appointmentRepairTime?: Maybe<TaskRangeTimeDto>;
+  appointmentTime?: Maybe<TaskRangeTimeDto>;
   assignInDate?: Maybe<Scalars["Date"]["output"]>;
   assignRangeTime?: Maybe<TaskRangeTimeDto>;
   assignedDate?: Maybe<Scalars["Date"]["output"]>;
@@ -884,8 +876,6 @@ export type UpdateTaskDetailInput = {
   appointmentDate?: InputMaybe<Scalars["Date"]["input"]>;
   appointmentRepairDate?: InputMaybe<Scalars["Date"]["input"]>;
   appointmentRepairRemark?: InputMaybe<Scalars["String"]["input"]>;
-  appointmentRepairTime?: InputMaybe<Scalars["String"]["input"]>;
-  appointmentTime?: InputMaybe<Scalars["String"]["input"]>;
   assignInDate?: InputMaybe<Scalars["Date"]["input"]>;
   assignRangeTime?: InputMaybe<Scalars["String"]["input"]>;
   assignedDate?: InputMaybe<Scalars["Date"]["input"]>;
@@ -989,11 +979,15 @@ export enum UploadFileType {
   AssignmentInProgress = "ASSIGNMENT_IN_PROGRESS",
   AssignmentProtection = "ASSIGNMENT_PROTECTION",
   AssignmentUploadCompleted = "ASSIGNMENT_UPLOAD_COMPLETED",
-  Central = "CENTRAL",
+  CentralAdditional = "CENTRAL_ADDITIONAL",
+  CentralFormAttachment = "CENTRAL_FORM_ATTACHMENT",
+  CentralMainFormAttachment = "CENTRAL_MAIN_FORM_ATTACHMENT",
   Customer = "CUSTOMER",
   InsuranceExpansion = "INSURANCE_EXPANSION",
   Other = "OTHER",
-  Service = "SERVICE",
+  ServiceAdditional = "SERVICE_ADDITIONAL",
+  ServiceFormAttachment = "SERVICE_FORM_ATTACHMENT",
+  ServiceMainFormAttachment = "SERVICE_MAIN_FORM_ATTACHMENT",
   Signature = "SIGNATURE",
   Task = "TASK",
 }

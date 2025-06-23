@@ -112,23 +112,6 @@ query Tasks(
   }
 }
 
-fragment UploadFile on UploadFile {
-  id
-  refId
-  fileId
-  fileType
-  fileName
-  fileFolder
-  filePath
-  fileBucket
-  fileExtension
-  fileUrl
-  isPublic
-  createdAt
-  updatedAt
-  deletedAt
-}
-
 fragment TaskDetailAssign on TaskDetailAssign {
   id
   code
@@ -257,9 +240,13 @@ fragment TaskDetail on TaskDetail {
   homecareRemark
   assignInDate
   appointmentDate
-  appointmentTime
+  appointmentTime {
+    ...TaskRangeTime
+  }
   appointmentRepairDate
-  appointmentRepairTime
+  appointmentRepairTime {
+    ...TaskRangeTime
+  }
   appointmentRepairRemark
   calledDate
   assignedDate

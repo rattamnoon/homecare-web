@@ -6,6 +6,7 @@ import {
   IPaginateMetaFragmentDoc,
   IPaginateLinksFragmentDoc,
 } from "./paginate.generated";
+import { UploadFileFragmentDoc } from "./upload-files.generated";
 import { UserFragmentDoc } from "./user.generated";
 import { CallingFragmentDoc } from "./callings.generated";
 import * as Apollo from "@apollo/client";
@@ -321,24 +322,6 @@ export type TasksQuery = {
   };
 };
 
-export type UploadFileFragment = {
-  __typename?: "UploadFile";
-  id: string;
-  refId?: string | null;
-  fileId?: string | null;
-  fileType: Types.UploadFileType;
-  fileName?: string | null;
-  fileFolder?: string | null;
-  filePath?: string | null;
-  fileBucket?: string | null;
-  fileExtension?: string | null;
-  fileUrl: string;
-  isPublic: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date | null;
-};
-
 export type TaskDetailAssignFragment = {
   __typename?: "TaskDetailAssign";
   id: string;
@@ -496,9 +479,7 @@ export type TaskDetailFragment = {
   homecareRemark?: string | null;
   assignInDate?: Date | null;
   appointmentDate?: Date | null;
-  appointmentTime?: string | null;
   appointmentRepairDate?: Date | null;
-  appointmentRepairTime?: string | null;
   appointmentRepairRemark?: string | null;
   calledDate?: Date | null;
   assignedDate?: Date | null;
@@ -556,6 +537,18 @@ export type TaskDetailFragment = {
       nameEn: string;
     } | null;
   };
+  appointmentTime?: {
+    __typename?: "TaskRangeTimeDto";
+    id: string;
+    nameTh: string;
+    nameEn: string;
+  } | null;
+  appointmentRepairTime?: {
+    __typename?: "TaskRangeTimeDto";
+    id: string;
+    nameTh: string;
+    nameEn: string;
+  } | null;
   homecareInRangeTime?: {
     __typename?: "TaskRangeTimeDto";
     id: string;
@@ -1052,9 +1045,7 @@ export type TaskQuery = {
       homecareRemark?: string | null;
       assignInDate?: Date | null;
       appointmentDate?: Date | null;
-      appointmentTime?: string | null;
       appointmentRepairDate?: Date | null;
-      appointmentRepairTime?: string | null;
       appointmentRepairRemark?: string | null;
       calledDate?: Date | null;
       assignedDate?: Date | null;
@@ -1112,6 +1103,18 @@ export type TaskQuery = {
           nameEn: string;
         } | null;
       };
+      appointmentTime?: {
+        __typename?: "TaskRangeTimeDto";
+        id: string;
+        nameTh: string;
+        nameEn: string;
+      } | null;
+      appointmentRepairTime?: {
+        __typename?: "TaskRangeTimeDto";
+        id: string;
+        nameTh: string;
+        nameEn: string;
+      } | null;
       homecareInRangeTime?: {
         __typename?: "TaskRangeTimeDto";
         id: string;
@@ -2091,9 +2094,7 @@ export type UpdateTaskDetailMutation = {
     homecareRemark?: string | null;
     assignInDate?: Date | null;
     appointmentDate?: Date | null;
-    appointmentTime?: string | null;
     appointmentRepairDate?: Date | null;
-    appointmentRepairTime?: string | null;
     appointmentRepairRemark?: string | null;
     calledDate?: Date | null;
     assignedDate?: Date | null;
@@ -2151,6 +2152,18 @@ export type UpdateTaskDetailMutation = {
         nameEn: string;
       } | null;
     };
+    appointmentTime?: {
+      __typename?: "TaskRangeTimeDto";
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    } | null;
+    appointmentRepairTime?: {
+      __typename?: "TaskRangeTimeDto";
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    } | null;
     homecareInRangeTime?: {
       __typename?: "TaskRangeTimeDto";
       id: string;
@@ -2692,9 +2705,7 @@ export type TaskDetailsQuery = {
       homecareRemark?: string | null;
       assignInDate?: Date | null;
       appointmentDate?: Date | null;
-      appointmentTime?: string | null;
       appointmentRepairDate?: Date | null;
-      appointmentRepairTime?: string | null;
       appointmentRepairRemark?: string | null;
       calledDate?: Date | null;
       assignedDate?: Date | null;
@@ -2752,6 +2763,18 @@ export type TaskDetailsQuery = {
           nameEn: string;
         } | null;
       };
+      appointmentTime?: {
+        __typename?: "TaskRangeTimeDto";
+        id: string;
+        nameTh: string;
+        nameEn: string;
+      } | null;
+      appointmentRepairTime?: {
+        __typename?: "TaskRangeTimeDto";
+        id: string;
+        nameTh: string;
+        nameEn: string;
+      } | null;
       homecareInRangeTime?: {
         __typename?: "TaskRangeTimeDto";
         id: string;
@@ -3237,9 +3260,7 @@ export type CreateTaskDetailReinprogressMutation = {
     homecareRemark?: string | null;
     assignInDate?: Date | null;
     appointmentDate?: Date | null;
-    appointmentTime?: string | null;
     appointmentRepairDate?: Date | null;
-    appointmentRepairTime?: string | null;
     appointmentRepairRemark?: string | null;
     calledDate?: Date | null;
     assignedDate?: Date | null;
@@ -3297,6 +3318,18 @@ export type CreateTaskDetailReinprogressMutation = {
         nameEn: string;
       } | null;
     };
+    appointmentTime?: {
+      __typename?: "TaskRangeTimeDto";
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    } | null;
+    appointmentRepairTime?: {
+      __typename?: "TaskRangeTimeDto";
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    } | null;
     homecareInRangeTime?: {
       __typename?: "TaskRangeTimeDto";
       id: string;
@@ -3782,9 +3815,7 @@ export type CreateTaskDetailMutation = {
     homecareRemark?: string | null;
     assignInDate?: Date | null;
     appointmentDate?: Date | null;
-    appointmentTime?: string | null;
     appointmentRepairDate?: Date | null;
-    appointmentRepairTime?: string | null;
     appointmentRepairRemark?: string | null;
     calledDate?: Date | null;
     assignedDate?: Date | null;
@@ -3842,6 +3873,18 @@ export type CreateTaskDetailMutation = {
         nameEn: string;
       } | null;
     };
+    appointmentTime?: {
+      __typename?: "TaskRangeTimeDto";
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    } | null;
+    appointmentRepairTime?: {
+      __typename?: "TaskRangeTimeDto";
+      id: string;
+      nameTh: string;
+      nameEn: string;
+    } | null;
     homecareInRangeTime?: {
       __typename?: "TaskRangeTimeDto";
       id: string;
@@ -4399,24 +4442,6 @@ export const TaskPriorityFragmentDoc = gql`
     nameTh
   }
 `;
-export const UploadFileFragmentDoc = gql`
-  fragment UploadFile on UploadFile {
-    id
-    refId
-    fileId
-    fileType
-    fileName
-    fileFolder
-    filePath
-    fileBucket
-    fileExtension
-    fileUrl
-    isPublic
-    createdAt
-    updatedAt
-    deletedAt
-  }
-`;
 export const TaskDetailAssignFragmentDoc = gql`
   fragment TaskDetailAssign on TaskDetailAssign {
     id
@@ -4545,9 +4570,13 @@ export const TaskDetailFragmentDoc = gql`
     homecareRemark
     assignInDate
     appointmentDate
-    appointmentTime
+    appointmentTime {
+      ...TaskRangeTime
+    }
     appointmentRepairDate
-    appointmentRepairTime
+    appointmentRepairTime {
+      ...TaskRangeTime
+    }
     appointmentRepairRemark
     calledDate
     assignedDate

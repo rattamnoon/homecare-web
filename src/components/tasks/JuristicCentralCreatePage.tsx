@@ -84,7 +84,7 @@ export const JuristicCentralCreatePage = () => {
     },
   });
 
-  const uploadFile = useFileUpload("file", "central");
+  const uploadFile = useFileUpload("file", "central/main");
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -232,7 +232,7 @@ export const JuristicCentralCreatePage = () => {
         description: taskDetail.description,
         files:
           taskDetail.images?.map((image) => ({
-            fileType: UploadFileType.Central,
+            fileType: UploadFileType.CentralMainFormAttachment,
             fileId: image.response?.fileId,
             fileName: image.response?.fileName,
             fileFolder: image.response?.fileFolder,

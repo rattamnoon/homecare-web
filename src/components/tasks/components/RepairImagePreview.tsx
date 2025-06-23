@@ -1,9 +1,9 @@
 "use client";
 
-import { UploadFileFragment } from "@/gql/generated/tasks.generated";
+import { UploadFileFragment } from "@/gql/generated/upload-files.generated";
 import { faImageSlash } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Image, Space, Tooltip } from "antd";
+import { Flex, Image, Tooltip } from "antd";
 import { useState } from "react";
 
 export const RepairImagePreview = ({
@@ -29,7 +29,7 @@ export const RepairImagePreview = ({
 
   return (
     <Image.PreviewGroup>
-      <Space>
+      <Flex gap={8} wrap="wrap">
         {validImages.map((image) => (
           <Image
             key={image.id}
@@ -46,7 +46,7 @@ export const RepairImagePreview = ({
             }}
           />
         ))}
-      </Space>
+      </Flex>
     </Image.PreviewGroup>
   );
 };

@@ -83,7 +83,7 @@ export const JuristicServiceCreatePage = () => {
     },
   });
 
-  const uploadFile = useFileUpload("file", "service");
+  const uploadFile = useFileUpload("file", "service/main");
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -217,7 +217,7 @@ export const JuristicServiceCreatePage = () => {
         description: taskDetail.description,
         files:
           taskDetail.images?.map((image) => ({
-            fileType: UploadFileType.Service,
+            fileType: UploadFileType.ServiceMainFormAttachment,
             fileId: image.response?.fileId,
             fileName: image.response?.fileName,
             fileFolder: image.response?.fileFolder,
