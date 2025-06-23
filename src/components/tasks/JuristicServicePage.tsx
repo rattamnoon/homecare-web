@@ -5,7 +5,9 @@ import { Routes } from "@/config/routes";
 import { TaskStatus, TaskType } from "@/gql/generated/graphql";
 import { useTasksQuery } from "@/gql/generated/tasks.generated";
 import { getTablePaginationProps } from "@/utils/utils";
-import { Col, Row, Table, Tag, theme } from "antd";
+import { faEllipsisVertical, faGear } from "@fortawesome/pro-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button, Col, Dropdown, Row, Table, Tag, theme } from "antd";
 import dayjs from "dayjs";
 import { useRouter } from "nextjs-toploader/app";
 import { useMemo } from "react";
@@ -105,6 +107,39 @@ export const JuristicServicePage = () => {
               },
             })}
             columns={[
+              {
+                dataIndex: "action",
+                key: "action",
+                align: "center",
+                width: 60,
+                fixed: "left",
+                render: (_, record) => {
+                  return (
+                    <Dropdown
+                      menu={{
+                        items: [
+                          {
+                            label: "จัดการงาน",
+                            key: "manage",
+                            icon: <FontAwesomeIcon icon={faGear} />,
+                            onClick: () => {
+                              router.push(
+                                Routes.TasksJuristicServiceDetail(record.id)
+                              );
+                            },
+                          },
+                        ],
+                      }}
+                    >
+                      <Button
+                        type="link"
+                        size="small"
+                        icon={<FontAwesomeIcon icon={faEllipsisVertical} />}
+                      />
+                    </Dropdown>
+                  );
+                },
+              },
               {
                 title: "รหัสงาน",
                 dataIndex: "code",
