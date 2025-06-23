@@ -228,6 +228,15 @@ fragment TaskDetail on TaskDetail {
     checkInRangeTime {
       ...TaskRangeTime
     }
+    area {
+      ...Master
+    }
+    building {
+      ...Master
+    }
+    floor {
+      ...Master
+    }
   }
   description
   categoryId
@@ -309,6 +318,41 @@ fragment TaskDetail on TaskDetail {
   }
   callings {
     ...Calling
+  }
+  logs {
+    ...TaskDetailLog
+  }
+  createdBy {
+    ...User
+  }
+  updatedBy {
+    ...User
+  }
+}
+
+fragment TaskDetailLog on TaskDetail {
+  id
+  taskId
+  code
+  status {
+    ...TaskStatus
+  }
+  category {
+    ...Master
+  }
+  subCategory {
+    ...Master
+  }
+  homecare {
+    ...User
+  }
+  createdAt
+  createdBy {
+    ...User
+  }
+  updatedAt
+  updatedBy {
+    ...User
   }
 }
 

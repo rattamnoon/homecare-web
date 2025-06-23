@@ -536,6 +536,72 @@ export type TaskDetailFragment = {
       nameTh: string;
       nameEn: string;
     } | null;
+    area?: {
+      __typename?: "Master";
+      id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
+      nameEn?: string | null;
+      maxScore?: number | null;
+      defaultScore?: number | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    building?: {
+      __typename?: "Master";
+      id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
+      nameEn?: string | null;
+      maxScore?: number | null;
+      defaultScore?: number | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    floor?: {
+      __typename?: "Master";
+      id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
+      nameEn?: string | null;
+      maxScore?: number | null;
+      defaultScore?: number | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
   };
   appointmentTime?: {
     __typename?: "TaskRangeTimeDto";
@@ -1004,6 +1070,229 @@ export type TaskDetailFragment = {
     deletedAt?: Date | null;
     taskDetail?: { __typename?: "TaskDetail"; id: string; code: string } | null;
   }>;
+  logs: Array<{
+    __typename?: "TaskDetail";
+    id: string;
+    taskId: string;
+    code: string;
+    createdAt: Date;
+    updatedAt: Date;
+    status?: {
+      __typename?: "TaskStatusDto";
+      id: Types.TaskStatus;
+      nameTh: string;
+      nameEn: string;
+      color: string;
+    } | null;
+    category?: {
+      __typename?: "Master";
+      id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
+      nameEn?: string | null;
+      maxScore?: number | null;
+      defaultScore?: number | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    subCategory?: {
+      __typename?: "Master";
+      id: string;
+      parentId?: string | null;
+      type: Types.MasterType;
+      sequence?: number | null;
+      nameTh?: string | null;
+      nameEn?: string | null;
+      maxScore?: number | null;
+      defaultScore?: number | null;
+      areaTypeTh?: string | null;
+      areaTypeEn?: string | null;
+      SLA1H?: number | null;
+      SLA1D?: number | null;
+      SLA2H?: number | null;
+      SLA2D?: number | null;
+      SLA3H?: number | null;
+      SLA3D?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    homecare?: {
+      __typename?: "User";
+      id: string;
+      employeeId: string;
+      username: string;
+      firstName?: string | null;
+      lastName?: string | null;
+      email: string;
+      lastLoginAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    createdBy?: {
+      __typename?: "User";
+      id: string;
+      employeeId: string;
+      username: string;
+      firstName?: string | null;
+      lastName?: string | null;
+      email: string;
+      lastLoginAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    updatedBy?: {
+      __typename?: "User";
+      id: string;
+      employeeId: string;
+      username: string;
+      firstName?: string | null;
+      lastName?: string | null;
+      email: string;
+      lastLoginAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+  }>;
+  createdBy?: {
+    __typename?: "User";
+    id: string;
+    employeeId: string;
+    username: string;
+    firstName?: string | null;
+    lastName?: string | null;
+    email: string;
+    lastLoginAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+  } | null;
+  updatedBy?: {
+    __typename?: "User";
+    id: string;
+    employeeId: string;
+    username: string;
+    firstName?: string | null;
+    lastName?: string | null;
+    email: string;
+    lastLoginAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+  } | null;
+};
+
+export type TaskDetailLogFragment = {
+  __typename?: "TaskDetail";
+  id: string;
+  taskId: string;
+  code: string;
+  createdAt: Date;
+  updatedAt: Date;
+  status?: {
+    __typename?: "TaskStatusDto";
+    id: Types.TaskStatus;
+    nameTh: string;
+    nameEn: string;
+    color: string;
+  } | null;
+  category?: {
+    __typename?: "Master";
+    id: string;
+    parentId?: string | null;
+    type: Types.MasterType;
+    sequence?: number | null;
+    nameTh?: string | null;
+    nameEn?: string | null;
+    maxScore?: number | null;
+    defaultScore?: number | null;
+    areaTypeTh?: string | null;
+    areaTypeEn?: string | null;
+    SLA1H?: number | null;
+    SLA1D?: number | null;
+    SLA2H?: number | null;
+    SLA2D?: number | null;
+    SLA3H?: number | null;
+    SLA3D?: number | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+  } | null;
+  subCategory?: {
+    __typename?: "Master";
+    id: string;
+    parentId?: string | null;
+    type: Types.MasterType;
+    sequence?: number | null;
+    nameTh?: string | null;
+    nameEn?: string | null;
+    maxScore?: number | null;
+    defaultScore?: number | null;
+    areaTypeTh?: string | null;
+    areaTypeEn?: string | null;
+    SLA1H?: number | null;
+    SLA1D?: number | null;
+    SLA2H?: number | null;
+    SLA2D?: number | null;
+    SLA3H?: number | null;
+    SLA3D?: number | null;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+  } | null;
+  homecare?: {
+    __typename?: "User";
+    id: string;
+    employeeId: string;
+    username: string;
+    firstName?: string | null;
+    lastName?: string | null;
+    email: string;
+    lastLoginAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+  } | null;
+  createdBy?: {
+    __typename?: "User";
+    id: string;
+    employeeId: string;
+    username: string;
+    firstName?: string | null;
+    lastName?: string | null;
+    email: string;
+    lastLoginAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+  } | null;
+  updatedBy?: {
+    __typename?: "User";
+    id: string;
+    employeeId: string;
+    username: string;
+    firstName?: string | null;
+    lastName?: string | null;
+    email: string;
+    lastLoginAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date | null;
+  } | null;
 };
 
 export type TaskQueryVariables = Types.Exact<{
@@ -1101,6 +1390,72 @@ export type TaskQuery = {
           id: string;
           nameTh: string;
           nameEn: string;
+        } | null;
+        area?: {
+          __typename?: "Master";
+          id: string;
+          parentId?: string | null;
+          type: Types.MasterType;
+          sequence?: number | null;
+          nameTh?: string | null;
+          nameEn?: string | null;
+          maxScore?: number | null;
+          defaultScore?: number | null;
+          areaTypeTh?: string | null;
+          areaTypeEn?: string | null;
+          SLA1H?: number | null;
+          SLA1D?: number | null;
+          SLA2H?: number | null;
+          SLA2D?: number | null;
+          SLA3H?: number | null;
+          SLA3D?: number | null;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        } | null;
+        building?: {
+          __typename?: "Master";
+          id: string;
+          parentId?: string | null;
+          type: Types.MasterType;
+          sequence?: number | null;
+          nameTh?: string | null;
+          nameEn?: string | null;
+          maxScore?: number | null;
+          defaultScore?: number | null;
+          areaTypeTh?: string | null;
+          areaTypeEn?: string | null;
+          SLA1H?: number | null;
+          SLA1D?: number | null;
+          SLA2H?: number | null;
+          SLA2D?: number | null;
+          SLA3H?: number | null;
+          SLA3D?: number | null;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        } | null;
+        floor?: {
+          __typename?: "Master";
+          id: string;
+          parentId?: string | null;
+          type: Types.MasterType;
+          sequence?: number | null;
+          nameTh?: string | null;
+          nameEn?: string | null;
+          maxScore?: number | null;
+          defaultScore?: number | null;
+          areaTypeTh?: string | null;
+          areaTypeEn?: string | null;
+          SLA1H?: number | null;
+          SLA1D?: number | null;
+          SLA2H?: number | null;
+          SLA2D?: number | null;
+          SLA3H?: number | null;
+          SLA3D?: number | null;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
         } | null;
       };
       appointmentTime?: {
@@ -1574,6 +1929,130 @@ export type TaskQuery = {
           code: string;
         } | null;
       }>;
+      logs: Array<{
+        __typename?: "TaskDetail";
+        id: string;
+        taskId: string;
+        code: string;
+        createdAt: Date;
+        updatedAt: Date;
+        status?: {
+          __typename?: "TaskStatusDto";
+          id: Types.TaskStatus;
+          nameTh: string;
+          nameEn: string;
+          color: string;
+        } | null;
+        category?: {
+          __typename?: "Master";
+          id: string;
+          parentId?: string | null;
+          type: Types.MasterType;
+          sequence?: number | null;
+          nameTh?: string | null;
+          nameEn?: string | null;
+          maxScore?: number | null;
+          defaultScore?: number | null;
+          areaTypeTh?: string | null;
+          areaTypeEn?: string | null;
+          SLA1H?: number | null;
+          SLA1D?: number | null;
+          SLA2H?: number | null;
+          SLA2D?: number | null;
+          SLA3H?: number | null;
+          SLA3D?: number | null;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        } | null;
+        subCategory?: {
+          __typename?: "Master";
+          id: string;
+          parentId?: string | null;
+          type: Types.MasterType;
+          sequence?: number | null;
+          nameTh?: string | null;
+          nameEn?: string | null;
+          maxScore?: number | null;
+          defaultScore?: number | null;
+          areaTypeTh?: string | null;
+          areaTypeEn?: string | null;
+          SLA1H?: number | null;
+          SLA1D?: number | null;
+          SLA2H?: number | null;
+          SLA2D?: number | null;
+          SLA3H?: number | null;
+          SLA3D?: number | null;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        } | null;
+        homecare?: {
+          __typename?: "User";
+          id: string;
+          employeeId: string;
+          username: string;
+          firstName?: string | null;
+          lastName?: string | null;
+          email: string;
+          lastLoginAt: Date;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        } | null;
+        createdBy?: {
+          __typename?: "User";
+          id: string;
+          employeeId: string;
+          username: string;
+          firstName?: string | null;
+          lastName?: string | null;
+          email: string;
+          lastLoginAt: Date;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        } | null;
+        updatedBy?: {
+          __typename?: "User";
+          id: string;
+          employeeId: string;
+          username: string;
+          firstName?: string | null;
+          lastName?: string | null;
+          email: string;
+          lastLoginAt: Date;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        } | null;
+      }>;
+      createdBy?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        username: string;
+        firstName?: string | null;
+        lastName?: string | null;
+        email: string;
+        lastLoginAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      updatedBy?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        username: string;
+        firstName?: string | null;
+        lastName?: string | null;
+        email: string;
+        lastLoginAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
     }>;
     status: {
       __typename?: "TaskStatusDto";
@@ -2151,6 +2630,72 @@ export type UpdateTaskDetailMutation = {
         nameTh: string;
         nameEn: string;
       } | null;
+      area?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      building?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      floor?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
     };
     appointmentTime?: {
       __typename?: "TaskRangeTimeDto";
@@ -2623,6 +3168,130 @@ export type UpdateTaskDetailMutation = {
         code: string;
       } | null;
     }>;
+    logs: Array<{
+      __typename?: "TaskDetail";
+      id: string;
+      taskId: string;
+      code: string;
+      createdAt: Date;
+      updatedAt: Date;
+      status?: {
+        __typename?: "TaskStatusDto";
+        id: Types.TaskStatus;
+        nameTh: string;
+        nameEn: string;
+        color: string;
+      } | null;
+      category?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      subCategory?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      homecare?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        username: string;
+        firstName?: string | null;
+        lastName?: string | null;
+        email: string;
+        lastLoginAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      createdBy?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        username: string;
+        firstName?: string | null;
+        lastName?: string | null;
+        email: string;
+        lastLoginAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      updatedBy?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        username: string;
+        firstName?: string | null;
+        lastName?: string | null;
+        email: string;
+        lastLoginAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+    }>;
+    createdBy?: {
+      __typename?: "User";
+      id: string;
+      employeeId: string;
+      username: string;
+      firstName?: string | null;
+      lastName?: string | null;
+      email: string;
+      lastLoginAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    updatedBy?: {
+      __typename?: "User";
+      id: string;
+      employeeId: string;
+      username: string;
+      firstName?: string | null;
+      lastName?: string | null;
+      email: string;
+      lastLoginAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
   };
 };
 
@@ -2761,6 +3430,72 @@ export type TaskDetailsQuery = {
           id: string;
           nameTh: string;
           nameEn: string;
+        } | null;
+        area?: {
+          __typename?: "Master";
+          id: string;
+          parentId?: string | null;
+          type: Types.MasterType;
+          sequence?: number | null;
+          nameTh?: string | null;
+          nameEn?: string | null;
+          maxScore?: number | null;
+          defaultScore?: number | null;
+          areaTypeTh?: string | null;
+          areaTypeEn?: string | null;
+          SLA1H?: number | null;
+          SLA1D?: number | null;
+          SLA2H?: number | null;
+          SLA2D?: number | null;
+          SLA3H?: number | null;
+          SLA3D?: number | null;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        } | null;
+        building?: {
+          __typename?: "Master";
+          id: string;
+          parentId?: string | null;
+          type: Types.MasterType;
+          sequence?: number | null;
+          nameTh?: string | null;
+          nameEn?: string | null;
+          maxScore?: number | null;
+          defaultScore?: number | null;
+          areaTypeTh?: string | null;
+          areaTypeEn?: string | null;
+          SLA1H?: number | null;
+          SLA1D?: number | null;
+          SLA2H?: number | null;
+          SLA2D?: number | null;
+          SLA3H?: number | null;
+          SLA3D?: number | null;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        } | null;
+        floor?: {
+          __typename?: "Master";
+          id: string;
+          parentId?: string | null;
+          type: Types.MasterType;
+          sequence?: number | null;
+          nameTh?: string | null;
+          nameEn?: string | null;
+          maxScore?: number | null;
+          defaultScore?: number | null;
+          areaTypeTh?: string | null;
+          areaTypeEn?: string | null;
+          SLA1H?: number | null;
+          SLA1D?: number | null;
+          SLA2H?: number | null;
+          SLA2D?: number | null;
+          SLA3H?: number | null;
+          SLA3D?: number | null;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
         } | null;
       };
       appointmentTime?: {
@@ -3234,6 +3969,130 @@ export type TaskDetailsQuery = {
           code: string;
         } | null;
       }>;
+      logs: Array<{
+        __typename?: "TaskDetail";
+        id: string;
+        taskId: string;
+        code: string;
+        createdAt: Date;
+        updatedAt: Date;
+        status?: {
+          __typename?: "TaskStatusDto";
+          id: Types.TaskStatus;
+          nameTh: string;
+          nameEn: string;
+          color: string;
+        } | null;
+        category?: {
+          __typename?: "Master";
+          id: string;
+          parentId?: string | null;
+          type: Types.MasterType;
+          sequence?: number | null;
+          nameTh?: string | null;
+          nameEn?: string | null;
+          maxScore?: number | null;
+          defaultScore?: number | null;
+          areaTypeTh?: string | null;
+          areaTypeEn?: string | null;
+          SLA1H?: number | null;
+          SLA1D?: number | null;
+          SLA2H?: number | null;
+          SLA2D?: number | null;
+          SLA3H?: number | null;
+          SLA3D?: number | null;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        } | null;
+        subCategory?: {
+          __typename?: "Master";
+          id: string;
+          parentId?: string | null;
+          type: Types.MasterType;
+          sequence?: number | null;
+          nameTh?: string | null;
+          nameEn?: string | null;
+          maxScore?: number | null;
+          defaultScore?: number | null;
+          areaTypeTh?: string | null;
+          areaTypeEn?: string | null;
+          SLA1H?: number | null;
+          SLA1D?: number | null;
+          SLA2H?: number | null;
+          SLA2D?: number | null;
+          SLA3H?: number | null;
+          SLA3D?: number | null;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        } | null;
+        homecare?: {
+          __typename?: "User";
+          id: string;
+          employeeId: string;
+          username: string;
+          firstName?: string | null;
+          lastName?: string | null;
+          email: string;
+          lastLoginAt: Date;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        } | null;
+        createdBy?: {
+          __typename?: "User";
+          id: string;
+          employeeId: string;
+          username: string;
+          firstName?: string | null;
+          lastName?: string | null;
+          email: string;
+          lastLoginAt: Date;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        } | null;
+        updatedBy?: {
+          __typename?: "User";
+          id: string;
+          employeeId: string;
+          username: string;
+          firstName?: string | null;
+          lastName?: string | null;
+          email: string;
+          lastLoginAt: Date;
+          createdAt: Date;
+          updatedAt: Date;
+          deletedAt?: Date | null;
+        } | null;
+      }>;
+      createdBy?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        username: string;
+        firstName?: string | null;
+        lastName?: string | null;
+        email: string;
+        lastLoginAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      updatedBy?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        username: string;
+        firstName?: string | null;
+        lastName?: string | null;
+        email: string;
+        lastLoginAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
     }>;
   };
 };
@@ -3317,6 +4176,72 @@ export type CreateTaskDetailReinprogressMutation = {
         nameTh: string;
         nameEn: string;
       } | null;
+      area?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      building?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      floor?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
     };
     appointmentTime?: {
       __typename?: "TaskRangeTimeDto";
@@ -3789,6 +4714,130 @@ export type CreateTaskDetailReinprogressMutation = {
         code: string;
       } | null;
     }>;
+    logs: Array<{
+      __typename?: "TaskDetail";
+      id: string;
+      taskId: string;
+      code: string;
+      createdAt: Date;
+      updatedAt: Date;
+      status?: {
+        __typename?: "TaskStatusDto";
+        id: Types.TaskStatus;
+        nameTh: string;
+        nameEn: string;
+        color: string;
+      } | null;
+      category?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      subCategory?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      homecare?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        username: string;
+        firstName?: string | null;
+        lastName?: string | null;
+        email: string;
+        lastLoginAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      createdBy?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        username: string;
+        firstName?: string | null;
+        lastName?: string | null;
+        email: string;
+        lastLoginAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      updatedBy?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        username: string;
+        firstName?: string | null;
+        lastName?: string | null;
+        email: string;
+        lastLoginAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+    }>;
+    createdBy?: {
+      __typename?: "User";
+      id: string;
+      employeeId: string;
+      username: string;
+      firstName?: string | null;
+      lastName?: string | null;
+      email: string;
+      lastLoginAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    updatedBy?: {
+      __typename?: "User";
+      id: string;
+      employeeId: string;
+      username: string;
+      firstName?: string | null;
+      lastName?: string | null;
+      email: string;
+      lastLoginAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
   };
 };
 
@@ -3872,6 +4921,72 @@ export type CreateTaskDetailMutation = {
         nameTh: string;
         nameEn: string;
       } | null;
+      area?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      building?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      floor?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
     };
     appointmentTime?: {
       __typename?: "TaskRangeTimeDto";
@@ -4344,6 +5459,130 @@ export type CreateTaskDetailMutation = {
         code: string;
       } | null;
     }>;
+    logs: Array<{
+      __typename?: "TaskDetail";
+      id: string;
+      taskId: string;
+      code: string;
+      createdAt: Date;
+      updatedAt: Date;
+      status?: {
+        __typename?: "TaskStatusDto";
+        id: Types.TaskStatus;
+        nameTh: string;
+        nameEn: string;
+        color: string;
+      } | null;
+      category?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      subCategory?: {
+        __typename?: "Master";
+        id: string;
+        parentId?: string | null;
+        type: Types.MasterType;
+        sequence?: number | null;
+        nameTh?: string | null;
+        nameEn?: string | null;
+        maxScore?: number | null;
+        defaultScore?: number | null;
+        areaTypeTh?: string | null;
+        areaTypeEn?: string | null;
+        SLA1H?: number | null;
+        SLA1D?: number | null;
+        SLA2H?: number | null;
+        SLA2D?: number | null;
+        SLA3H?: number | null;
+        SLA3D?: number | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      homecare?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        username: string;
+        firstName?: string | null;
+        lastName?: string | null;
+        email: string;
+        lastLoginAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      createdBy?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        username: string;
+        firstName?: string | null;
+        lastName?: string | null;
+        email: string;
+        lastLoginAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+      updatedBy?: {
+        __typename?: "User";
+        id: string;
+        employeeId: string;
+        username: string;
+        firstName?: string | null;
+        lastName?: string | null;
+        email: string;
+        lastLoginAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt?: Date | null;
+      } | null;
+    }>;
+    createdBy?: {
+      __typename?: "User";
+      id: string;
+      employeeId: string;
+      username: string;
+      firstName?: string | null;
+      lastName?: string | null;
+      email: string;
+      lastLoginAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
+    updatedBy?: {
+      __typename?: "User";
+      id: string;
+      employeeId: string;
+      username: string;
+      firstName?: string | null;
+      lastName?: string | null;
+      email: string;
+      lastLoginAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt?: Date | null;
+    } | null;
   };
 };
 
@@ -4526,6 +5765,36 @@ export const TaskDetailReportLogFragmentDoc = gql`
   ${TaskRangeTimeFragmentDoc}
   ${UploadFileFragmentDoc}
 `;
+export const TaskDetailLogFragmentDoc = gql`
+  fragment TaskDetailLog on TaskDetail {
+    id
+    taskId
+    code
+    status {
+      ...TaskStatus
+    }
+    category {
+      ...Master
+    }
+    subCategory {
+      ...Master
+    }
+    homecare {
+      ...User
+    }
+    createdAt
+    createdBy {
+      ...User
+    }
+    updatedAt
+    updatedBy {
+      ...User
+    }
+  }
+  ${TaskStatusFragmentDoc}
+  ${MasterFragmentDoc}
+  ${UserFragmentDoc}
+`;
 export const TaskDetailFragmentDoc = gql`
   fragment TaskDetail on TaskDetail {
     id
@@ -4557,6 +5826,15 @@ export const TaskDetailFragmentDoc = gql`
       checkInDate
       checkInRangeTime {
         ...TaskRangeTime
+      }
+      area {
+        ...Master
+      }
+      building {
+        ...Master
+      }
+      floor {
+        ...Master
       }
     }
     description
@@ -4640,16 +5918,26 @@ export const TaskDetailFragmentDoc = gql`
     callings {
       ...Calling
     }
+    logs {
+      ...TaskDetailLog
+    }
+    createdBy {
+      ...User
+    }
+    updatedBy {
+      ...User
+    }
   }
   ${TaskStatusFragmentDoc}
   ${TaskRangeTimeFragmentDoc}
+  ${MasterFragmentDoc}
   ${TaskPriorityFragmentDoc}
   ${UploadFileFragmentDoc}
-  ${MasterFragmentDoc}
   ${UserFragmentDoc}
   ${TaskDetailAssignFragmentDoc}
   ${TaskDetailReportLogFragmentDoc}
   ${CallingFragmentDoc}
+  ${TaskDetailLogFragmentDoc}
 `;
 export const TasksDocument = gql`
   query Tasks(

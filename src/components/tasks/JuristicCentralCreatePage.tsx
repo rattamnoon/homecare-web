@@ -84,7 +84,7 @@ export const JuristicCentralCreatePage = () => {
     },
   });
 
-  const uploadFile = useFileUpload("file", "central/main");
+  const uploadFile = useFileUpload("file", "central/main-form-attachment");
 
   const { fields, append, remove } = useFieldArray({
     control,

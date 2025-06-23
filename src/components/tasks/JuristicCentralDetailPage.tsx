@@ -14,6 +14,7 @@ import {
   faEdit,
   faHistory,
   faPaperclip,
+  faSave,
 } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -36,6 +37,8 @@ import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { getImageUrl } from "../layout/TopNavBar";
 import { RepairImagePreview } from "./components/RepairImagePreview";
+import { JuristicCentralEditDialog } from "./components/dialogs/JuristicCentralEditDialog";
+import { JuristicCentralLogsDialog } from "./components/dialogs/JuristicCentralLogsDialog";
 import { JuristicCentralUploadFilesDialog } from "./components/dialogs/JuristicCentralUploadFilesDialog";
 
 const { Title, Text } = Typography;
@@ -76,6 +79,8 @@ export const JuristicCentralDetailPage = () => {
   const [notificationApi, notificationContextHolder] =
     notification.useNotification();
   const [uploadFilesDialogOpen, setUploadFilesDialogOpen] = useState(false);
+  const [logsDialogOpen, setLogsDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [taskDetail, setTaskDetail] = useState<TaskDetailFragment | null>(null);
 
   const { data, loading, error } = useTaskQuery({
@@ -233,16 +238,18 @@ export const JuristicCentralDetailPage = () => {
                       </Descriptions.Item>
                       <Descriptions.Item label="ผู้รับผิดชอบ" span={3}>
                         <Flex align="center" gap={8}>
-                          {detail.homecare?.employeeId && (
+                          {detail?.homecare?.employeeId && (
                             <AvatarWithEmployeeId
                               employeeId={detail.homecare?.employeeId}
                             />
                           )}
-                          <Text>
-                            {detail.homecare?.firstName}{" "}
-                            {detail.homecare?.lastName} (
-                            {detail.homecare?.employeeId})
-                          </Text>
+                          {detail?.homecare && (
+                            <Text>
+                              {detail.homecare?.firstName}{" "}
+                              {detail.homecare?.lastName} (
+                              {detail.homecare?.employeeId})
+                            </Text>
+                          )}
                         </Flex>
                       </Descriptions.Item>
                       <Descriptions.Item label="รูปภาพ" span={3}>
@@ -285,6 +292,10 @@ export const JuristicCentralDetailPage = () => {
                               },
                             }}
                             icon={<FontAwesomeIcon icon={faEdit} />}
+                            onClick={() => {
+                              setEditDialogOpen(true);
+                              setTaskDetail(detail);
+                            }}
                           >
                             แก้ไข
                           </Button>
@@ -299,6 +310,10 @@ export const JuristicCentralDetailPage = () => {
                               },
                             }}
                             icon={<FontAwesomeIcon icon={faHistory} />}
+                            onClick={() => {
+                              setLogsDialogOpen(true);
+                              setTaskDetail(detail);
+                            }}
                           >
                             Logs
                           </Button>
@@ -314,7 +329,10 @@ export const JuristicCentralDetailPage = () => {
       )}
       <JuristicCentralUploadFilesDialog
         open={uploadFilesDialogOpen}
-        onCancel={() => setUploadFilesDialogOpen(false)}
+        onCancel={() => {
+          setUploadFilesDialogOpen(false);
+          setTaskDetail(null);
+        }}
         onSubmit={async (values) => {
           const createUploadFileInput: CreateUploadFileInput[] =
             values.images.map((image) => ({
@@ -328,13 +346,44 @@ export const JuristicCentralDetailPage = () => {
               fileExtension: image.response?.fileExtension,
             }));
 
-          await createUploadFile({
-            variables: {
-              createUploadFileInput,
+          await modalApi.confirm({
+            title: "ยืนยันการแนบรูปภาพเพิ่มเติม",
+            content: "ยืนยันการแนบรูปภาพเพิ่มเติม",
+            okText: "ยืนยัน",
+            cancelText: "ยกเลิก",
+            okButtonProps: {
+              icon: <FontAwesomeIcon icon={faSave} />,
+            },
+            onOk: async () => {
+              await createUploadFile({
+                variables: {
+                  createUploadFileInput,
+                },
+              });
             },
           });
         }}
         confirmLoading={createUploadFileLoading}
+        taskDetail={taskDetail}
+      />
+      <JuristicCentralEditDialog
+        open={editDialogOpen}
+        onCancel={() => {
+          setEditDialogOpen(false);
+          setTaskDetail(null);
+        }}
+        onSubmit={() => {
+          setEditDialogOpen(false);
+          setTaskDetail(null);
+        }}
+        taskDetail={taskDetail}
+      />
+      <JuristicCentralLogsDialog
+        open={logsDialogOpen}
+        onCancel={() => {
+          setLogsDialogOpen(false);
+          setTaskDetail(null);
+        }}
         taskDetail={taskDetail}
       />
     </LayoutWithBreadcrumb>

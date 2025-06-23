@@ -83,7 +83,7 @@ export const JuristicServiceCreatePage = () => {
     },
   });
 
-  const uploadFile = useFileUpload("file", "service/main");
+  const uploadFile = useFileUpload("file", "service/main-form-attachment");
 
   const { fields, append, remove } = useFieldArray({
     control,
