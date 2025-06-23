@@ -1,4 +1,5 @@
 import {
+  faBell,
   faClockRotateLeft,
   faDatabase,
   faDisplayChartUpCircleDollar,
@@ -65,6 +66,13 @@ export const siteConfig = {
           key: "insurance-expand",
           icon: faClockRotateLeft,
           href: Routes.SystemInsuranceExpand,
+        },
+        {
+          label: "แจ้งเตือน",
+          key: "notification",
+          icon: faBell,
+          href: Routes.SystemNotification,
+          disabled: true,
         },
       ],
     },

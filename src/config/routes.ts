@@ -22,4 +22,5 @@ export const Routes = {
   System: "/system",
   SystemMaster: "/system/master",
   SystemInsuranceExpand: "/system/insurance-expand",
+  SystemNotification: "/system/notification",
 };

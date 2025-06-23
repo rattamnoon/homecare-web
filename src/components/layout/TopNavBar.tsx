@@ -105,6 +105,7 @@ const MainMenu = () => {
         icon: <FontAwesomeIcon icon={child.icon} />,
         key: child.key,
         onClick: () => router.push(child.href),
+        ...(child.disabled && { disabled: true }),
       })),
     })),
     ...(!isMobile
