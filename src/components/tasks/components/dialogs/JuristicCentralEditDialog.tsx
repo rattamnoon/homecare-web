@@ -61,7 +61,6 @@ export const getIsJuristicCentralDisabled = (status?: TaskStatus | null) => {
 };
 
 const schema = z.object({
-  code: z.string({ message: "กรุณากรอกรหัส" }),
   status: z.nativeEnum(TaskStatus, {
     message: "กรุณาเลือกสถานะ",
   }),
@@ -69,10 +68,10 @@ const schema = z.object({
   categoryId: z.string({ message: "กรุณาเลือกหลัก" }),
   subCategoryId: z.string({ message: "กรุณาเลือกรายการ" }),
   homecareId: z.string({ message: "กรุณาเลือกผู้รับผิดชอบ" }),
-  appointmentDate: z.date({ message: "กรุณากรอกวันเวลา" }),
-  appointmentTime: z.string({ message: "กรุณากรอกวันเวลา" }),
-  appointmentRepairDate: z.date({ message: "กรุณากรอกวันเวลา" }),
-  appointmentRepairTime: z.string({ message: "กรุณากรอกวันเวลา" }),
+  appointmentDate: z.date({ message: "กรุณาเลือกวันที่" }),
+  appointmentTime: z.string({ message: "กรุณาเลือกเวลา" }),
+  appointmentRepairDate: z.date().optional(),
+  appointmentRepairTime: z.string().optional(),
   images: z.array(z.custom<UploadFile>()).optional(),
 });
 
@@ -129,7 +128,8 @@ const statusOptions = (currentStatus?: TaskStatus | null) => {
 interface JuristicCentralEditDialogProps {
   open: boolean;
   onCancel: () => void;
-  onSubmit: () => void;
+  onSubmit: (values: z.infer<typeof schema>) => Promise<void>;
+  confirmLoading: boolean;
   taskDetail?: TaskDetailFragment | null;
 }
 
@@ -257,6 +257,8 @@ const CaseUpdateThread = ({
                     placeholder="ข้อมูลเพิ่มเติม"
                     value={field.value || ""}
                     disabled={isDisabled}
+                    showCount
+                    maxLength={500}
                   />
                 </CustomFormItem>
               )}
@@ -288,13 +290,20 @@ export const JuristicCentralEditDialog = ({
   onCancel,
   onSubmit,
   taskDetail,
+  confirmLoading,
 }: JuristicCentralEditDialogProps) => {
-  const { control, handleSubmit, watch, setValue } = useForm<
-    z.infer<typeof schema>
-  >({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<z.infer<typeof schema>>({
     mode: "onChange",
     resolver: zodResolver(schema),
   });
+
+  console.log(errors);
 
   const categoryId = watch("categoryId");
   const subCategoryId = watch("subCategoryId");
@@ -365,13 +374,16 @@ export const JuristicCentralEditDialog = ({
         setValue("description", taskDetail.description);
       }
       if (taskDetail.appointmentDate) {
-        setValue("appointmentDate", taskDetail.appointmentDate);
+        setValue("appointmentDate", dayjs(taskDetail.appointmentDate).toDate());
       }
       if (taskDetail.appointmentTime) {
         setValue("appointmentTime", taskDetail.appointmentTime.id);
       }
       if (taskDetail.appointmentRepairDate) {
-        setValue("appointmentRepairDate", taskDetail.appointmentRepairDate);
+        setValue(
+          "appointmentRepairDate",
+          dayjs(taskDetail.appointmentRepairDate).toDate()
+        );
       }
       if (taskDetail.appointmentRepairTime) {
         setValue("appointmentRepairTime", taskDetail.appointmentRepairTime.id);
@@ -418,6 +430,7 @@ export const JuristicCentralEditDialog = ({
               onClick={handleSubmit(onSubmit)}
               icon={<FontAwesomeIcon icon={faSave} />}
               disabled={isDisabled}
+              loading={confirmLoading}
             >
               บันทึก
             </Button>
@@ -606,6 +619,8 @@ export const JuristicCentralEditDialog = ({
                       placeholder="รายละเอียด"
                       value={field.value || ""}
                       disabled={isDisabled}
+                      showCount
+                      maxLength={500}
                     />
                   </CustomFormItem>
                 )}
@@ -741,6 +756,11 @@ export const JuristicCentralEditDialog = ({
                             format="DD/MM/YYYY"
                             style={{ width: "100%" }}
                             disabled={isDisabled}
+                            onChange={(value) => {
+                              field.onChange(
+                                value ? dayjs(value).toDate() : null
+                              );
+                            }}
                           />
                           {error && <Text type="danger">{error.message}</Text>}
                         </Flex>
@@ -812,6 +832,11 @@ export const JuristicCentralEditDialog = ({
                             format="DD/MM/YYYY"
                             style={{ width: "100%" }}
                             disabled={isDisabled}
+                            onChange={(value) => {
+                              field.onChange(
+                                value ? dayjs(value).toDate() : null
+                              );
+                            }}
                           />
                           {error && <Text type="danger">{error.message}</Text>}
                         </Flex>

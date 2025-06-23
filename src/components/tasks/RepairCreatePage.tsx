@@ -366,6 +366,7 @@ export const RepairCreatePage = () => {
                       onChange={(value) => {
                         field.onChange(dayjs(value).toDate());
                       }}
+                      value={field.value ? dayjs(field.value) : undefined}
                       placeholder="วันที่เข้าตรวจสอบ"
                       format="DD/MM/YYYY"
                       style={{ width: "100%" }}

@@ -395,12 +395,6 @@ mutation CreateTask(
   }
 }
 
-mutation UpdateTaskDetail($updateTaskDetailInput: UpdateTaskDetailInput!) {
-  updateTaskDetail(updateTaskDetailInput: $updateTaskDetailInput) {
-    ...TaskDetail
-  }
-}
-
 mutation CreateTaskDetailReportLog(
   $createTaskDetailReportLogInput: CreateTaskDetailReportLogInput!
   $createUploadFileInput: [CreateUploadFileInput!]
@@ -481,6 +475,12 @@ mutation CreateTaskDetail(
     taskId: $taskId
     createTaskDetailInput: $createTaskDetailInput
   ) {
+    ...TaskDetail
+  }
+}
+
+mutation UpdateTaskDetail($updateTaskDetailInput: UpdateTaskDetailInput!) {
+  updateTaskDetail(updateTaskDetailInput: $updateTaskDetailInput) {
     ...TaskDetail
   }
 }

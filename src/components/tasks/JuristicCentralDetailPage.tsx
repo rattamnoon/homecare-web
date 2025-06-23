@@ -1,11 +1,16 @@
 "use client";
 
 import { LayoutWithBreadcrumb } from "@/components/layout/LayoutWithBreadcrumb";
-import { CreateUploadFileInput, UploadFileType } from "@/gql/generated/graphql";
+import {
+  CreateUploadFileInput,
+  UpdateTaskDetailInput,
+  UploadFileType,
+} from "@/gql/generated/graphql";
 import {
   TaskDetailFragment,
   TaskDocument,
   useTaskQuery,
+  useUpdateTaskDetailMutation,
 } from "@/gql/generated/tasks.generated";
 import { useCreateUploadFileMutation } from "@/gql/generated/upload-files.generated";
 import imageToken from "@/utils/imageToken";
@@ -107,6 +112,30 @@ export const JuristicCentralDetailPage = () => {
           description: "สร้างรูปภาพสำเร็จ",
         });
         setUploadFilesDialogOpen(false);
+        setTaskDetail(null);
+      },
+      onError: (error) => {
+        notificationApi.error({
+          message: "เกิดข้อผิดพลาด !!",
+          description: error.message,
+        });
+      },
+      refetchQueries: [
+        {
+          query: TaskDocument,
+          variables: { id: taskId },
+        },
+      ],
+    });
+
+  const [updateTaskDetail, { loading: updateTaskDetailLoading }] =
+    useUpdateTaskDetailMutation({
+      onCompleted: () => {
+        notificationApi.success({
+          message: "สำเร็จ !!",
+          description: "บันทึกข้อมูลเรียบร้อย",
+        });
+        setEditDialogOpen(false);
         setTaskDetail(null);
       },
       onError: (error) => {
@@ -388,10 +417,43 @@ export const JuristicCentralDetailPage = () => {
           setEditDialogOpen(false);
           setTaskDetail(null);
         }}
-        onSubmit={() => {
-          setEditDialogOpen(false);
-          setTaskDetail(null);
+        onSubmit={async (values) => {
+          const createUploadFileInput: CreateUploadFileInput[] =
+            values.images?.map((image) => ({
+              refId: taskDetail?.id ?? "",
+              fileType: UploadFileType.CentralFormAttachment,
+              fileId: image.response?.fileId,
+              fileName: image.response?.fileName,
+              fileFolder: image.response?.fileFolder,
+              filePath: image.response?.filePath,
+              fileBucket: image.response?.fileBucket,
+              fileExtension: image.response?.fileExtension,
+            })) ?? [];
+
+          const updateTaskDetailInput: UpdateTaskDetailInput = {
+            id: taskDetail?.id ?? "",
+            priority: taskDetail?.priority?.id ?? 0,
+            status: values.status,
+            description: values.description,
+            categoryId: values.categoryId,
+            subCategoryId: values.subCategoryId,
+            homecareId: values.homecareId,
+            appointmentDate: values.appointmentDate
+              ? dayjs(values.appointmentDate).toDate()
+              : undefined,
+            appointmentTime: values.appointmentTime,
+            appointmentRepairDate: values.appointmentRepairDate
+              ? dayjs(values.appointmentRepairDate).toDate()
+              : undefined,
+            appointmentRepairTime: values.appointmentRepairTime,
+            files: createUploadFileInput,
+          };
+
+          await updateTaskDetail({
+            variables: { updateTaskDetailInput },
+          });
         }}
+        confirmLoading={updateTaskDetailLoading}
         taskDetail={taskDetail}
       />
       <JuristicCentralLogsDialog

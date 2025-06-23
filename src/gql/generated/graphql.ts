@@ -94,6 +94,8 @@ export type CreateTaskDetailInput = {
   appointmentDate?: InputMaybe<Scalars["Date"]["input"]>;
   appointmentRepairDate?: InputMaybe<Scalars["Date"]["input"]>;
   appointmentRepairRemark?: InputMaybe<Scalars["String"]["input"]>;
+  appointmentRepairTime?: InputMaybe<Scalars["String"]["input"]>;
+  appointmentTime?: InputMaybe<Scalars["String"]["input"]>;
   assignInDate?: InputMaybe<Scalars["Date"]["input"]>;
   assignRangeTime?: InputMaybe<Scalars["String"]["input"]>;
   assignedDate?: InputMaybe<Scalars["Date"]["input"]>;
@@ -882,6 +884,8 @@ export type UpdateTaskDetailInput = {
   appointmentDate?: InputMaybe<Scalars["Date"]["input"]>;
   appointmentRepairDate?: InputMaybe<Scalars["Date"]["input"]>;
   appointmentRepairRemark?: InputMaybe<Scalars["String"]["input"]>;
+  appointmentRepairTime?: InputMaybe<Scalars["String"]["input"]>;
+  appointmentTime?: InputMaybe<Scalars["String"]["input"]>;
   assignInDate?: InputMaybe<Scalars["Date"]["input"]>;
   assignRangeTime?: InputMaybe<Scalars["String"]["input"]>;
   assignedDate?: InputMaybe<Scalars["Date"]["input"]>;

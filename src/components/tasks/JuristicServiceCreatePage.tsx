@@ -205,13 +205,13 @@ export const JuristicServiceCreatePage = () => {
       customerPhone,
       source,
       customerRequestedRepairDate: dayjs().toDate(),
-      status: TaskStatus.Pending,
+      status: TaskStatus.Open,
       type: TaskType.Service,
     };
 
     const createTaskDetailInput: CreateTaskDetailInput[] = taskDetails.map(
       (taskDetail) => ({
-        status: TaskStatus.Pending,
+        status: TaskStatus.Open,
         categoryId: taskDetail.categoryId,
         subCategoryId: taskDetail.subCategoryId,
         description: taskDetail.description,

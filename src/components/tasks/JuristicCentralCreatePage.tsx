@@ -217,7 +217,7 @@ export const JuristicCentralCreatePage = () => {
       customerName,
       customerPhone,
       source,
-      status: TaskStatus.Pending,
+      status: TaskStatus.Open,
       type: TaskType.Central,
       areaId,
       buildingId,
@@ -226,7 +226,7 @@ export const JuristicCentralCreatePage = () => {
 
     const createTaskDetailInput: CreateTaskDetailInput[] = taskDetails.map(
       (taskDetail) => ({
-        status: TaskStatus.Pending,
+        status: TaskStatus.Open,
         categoryId: taskDetail.categoryId,
         subCategoryId: taskDetail.subCategoryId,
         description: taskDetail.description,
