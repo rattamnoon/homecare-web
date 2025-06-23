@@ -58,6 +58,7 @@ const schema = z.object({
   checkInDate: z.date({ message: "กรุณากรอกวันที่เข้าตรวจสอบ" }),
   source: z.string({ message: "กรุณาเลือกช่องทาง" }),
   checkInRangeTime: z.string({ message: "กรุณาเลือกช่วงเวลา" }),
+  customerRequestedRepairDate: z.date().optional(),
   taskDetails: z.array(
     z.object(
       {
@@ -94,6 +95,7 @@ export const RepairCreatePage = () => {
   });
 
   const projectId = watch("projectId");
+  const source = watch("source");
 
   const { data: projects, loading: projectsLoading } = useProjectsQuery();
   const { data: units, loading: unitsLoading } = useUnitsQuery({
@@ -203,6 +205,7 @@ export const RepairCreatePage = () => {
       source,
       checkInRangeTime,
       taskDetails,
+      customerRequestedRepairDate,
     } = data;
 
     const unit = units?.units.find((unit) => unit.id === unitId);
@@ -216,7 +219,9 @@ export const RepairCreatePage = () => {
       checkInDate,
       source,
       checkInRangeTime,
-      customerRequestedRepairDate: dayjs().toDate(),
+      customerRequestedRepairDate: customerRequestedRepairDate
+        ? dayjs(customerRequestedRepairDate).toDate()
+        : undefined,
       status: TaskStatus.Pending,
       type: TaskType.Repair,
     };
@@ -420,6 +425,35 @@ export const RepairCreatePage = () => {
                 )}
               />
             </Col>
+            {/* วันที่นิติได้รับแจ้งซ่อมจากลูกบ้าน จากการเลือกช่องทาง 01 นิติบุคคล */}
+            {source === "01" && (
+              <Col span={12}>
+                <Controller
+                  control={control}
+                  name="customerRequestedRepairDate"
+                  render={({ field, formState: { errors } }) => (
+                    <Form.Item
+                      label="วันที่นิติได้รับแจ้งซ่อมจากลูกบ้าน"
+                      required={false}
+                      validateStatus={
+                        errors.customerRequestedRepairDate ? "error" : ""
+                      }
+                      help={errors.customerRequestedRepairDate?.message}
+                    >
+                      <DatePicker
+                        {...field}
+                        format="DD/MM/YYYY"
+                        placeholder="วันที่นิติได้รับแจ้งซ่อมจากลูกบ้าน"
+                        onChange={(value) => {
+                          field.onChange(dayjs(value).toDate());
+                        }}
+                        value={field.value ? dayjs(field.value) : undefined}
+                      />
+                    </Form.Item>
+                  )}
+                />
+              </Col>
+            )}
             <Col span={24}>
               <Divider orientation="left">รายการแจ้งซ่อม</Divider>
               <Row gutter={[16, 16]} justify="center">
