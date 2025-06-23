@@ -1,6 +1,0 @@
-[install]
-registry = "https://registry.npmjs.org/"
-
-[install.scopes."@fortawesome"]
-registry = "https://npm.fontawesome.com/"
-token = "1D64913B-2696-419B-92BF-619F5B9AD118"
