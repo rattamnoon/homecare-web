@@ -142,6 +142,9 @@ export const RepairWaitingApprovalPage = () => {
               isSource
               isCheckInDate
               isCreatedAt
+              onCreateButtonClick={() => {
+                router.push(Routes.TasksRepairCreate);
+              }}
             />
           </Col>
           <Col span={24}>

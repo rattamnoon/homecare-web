@@ -293,6 +293,25 @@ export const RepairTable = ({
           },
         },
         {
+          title: "วันที่และเวลาแจ้งซ่อม",
+          dataIndex: "customerRequestedRepairDate",
+          key: "customerRequestedRepairDate",
+          align: "center",
+          width: 180,
+          render: (_, record) => {
+            return record.customerRequestedRepairDate
+              ? dayjs(record.customerRequestedRepairDate).format(
+                  "DD/MM/YYYY HH:mm"
+                )
+              : dayjs(record.createdAt).format("DD/MM/YYYY HH:mm");
+          },
+          onCell: (record) => ({
+            style: {
+              textAlign: "center",
+            },
+          }),
+        },
+        {
           title: "จำนวนงานแจ้งซ่อม",
           dataIndex: "details",
           key: "details",
@@ -301,23 +320,6 @@ export const RepairTable = ({
           render: (_, record) => {
             return record.details?.length ?? 0;
           },
-        },
-        {
-          title: "วันที่แจ้งซ่อม",
-          dataIndex: "customerRequestedRepairDate",
-          key: "customerRequestedRepairDate",
-          align: "center",
-          width: 100,
-          render: (_, record) => {
-            return record.customerRequestedRepairDate
-              ? dayjs(record.customerRequestedRepairDate).format("DD/MM/YYYY")
-              : dayjs(record.createdAt).format("DD/MM/YYYY");
-          },
-          onCell: (record) => ({
-            style: {
-              textAlign: "center",
-            },
-          }),
         },
       ]}
     />

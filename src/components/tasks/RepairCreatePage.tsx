@@ -83,6 +83,7 @@ export const RepairCreatePage = () => {
     mode: "onChange",
     resolver: zodResolver(schema),
     defaultValues: {
+      customerRequestedRepairDate: dayjs().toDate(),
       taskDetails: [{}],
     },
   });
@@ -442,7 +443,8 @@ export const RepairCreatePage = () => {
                     >
                       <DatePicker
                         {...field}
-                        format="DD/MM/YYYY"
+                        showTime
+                        format="DD/MM/YYYY HH:mm"
                         placeholder="วันที่นิติได้รับแจ้งซ่อมจากลูกบ้าน"
                         onChange={(value) => {
                           field.onChange(dayjs(value).toDate());
