@@ -221,7 +221,7 @@ export const RepairCreatePage = () => {
       checkInRangeTime,
       customerRequestedRepairDate: customerRequestedRepairDate
         ? dayjs(customerRequestedRepairDate).toDate()
-        : undefined,
+        : dayjs().toDate(),
       status: TaskStatus.Pending,
       type: TaskType.Repair,
     };

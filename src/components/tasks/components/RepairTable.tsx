@@ -302,6 +302,23 @@ export const RepairTable = ({
             return record.details?.length ?? 0;
           },
         },
+        {
+          title: "วันที่แจ้งซ่อม",
+          dataIndex: "customerRequestedRepairDate",
+          key: "customerRequestedRepairDate",
+          align: "center",
+          width: 100,
+          render: (_, record) => {
+            return record.customerRequestedRepairDate
+              ? dayjs(record.customerRequestedRepairDate).format("DD/MM/YYYY")
+              : dayjs(record.createdAt).format("DD/MM/YYYY");
+          },
+          onCell: (record) => ({
+            style: {
+              textAlign: "center",
+            },
+          }),
+        },
       ]}
     />
   );
