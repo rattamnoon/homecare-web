@@ -181,7 +181,35 @@ export const SearchFilter = ({
   };
 
   return (
-    <Form layout="horizontal">
+    <Form
+      layout="horizontal"
+      initialValues={{
+        searchText: searchText,
+        statuses: statuses,
+        projectId: projectId,
+        unitIds: unitIds,
+        sources: sources,
+        isCall: isCall,
+        ...(checkInDate.length > 0 && {
+          checkInDate: [
+            checkInDate[0] ? dayjs(checkInDate[0], "YYYY-MM-DD") : null,
+            checkInDate[1] ? dayjs(checkInDate[1], "YYYY-MM-DD") : null,
+          ],
+        }),
+        ...(createdAt.length > 0 && {
+          createdAt: [
+            createdAt[0] ? dayjs(createdAt[0], "YYYY-MM-DD") : null,
+            createdAt[1] ? dayjs(createdAt[1], "YYYY-MM-DD") : null,
+          ],
+        }),
+        ...(finishedDate.length > 0 && {
+          finishedDate: [
+            finishedDate[0] ? dayjs(finishedDate[0], "YYYY-MM-DD") : null,
+            finishedDate[1] ? dayjs(finishedDate[1], "YYYY-MM-DD") : null,
+          ],
+        }),
+      }}
+    >
       <Row gutter={[16, 16]}>
         <Col span={24} style={{ display: isSearchText ? "block" : "none" }}>
           <Flex justify="space-between">
@@ -194,7 +222,6 @@ export const SearchFilter = ({
               <Input
                 placeholder="ค้นหาโดยรหัสงาน, ชื่อลูกค้า, เบอร์โทรลูกค้า"
                 allowClear
-                defaultValue={searchText}
                 onChange={(e) => {
                   handleSearch([{ key: "searchText", value: e.target.value }]);
                 }}
@@ -233,7 +260,6 @@ export const SearchFilter = ({
                   mode="multiple"
                   placeholder="สถานะ"
                   loading={statusesLoading}
-                  defaultValue={statuses}
                   onChange={(value) => {
                     handleSearch([{ key: "statuses", value: value.join(",") }]);
                   }}
@@ -268,7 +294,6 @@ export const SearchFilter = ({
                   {...sharedSelectProps}
                   placeholder="โครงการ"
                   loading={projectsLoading}
-                  defaultValue={projectId}
                   onChange={(value) => {
                     handleSearch([{ key: "projectId", value }]);
                   }}
@@ -291,7 +316,6 @@ export const SearchFilter = ({
                   mode="multiple"
                   placeholder="ห้อง"
                   loading={unitsLoading}
-                  defaultValue={unitIds}
                   onChange={(value) => {
                     handleSearch([{ key: "unitIds", value: value.join(",") }]);
                   }}
@@ -317,14 +341,6 @@ export const SearchFilter = ({
                   placeholder={["เริ่มต้น", "สิ้นสุด"]}
                   allowClear
                   format="DD/MM/YYYY"
-                  defaultValue={[
-                    finishedDate[0]
-                      ? dayjs(finishedDate[0], "YYYY-MM-DD")
-                      : null,
-                    finishedDate[1]
-                      ? dayjs(finishedDate[1], "YYYY-MM-DD")
-                      : null,
-                  ]}
                   onChange={(value) => {
                     if (value) {
                       handleSearch([
@@ -359,7 +375,6 @@ export const SearchFilter = ({
                   {...sharedSelectProps}
                   placeholder="การโทรที่ถูกบันทึกไว้"
                   allowClear={false}
-                  defaultValue={isCall}
                   onChange={(value) => {
                     handleSearch([{ key: "isCall", value }]);
                   }}
@@ -387,7 +402,6 @@ export const SearchFilter = ({
                   mode="multiple"
                   placeholder="ช่องทาง"
                   loading={optionsLoading}
-                  defaultValue={sources}
                   onChange={(value) => {
                     handleSearch([{ key: "sources", value: value.join(",") }]);
                   }}
@@ -413,10 +427,6 @@ export const SearchFilter = ({
                   placeholder={["เริ่มต้น", "สิ้นสุด"]}
                   allowClear
                   format="DD/MM/YYYY"
-                  defaultValue={[
-                    checkInDate[0] ? dayjs(checkInDate[0], "YYYY-MM-DD") : null,
-                    checkInDate[1] ? dayjs(checkInDate[1], "YYYY-MM-DD") : null,
-                  ]}
                   onChange={(value) => {
                     if (value) {
                       handleSearch([
@@ -451,10 +461,6 @@ export const SearchFilter = ({
                   placeholder={["เริ่มต้น", "สิ้นสุด"]}
                   allowClear
                   format="DD/MM/YYYY"
-                  defaultValue={[
-                    createdAt[0] ? dayjs(createdAt[0], "YYYY-MM-DD") : null,
-                    createdAt[1] ? dayjs(createdAt[1], "YYYY-MM-DD") : null,
-                  ]}
                   onChange={(value) => {
                     if (value) {
                       handleSearch([
