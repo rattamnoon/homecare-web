@@ -15,8 +15,8 @@
     "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@apollo/client": "^3.13.8",
     "@apollo/client-integration-nextjs": "^0.12.2",
-    "@aws-sdk/client-s3": "^3.832.0",
-    "@aws-sdk/s3-request-presigner": "^3.832.0",
+    "@aws-sdk/client-s3": "^3.835.0",
+    "@aws-sdk/s3-request-presigner": "^3.835.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
@@ -33,7 +33,7 @@
     "@fortawesome/sharp-solid-svg-icons": "^6.7.2",
     "@fortawesome/sharp-thin-svg-icons": "^6.7.2",
     "@hookform/resolvers": "^5.1.1",
-    "antd": "^5.26.1",
+    "antd": "^5.26.2",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.13",
     "graphql": "^16.11.0",
@@ -82,5 +82,5 @@
     "eslint-config-next": "15.3.4",
     "typescript": "^5"
   },
-  "packageManager": "pnpm@10.12.2"
+  "packageManager": "pnpm@10.12.4"
 }

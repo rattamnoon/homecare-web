@@ -1,17 +1,21 @@
 "use client";
 
 import { LayoutWithBreadcrumb } from "@/components/layout/LayoutWithBreadcrumb";
+import { Routes } from "@/config/routes";
 import { TaskType } from "@/gql/generated/graphql";
 import { useTasksQuery } from "@/gql/generated/tasks.generated";
 import { Calendar, CalendarProps, Flex, Skeleton, Tag } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/th";
 import weekday from "dayjs/plugin/weekday";
+import { useRouter } from "nextjs-toploader/app";
 import { useMemo, useState } from "react";
+import { SearchFilter } from "../common/SearchFilter";
 
 dayjs.extend(weekday);
 
 export const RepairCalendarPage = () => {
+  const router = useRouter();
   const [pageSize, setPageSize] = useState(1000);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentDate, setCurrentDate] = useState<Dayjs>(dayjs());
@@ -59,6 +63,21 @@ export const RepairCalendarPage = () => {
 
   return (
     <LayoutWithBreadcrumb>
+      <SearchFilter
+        route="TasksRepairCalendar"
+        isSearchText
+        isStatus
+        isProject
+        isUnit
+        isSource
+        isCheckInDate
+        isCreatedAt
+        isFinishedDate
+        isCreateButton
+        onCreateButtonClick={() => {
+          router.push(Routes.TasksRepairCreate);
+        }}
+      />
       <Skeleton loading={loading}>
         <Calendar
           value={currentDate}
